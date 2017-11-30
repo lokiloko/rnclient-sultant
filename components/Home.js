@@ -20,31 +20,34 @@ export default class HomeScreen extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
+      <Image source={{uri: 'https://hdwallsource.com/img/2016/9/cash-money-wallpaper-background-49518-51193-hd-wallpapers.jpg'}}>
       <View style={styles.container}>
       <Text style={styles.appName}>SULTANT</Text>
       <View>
-      <TouchableOpacity onPress={() => navigate('Inputbudget')}>
+
         <Image
           style={styles.imageLogo}
-          source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/a/ab/Logo_TV_2015.png'}}
+          source={require('./sultant.png')}
         />
-      </TouchableOpacity>
+
       </View>
 
       <View>
+      <TouchableOpacity onPress={() => navigate('ujicobacamera')}>
         <Image
             style={styles.imageLogin}
             source={{uri: 'http://qsmart.co/Images/fb.png'}}
           />
+      </TouchableOpacity>
       </View>
       </View>
+      </Image>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
     alignItems: 'center'
   },
   imageLogo: {
@@ -59,6 +62,13 @@ const styles = StyleSheet.create({
   },
   appName: {
     paddingTop: 70,
+    paddingBottom: 50,
     fontSize: 20,
-  }
+  },
+  HomeScreen: {
+        flex: 1,
+        width: null,
+        height: null,
+        resizeMode: 'cover'
+    }
 });

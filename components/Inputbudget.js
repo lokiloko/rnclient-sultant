@@ -50,6 +50,7 @@ export default class Inputbudget extends React.Component {
     const { navigate } = this.props.navigation;
     let { phone } = this.state;
     return (
+      <Image source={{uri: 'https://hdwallsource.com/img/2016/9/cash-money-wallpaper-background-49518-51193-hd-wallpapers.jpg'}}>
       <View style={styles.container}>
       <View style={{paddingTop: 100}}>
 
@@ -57,7 +58,7 @@ export default class Inputbudget extends React.Component {
             raised
             icon={{name: 'code', size: 20}}
             onPress={this._showModal}
-            buttonStyle={{backgroundColor: 'red', borderRadius: 10}}
+            buttonStyle={{backgroundColor: 'blue', borderRadius: 20}}
             textStyle={{textAlign: 'center'}}
             title={`Input Budget`}
           />
@@ -102,6 +103,7 @@ export default class Inputbudget extends React.Component {
           </Modal>
       </View>
       </View>
+      </Image>
     );
   }
 }
@@ -109,6 +111,7 @@ export default class Inputbudget extends React.Component {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    height: responsiveHeight(100)
   },
   bottomModal: {
     backgroundColor: 'white',
@@ -118,4 +121,10 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
+  Inputbudget: {
+    flex: 1,
+    width: null,
+    height: null,
+    resizeMode: 'cover'
+  }
 });

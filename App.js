@@ -12,13 +12,15 @@ import Inputbudget from './components/Inputbudget'
 import Currentballance from './components/Currentballance'
 import Detailtransaksi from './components/Detailtransaksi'
 import Startshoping from './components/Startshoping'
+import ujicobacamera from './components/ujicobacamera'
 
 const SimpleApp = StackNavigator({
   Home: { screen: HomeScreen },
   Inputbudget: { screen: Inputbudget },
   Currentballance: { screen: Currentballance },
   Detailtransaksi: { screen: Detailtransaksi },
-  Startshoping: { screen: Startshoping }
+  Startshoping: { screen: Startshoping },
+  ujicobacamera: { screen: ujicobacamera }
 });
 
 export default class App extends React.Component {

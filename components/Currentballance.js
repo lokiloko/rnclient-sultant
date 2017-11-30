@@ -54,13 +54,14 @@ export default class Currentballance extends React.Component {
     ]
 
     return (
+      <Image source={{uri: 'https://hdwallsource.com/img/2016/9/cash-money-wallpaper-background-49518-51193-hd-wallpapers.jpg'}}>
       <View style={styles.container}>
 
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', paddingTop: 20}}>
           <View style={{paddingLeft: 30}}>
             <Image
               style={styles.imageLogo}
-              source={{uri: 'http://sultan.readthedocs.io/en/latest/_images/sultan-logo.png'}}
+              source={require('./sultant.png')}
             />
           </View>
           <View style={{flex: 1}}>
@@ -97,6 +98,7 @@ export default class Currentballance extends React.Component {
         </View>
 
       </View>
+      </Image>
     );
   }
 }
@@ -106,8 +108,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageLogo: {
-    width: 70,
-    height: 70,
+    width: 50,
+    height: 50,
     resizeMode: Image.resizeMode.contain,
   },
   appName: {
