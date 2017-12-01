@@ -14,14 +14,6 @@ import {
 import Exponent, { Constants, ImagePicker, registerRootComponent, FileSystem } from 'expo';
 import Dropbox from 'dropbox'
 import axios from 'axios'
-// import Storage from '@google-cloud/storage'
-//
-// const storage = Storage({
-//   projectId: "api-project-721451771393" ,
-//   keyFilename: "keyFile.json"
-// })
-//
-// const bucket = storage.bucket("sultantscan")
 
 export default class App extends React.Component {
   state = {
@@ -148,31 +140,7 @@ export default class App extends React.Component {
     this._handleImagePicked(pickerResult);
   };
 
-  // uploadFile = (bucketName, filename) => {
-  //   // [START storage_upload_file]
-  //
-  //   // Imports the Google Cloud client library
-  //   // Creates a client
-  //
-  //   // const bucketName = 'Name of a bucket, e.g. my-bucket';
-  //   // const filename = 'Local file to upload, e.g. ./local/path/to/file.txt';
-  //   // Uploads a local file to the bucket
-  //   storage
-  //     .bucket(bucketName)
-  //     .upload(filename)
-  //     .then(() => {
-  //       console.log(`${filename} uploaded to ${bucketName}.`);
-  //     })
-  //     .catch(err => {
-  //       console.error('ERROR:', err);
-  //     });
-  //     // [END storage_upload_file]
-  // }
-
   _handleImagePicked = async pickerResult => {
-    // let uploadResponse = ''
-    // let uploadResult = ''
-
     try {
       this.setState({ uploading: true });
 
