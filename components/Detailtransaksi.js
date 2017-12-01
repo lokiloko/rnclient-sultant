@@ -27,28 +27,8 @@ export default class Detailtransaksi extends React.Component {
   }
 
   render() {
-    const list = [
-      {
-        name: 'Chiki Uenak',
-        avatar_url: 'https://i1.sndcdn.com/artworks-000066312689-d7quy2-t500x500.jpg'
-      },
-      {
-        name: 'Chitatoz',
-        avatar_url: 'https://i1.sndcdn.com/artworks-000066312689-d7quy2-t500x500.jpg',
-      },
-      {
-        name: 'Keripik Uenak',
-        avatar_url: 'https://i1.sndcdn.com/artworks-000066312689-d7quy2-t500x500.jpg',
-      },
-      {
-        name: 'Somai Goreng',
-        avatar_url: 'https://i1.sndcdn.com/artworks-000066312689-d7quy2-t500x500.jpg',
-      },
-      {
-        name: 'Ayam Bawang',
-        avatar_url: 'https://i1.sndcdn.com/artworks-000066312689-d7quy2-t500x500.jpg',
-      },
-    ]
+    const list = this.props.navigation.state.params.list.items
+
     return (
       <Image source={{uri: 'https://hdwallsource.com/img/2016/9/cash-money-wallpaper-background-49518-51193-hd-wallpapers.jpg'}}>
       <View style={styles.container}>
@@ -57,12 +37,12 @@ export default class Detailtransaksi extends React.Component {
         <Content>
           <List containerStyle={{marginBottom: 20}}>
           {
-            list.map((l, i) => (
+            list.map((item, index) => (
               <ListItem
               roundAvatar
-              avatar={{uri:l.avatar_url}}
-              key={i}
-              title={l.name}
+              avatar={{uri:'https://i1.sndcdn.com/artworks-000066312689-d7quy2-t500x500.jpg'}}
+              key={index}
+              title={item.name + " ~ Qty:" + item.qty + " ~ Price:" + item.price}
               />
             ))
           }

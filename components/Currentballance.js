@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import { TextInput, StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, SectionList} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 // import axios from 'axios'
@@ -9,7 +10,9 @@ import Modal from 'react-native-modal'
 import { Container, Header, Content, Form, Item, Input, Label, Button, Icon} from 'native-base';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 
-export default class Currentballance extends React.Component {
+import { getTransactions } from '../actions'
+
+class Currentballance extends React.Component {
   static navigationOptions = {
     title: 'Current Ballance',
   };
@@ -17,7 +20,7 @@ export default class Currentballance extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      text:'aman'
+      text: 'aman'
     }
   }
 
@@ -28,31 +31,20 @@ export default class Currentballance extends React.Component {
     });
   }
 
+  componentDidMount() {
+    this.props.fetchTransactions()
+  }
+
   render() {
     const { navigate } = this.props.navigation;
-    const list = [
-      {
-        name: 'Chiki Uenak',
-        avatar_url: 'https://i1.sndcdn.com/artworks-000066312689-d7quy2-t500x500.jpg'
-      },
-      {
-        name: 'Chitatoz',
-        avatar_url: 'https://i1.sndcdn.com/artworks-000066312689-d7quy2-t500x500.jpg',
-      },
-      {
-        name: 'Keripik Uenak',
-        avatar_url: 'https://i1.sndcdn.com/artworks-000066312689-d7quy2-t500x500.jpg',
-      },
-      {
-        name: 'Somai Goreng',
-        avatar_url: 'https://i1.sndcdn.com/artworks-000066312689-d7quy2-t500x500.jpg',
-      },
-      {
-        name: 'Ayam Bawang',
-        avatar_url: 'https://i1.sndcdn.com/artworks-000066312689-d7quy2-t500x500.jpg',
-      },
-    ]
-
+    const lists = this.props.transactionList
+    // const list = [
+    //   {
+    //     _id: 'asdasdads',
+    //     totalPrice: '10000'
+    //   }
+    // ]
+    // console.log(list);
     return (
       <Image source={{uri: 'https://hdwallsource.com/img/2016/9/cash-money-wallpaper-background-49518-51193-hd-wallpapers.jpg'}}>
       <View style={styles.container}>
@@ -79,18 +71,17 @@ export default class Currentballance extends React.Component {
           </Button>
 
           <List containerStyle={{marginBottom: 20}}>
-          {
-            list.map((l, i) => (
-              <TouchableOpacity onPress={() => navigate('Detailtransaksi')}>
-              <ListItem
-              roundAvatar
-              avatar={{uri:l.avatar_url}}
-              key={i}
-              title={l.name}
-              />
+          { lists ?
+            lists.map((list, index) => (
+              <TouchableOpacity key={ index } onPress={() => navigate('Detailtransaksi', { list })}>
+                <ListItem
+                  roundAvatar
+                  avatar={{uri:'https://i1.sndcdn.com/artworks-000066312689-d7quy2-t500x500.jpg'}}
+                  title={list.date.slice(0, 10) + " ~~~ Rp" + list.totalPrice}
+                />
               </TouchableOpacity>
             ))
-          }
+          : <Text>loading..</Text> }
           </List>
 
         </Content>
@@ -119,3 +110,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   }
 });
+
+const mapStateToProps = (state) => {
+  return {
+    transactionList: state.transactionsReducer.transactions
+  }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchTransactions: () => dispatch(getTransactions())
+})
+
+// export default Currentballance
+export default connect(mapStateToProps, mapDispatchToProps)(Currentballance)

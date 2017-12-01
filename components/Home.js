@@ -33,7 +33,7 @@ export default class HomeScreen extends React.Component {
       </View>
 
       <View>
-      <TouchableOpacity onPress={() => navigate('ujicobacamera')}>
+      <TouchableOpacity onPress={() => navigate('Inputbudget')}>
         <Image
             style={styles.imageLogin}
             source={{uri: 'http://qsmart.co/Images/fb.png'}}
