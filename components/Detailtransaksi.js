@@ -50,6 +50,7 @@ export default class Detailtransaksi extends React.Component {
       },
     ]
     return (
+      <Image source={{uri: 'https://hdwallsource.com/img/2016/9/cash-money-wallpaper-background-49518-51193-hd-wallpapers.jpg'}}>
       <View style={styles.container}>
         <View style={{paddingTop: 20, paddingLeft: 30, paddingRight: 30, flexDirection: 'row'}}>
         <Container>
@@ -70,6 +71,7 @@ export default class Detailtransaksi extends React.Component {
         </Container>
         </View>
       </View>
+      </Image>
     );
   }
 }
