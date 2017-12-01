@@ -13,6 +13,7 @@ import Currentballance from './components/Currentballance'
 import Detailtransaksi from './components/Detailtransaksi'
 import Startshoping from './components/Startshoping'
 import ujicobacamera from './components/ujicobacamera'
+import Scanktp from './components/Scanktp'
 
 const SimpleApp = StackNavigator({
   Home: { screen: HomeScreen },
@@ -20,7 +21,8 @@ const SimpleApp = StackNavigator({
   Currentballance: { screen: Currentballance },
   Detailtransaksi: { screen: Detailtransaksi },
   Startshoping: { screen: Startshoping },
-  ujicobacamera: { screen: ujicobacamera }
+  ujicobacamera: { screen: ujicobacamera },
+  Scanktp: { screen: Scanktp }
 });
 
 export default class App extends React.Component {

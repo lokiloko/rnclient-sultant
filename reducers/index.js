@@ -1,18 +1,21 @@
 import { combineReducers } from 'redux';
 
 const news = {
-  allnews: []
+  dataUser: []
 }
 
-const newsReducers = (state = news, action) => {
+const userReducers = (state = news, action) => {
+  // console.log('manamih', action.value._id)
+  // alert(action.value.dataUser)
   switch (action.type) {
-    case 'DAPAT_BERITA':
-      return {...state, allnews:action.value}
+    case 'DATA_SCAN_KTP':
+      // console.log('action=>', action.value)
+      return {...state, dataUser: action.value}
     default:
       return state;
   }
 };
 
 export default combineReducers({
-  allnews: newsReducers
+  dataUser: userReducers
 });

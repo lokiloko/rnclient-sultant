@@ -1,295 +1,194 @@
 import React from 'react';
 import {
+  ActivityIndicator,
+  Button,
+  Clipboard,
+  Image,
+  Share,
+  StatusBar,
   StyleSheet,
   Text,
-  View,
   TouchableOpacity,
-  Slider,
-  Image,
-  Picker,
-  Button,
-  ScrollView,
-  Vibration,
+  View,
 } from 'react-native';
-import {
-  Camera,
-  Video,
-  FileSystem,
-  Permissions,
-} from 'expo';
-const flashModeOrder = {
-  off: 'on',
-  on: 'auto',
-  auto: 'torch',
-  torch: 'off',
-};
-const wbOrder = {
-  auto: 'sunny',
-  sunny: 'cloudy',
-  cloudy: 'shadow',
-  shadow: 'fluorescent',
-  fluorescent: 'incandescent',
-  incandescent: 'auto',
-};
-export default class ujicobacamera extends React.Component {
+import Exponent, { Constants, ImagePicker, registerRootComponent } from 'expo';
+
+export default class App extends React.Component {
   state = {
-    flash: 'off',
-    zoom: 0,
-    autoFocus: 'on',
-    depth: 0,
-    type: 'back',
-    whiteBalance: 'auto',
-    ratio: '16:9',
-    ratios: [],
-    photoId: new Date(),
-    showGallery: false,
-    photos: [],
+    image: null,
+    uploading: false,
   };
-
-  componentDidMount() {
-    FileSystem.makeDirectoryAsync(
-      FileSystem.documentDirectory + 'photos'
-    ).catch(e => {
-      console.log(e, 'Directory exists');
-    });
-  }
-
-  getRatios = async function() {
-    const ratios = await this.camera.getSupportedRatios();
-    return ratios;
-  };
-
-  toggleView() {
-    this.setState({
-      showGallery: !this.state.showGallery,
-    });
-  }
-
-  toggleFacing() {
-    this.setState({
-      type: this.state.type === 'back' ? 'front' : 'back',
-    });
-  }
-
-  toggleFlash() {
-    this.setState({
-      flash: flashModeOrder[this.state.flash],
-    });
-  }
-
-  setRatio(ratio) {
-    this.setState({
-      ratio,
-    });
-  }
-
-  toggleWB() {
-    this.setState({
-      whiteBalance: wbOrder[this.state.whiteBalance],
-    });
-  }
-
-  toggleFocus() {
-    this.setState({
-      autoFocus: this.state.autoFocus === 'on' ? 'off' : 'on',
-    });
-  }
-
-  zoomOut() {
-    this.setState({
-      zoom: this.state.zoom - 0.1 < 0 ? 0 : this.state.zoom - 0.1,
-    });
-  }
-
-  zoomIn() {
-    this.setState({
-      zoom: this.state.zoom + 0.1 > 1 ? 1 : this.state.zoom + 0.1,
-    });
-  }
-
-  setFocusDepth(depth) {
-    this.setState({
-      depth,
-    });
-  }
-
-  takePicture = async function() {
-    if (this.camera) {
-      this.camera.takePicture().then(data => {
-        FileSystem.moveAsync({
-          from: data,
-          to: `${FileSystem.documentDirectory}photos/Photo_${this.state
-            .photoId}.jpg`,
-        }).then(() => {
-          this.setState({
-            photoId: this.state.photoId + 1,
-          });
-          Vibration.vibrate();
-        });
-      });
-    }
-  };
-
-  renderCamera() {
-    return (
-      <Camera
-        ref={ref => {
-          this.camera = ref;
-        }}
-        style={{
-          flex: 1,
-        }}
-        type={this.state.type}
-        flashMode={this.state.flash}
-        autoFocus={this.state.autoFocus}
-        zoom={this.state.zoom}
-        whiteBalance={this.state.whiteBalance}
-        ratio={this.state.ratio}
-        focusDepth={this.state.depth}>
-        <View
-          style={{
-            flex: 0.5,
-            backgroundColor: 'transparent',
-            flexDirection: 'row',
-          }}>
-          <TouchableOpacity
-            style={styles.flipButton}
-            onPress={this.toggleFacing.bind(this)}>
-            <Text style={styles.flipText}> FLIP </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.flipButton}
-            onPress={this.toggleFlash.bind(this)}>
-            <Text style={styles.flipText}>
-              {' '}FLASH: {this.state.flash}{' '}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.flipButton}
-            onPress={this.toggleWB.bind(this)}>
-            <Text style={styles.flipText}>
-              {' '}WB: {this.state.whiteBalance}{' '}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            flex: 0.4,
-            backgroundColor: 'transparent',
-            flexDirection: 'row',
-            alignSelf: 'flex-end',
-          }}>
-          <Slider
-            style={{ width: 150, marginTop: 15, alignSelf: 'flex-end' }}
-            onValueChange={this.setFocusDepth.bind(this)}
-            value={this.state.depth}
-            step={0.1}
-            disabled={this.state.autoFocus === 'on'}
-          />
-        </View>
-        <View
-          style={{
-            flex: 0.1,
-            backgroundColor: 'transparent',
-            flexDirection: 'row',
-            alignSelf: 'flex-end',
-          }}>
-          <TouchableOpacity
-            style={[styles.flipButton, { flex: 0.1, alignSelf: 'flex-end' }]}
-            onPress={this.zoomIn.bind(this)}>
-            <Text style={styles.flipText}> + </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.flipButton, { flex: 0.1, alignSelf: 'flex-end' }]}
-            onPress={this.zoomOut.bind(this)}>
-            <Text style={styles.flipText}> - </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.flipButton, { flex: 0.25, alignSelf: 'flex-end' }]}
-            onPress={this.toggleFocus.bind(this)}>
-            <Text style={styles.flipText}>
-              {' '}AF : {this.state.autoFocus}{' '}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.flipButton,
-              styles.picButton,
-              { flex: 0.3, alignSelf: 'flex-end' },
-            ]}
-            onPress={this.takePicture.bind(this)}>
-            <Text style={styles.flipText}> SNAP </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.flipButton,
-              styles.galleryButton,
-              { flex: 0.25, alignSelf: 'flex-end' },
-            ]}
-            onPress={this.toggleView.bind(this)}>
-            <Text style={styles.flipText}> Gallery </Text>
-          </TouchableOpacity>
-        </View>
-      </Camera>
-    );
-  }
 
   render() {
+    let { image } = this.state;
+
     return (
-      <View style={styles.container}>
-        {this.state.showGallery ? this.renderGallery() : this.renderCamera()}
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text
+          style={{
+            fontSize: 20,
+            marginBottom: 20,
+            textAlign: 'center',
+            marginHorizontal: 15,
+          }}>
+          Example: Upload ImagePicker result
+        </Text>
+
+        <Button
+          onPress={this._pickImage}
+          title="Pick an image from camera roll"
+        />
+
+        <Button onPress={this._takePhoto} title="Take a photo" />
+
+        {this._maybeRenderImage()}
+        {this._maybeRenderUploadingOverlay()}
+
+        <StatusBar barStyle="default" />
       </View>
     );
   }
 
+  _maybeRenderUploadingOverlay = () => {
+    if (this.state.uploading) {
+      return (
+        <View
+          style={[
+            StyleSheet.absoluteFill,
+            {
+              backgroundColor: 'rgba(0,0,0,0.4)',
+              alignItems: 'center',
+              justifyContent: 'center',
+            },
+          ]}>
+          <ActivityIndicator color="#fff" animating size="large" />
+        </View>
+      );
+    }
+  };
+
+  _maybeRenderImage = () => {
+    let { image } = this.state;
+    if (!image) {
+      return;
+    }
+
+    return (
+      <View
+        style={{
+          marginTop: 30,
+          width: 250,
+          borderRadius: 3,
+          elevation: 2,
+          shadowColor: 'rgba(0,0,0,1)',
+          shadowOpacity: 0.2,
+          shadowOffset: { width: 4, height: 4 },
+          shadowRadius: 5,
+        }}>
+        <View
+          style={{
+            borderTopRightRadius: 3,
+            borderTopLeftRadius: 3,
+            overflow: 'hidden',
+          }}>
+          <Image source={{ uri: image }} style={{ width: 250, height: 250 }} />
+        </View>
+
+        <Text
+          onPress={this._copyToClipboard}
+          onLongPress={this._share}
+          style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
+          {image}
+        </Text>
+      </View>
+    );
+  };
+
+  _share = () => {
+    Share.share({
+      message: this.state.image,
+      title: 'Check out this photo',
+      url: this.state.image,
+    });
+  };
+
+  _copyToClipboard = () => {
+    Clipboard.setString(this.state.image);
+    alert('Copied image URL to clipboard');
+  };
+
+  _takePhoto = async () => {
+    let pickerResult = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    this._handleImagePicked(pickerResult);
+  };
+
+  _pickImage = async () => {
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    this._handleImagePicked(pickerResult);
+  };
+
+  _handleImagePicked = async pickerResult => {
+    let uploadResponse, uploadResult;
+
+    try {
+      this.setState({ uploading: true });
+
+      if (!pickerResult.cancelled) {
+        uploadResponse = await uploadImageAsync(pickerResult.uri);
+        uploadResult = await uploadResponse.json();
+        this.setState({ image: uploadResult.location });
+      }
+    } catch (e) {
+      console.log({ uploadResponse });
+      console.log({ uploadResult });
+      console.log({ e });
+      alert('Upload failed, sorry :(');
+    } finally {
+      this.setState({ uploading: false });
+    }
+  };
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'ivory',
-  },
-  navigation: {
-    flex: 1,
-  },
-  gallery: {
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  flipButton: {
-    flex: 0.3,
-    height: 40,
-    marginHorizontal: 2,
-    marginBottom: 10,
-    marginTop: 20,
-    borderRadius: 8,
-    borderColor: 'white',
-    borderWidth: 1,
-    padding: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  flipText: {
-    color: 'white',
-    fontSize: 15,
-  },
-  item: {
-    margin: 4,
-    backgroundColor: 'indianred',
-    height: 35,
-    width: 80,
-    borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  picButton: {
-    backgroundColor: 'darkseagreen',
-  },
-  galleryButton: {
-    backgroundColor: 'indianred',
-  },
-  row: {
-    flexDirection: 'row',
-  },
-});
+async function uploadImageAsync(uri) {
+  let apiUrl = 'https://file-upload-example-backend-dkhqoilqqn.now.sh/upload';
+
+  // Note:
+  // Uncomment this if you want to experiment with local server
+  //
+  if (Constants.isDevice) {
+    alert('aman')
+    // apiUrl = `https://your-ngrok-subdomain.ngrok.io/upload`;
+  } else {
+    alert('tidakaman')
+    apiUrl = `./components`
+  }
+
+  let uriParts = uri.split('.');
+  let fileType = uri[uri.length - 1];
+
+  let formData = new FormData();
+  formData.append('photo', {
+    uri,
+    name: `photo.${fileType}`,
+    type: `image/${fileType}`,
+  });
+
+  let options = {
+    method: 'POST',
+    body: formData,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'multipart/form-data',
+    },
+  };
+
+  return fetch(apiUrl, options);
+}
