@@ -38,13 +38,6 @@ class Currentballance extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     const lists = this.props.transactionList
-    // const list = [
-    //   {
-    //     _id: 'asdasdads',
-    //     totalPrice: '10000'
-    //   }
-    // ]
-    // console.log(list);
     return (
       <Image source={{uri: 'https://hdwallsource.com/img/2016/9/cash-money-wallpaper-background-49518-51193-hd-wallpapers.jpg'}}>
       <View style={styles.container}>
@@ -65,8 +58,7 @@ class Currentballance extends React.Component {
         <Container>
         <Content>
           <Button block success rounded
-          onPress={() => navigate('Startshoping')}
-          >
+          onPress={() => navigate('Startshoping')}>
             <Text>Start Shoping</Text>
           </Button>
 
