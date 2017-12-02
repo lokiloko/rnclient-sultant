@@ -64,7 +64,7 @@ class Currentballance extends React.Component {
           </Button>
 
           <List containerStyle={{marginBottom: 20}}>
-          { lists ?
+          { lists.length != 0 ?
             lists.map((list, index) => (
               <TouchableOpacity key={ index } onPress={() => navigate('Detailtransaksi', { list })}>
                 <ListItem
