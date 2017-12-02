@@ -17,9 +17,13 @@ class HomeScreen extends React.Component {
     this.state = {
       nik: 0,
       nama: '',
-      pekerjaan: '',
       provinsi: '',
       kota: '',
+      jenisKelamin: '',
+      agama: '',
+      status: '',
+      tempatLahir: '',
+      tanggalLahir: '',
 
     }
   }
@@ -31,7 +35,7 @@ class HomeScreen extends React.Component {
             // this.setState({
             //     id: result
             // });
-            console.log('iduser', result)
+
         }
     });
   }
@@ -40,9 +44,13 @@ class HomeScreen extends React.Component {
     let object = {
       nik: this.state.nik,
       nama: this.state.nama,
-      pekerjaan: this.state.pekerjaan,
       provinsi: this.state.provinsi,
       kota: this.state.kota,
+      jenisKelamin: this.state.jenisKelamin,
+      agama: this.state.agama,
+      status: this.state.status,
+      tempatLahir: this.state.tempatLahir,
+      tanggalLahir: this.state.tanggalLahir,
     }
 
     this.props.postUser(object)
@@ -79,11 +87,11 @@ class HomeScreen extends React.Component {
             onChangeText={(nama) => this.setState({nama})}
             value={this.state.nama}
           />
-          <Text style={styles.textinputval}>Pekerjaan</Text>
+          <Text style={styles.textinputval}>Jenis Kelamin</Text>
           <TextInput
             style={styles.textinput}
-            onChangeText={(pekerjaan) => this.setState({pekerjaan})}
-            value={this.state.pekerjaan}
+            onChangeText={(jenisKelamin) => this.setState({jenisKelamin})}
+            value={this.state.jenisKelamin}
           />
           <Text style={styles.textinputval}>Provinsi</Text>
           <TextInput
@@ -97,6 +105,13 @@ class HomeScreen extends React.Component {
             onChangeText={(kota) => this.setState({kota})}
             value={this.state.kota}
           />
+          <Text style={styles.textinputval}>Agama</Text>
+          <TextInput
+            style={styles.textinput}
+            onChangeText={(agama) => this.setState({agama})}
+            value={this.state.agama}
+          />
+          
         </View>
 
         <View style={{flexDirection: 'row', paddingTop: 20}}>
