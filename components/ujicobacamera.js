@@ -132,15 +132,15 @@ export default class App extends React.Component {
     this._handleImagePicked(pickerResult);
   };
 
-  _pickImage = async () => {
-    let pickerResult = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-    });
-
-
-    this._handleImagePicked(pickerResult);
-  };
+  // _pickImage = async () => {
+  //   let pickerResult = await ImagePicker.launchImageLibraryAsync({
+  //     allowsEditing: true,
+  //     aspect: [4, 3],
+  //   });
+  //
+  //
+  //   this._handleImagePicked(pickerResult);
+  // };
 
   _handleImagePicked = async pickerResult => {
     try {
