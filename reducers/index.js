@@ -1,21 +1,21 @@
 import { combineReducers } from 'redux';
 
-const news = {
-  allnews: []
+const user = {
+  dataUser: {}
 }
 
 const transactionsDefaultState = {
   transactions: []
 }
 
-const newsReducers = (state = news, action) => {
+const userReducers = (state = user, action) => {
   switch (action.type) {
-    case 'DAPAT_BERITA':
-      return {...state, allnews:action.value}
+    case 'DATA_SCAN_KTP':
+      return {...state, dataUser: action.value}
     default:
       return state;
   }
-};
+}
 
 const transactionsReducer = (state = transactionsDefaultState, action) => {
   if (action.type && action.type === "TRANSACTION_LIST") {
@@ -26,6 +26,6 @@ const transactionsReducer = (state = transactionsDefaultState, action) => {
 }
 
 export default combineReducers({
-  allnews: newsReducers,
+  userReducers,
   transactionsReducer
 });

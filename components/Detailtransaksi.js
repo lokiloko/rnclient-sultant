@@ -1,5 +1,15 @@
 import React from 'react';
-import { TextInput, StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, SectionList} from 'react-native';
+import {
+  AsyncStorage,
+  TextInput,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  SectionList
+} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 // import axios from 'axios'
 import { List, ListItem } from 'react-native-elements';
@@ -13,10 +23,8 @@ export default class Detailtransaksi extends React.Component {
     title: 'Detail Transaksi',
   };
 
-  constructor(props) {
-    super(props)
-    this.state = {
-    }
+  constructor() {
+    super()
   }
 
   async componentWillMount() {
@@ -31,26 +39,26 @@ export default class Detailtransaksi extends React.Component {
 
     return (
       <Image source={{uri: 'https://hdwallsource.com/img/2016/9/cash-money-wallpaper-background-49518-51193-hd-wallpapers.jpg'}}>
-      <View style={styles.container}>
-        <View style={{paddingTop: 20, paddingLeft: 30, paddingRight: 30, flexDirection: 'row'}}>
-        <Container>
-        <Content>
-          <List containerStyle={{marginBottom: 20}}>
-          {
-            list.map((item, index) => (
-              <ListItem
-              roundAvatar
-              avatar={{uri:'https://i1.sndcdn.com/artworks-000066312689-d7quy2-t500x500.jpg'}}
-              key={index}
-              title={item.name + " ~ Qty:" + item.qty + " ~ Price:" + item.price}
-              />
-            ))
-          }
-          </List>
-        </Content>
-        </Container>
+        <View style={styles.container}>
+          <View style={{paddingTop: 20, paddingLeft: 30, paddingRight: 30, flexDirection: 'row'}}>
+          <Container>
+          <Content>
+            <List containerStyle={{marginBottom: 20}}>
+            {
+              list.map((item, index) => (
+                <ListItem
+                roundAvatar
+                avatar={{uri:'https://i1.sndcdn.com/artworks-000066312689-d7quy2-t500x500.jpg'}}
+                key={index}
+                title={item.name + " ~ Qty:" + item.qty + " ~ Price:" + item.price}
+                />
+              ))
+            }
+            </List>
+          </Content>
+          </Container>
+          </View>
         </View>
-      </View>
       </Image>
     );
   }
