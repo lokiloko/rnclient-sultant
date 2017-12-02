@@ -111,7 +111,6 @@ class HomeScreen extends React.Component {
             onChangeText={(agama) => this.setState({agama})}
             value={this.state.agama}
           />
-          
         </View>
 
         <View style={{flexDirection: 'row', paddingTop: 20}}>
