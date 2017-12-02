@@ -21,6 +21,11 @@ export default class App extends React.Component {
     uploading: false,
   };
 
+  // <Button
+  //   onPress={this._pickImage}
+  //   title="Pick an image from camera roll"
+  // />
+
   render() {
     let { image } = this.state;
 
@@ -36,10 +41,7 @@ export default class App extends React.Component {
           Example: Upload ImagePicker result
         </Text>
 
-        <Button
-          onPress={this._pickImage}
-          title="Pick an image from camera roll"
-        />
+
 
         <Button onPress={this._takePhoto} title="Take a photo" />
 

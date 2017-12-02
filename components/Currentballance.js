@@ -38,6 +38,7 @@ class Currentballance extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     const lists = this.props.transactionList
+    const imguri = 'https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/24129614_10210614123930346_4311928442133126805_n.jpg?_nc_eui2=v1%3AAeFmBr5_jAksHWATxU71fb1aoyFlUXlYwgk9uS3xGS22niluU6JAORQmnNPx7kDgYZSlg74KhzlOddsaygN1AmLWlzk_Hovz8kgCr55G01s7tQ&oh=a77e1a0c9437286b040cce8aa155e9fb&oe=5A9748F6'
     return (
       <Image source={{uri: 'https://hdwallsource.com/img/2016/9/cash-money-wallpaper-background-49518-51193-hd-wallpapers.jpg'}}>
       <View style={styles.container}>
@@ -68,7 +69,7 @@ class Currentballance extends React.Component {
               <TouchableOpacity key={ index } onPress={() => navigate('Detailtransaksi', { list })}>
                 <ListItem
                   roundAvatar
-                  avatar={{uri:'https://i1.sndcdn.com/artworks-000066312689-d7quy2-t500x500.jpg'}}
+                  avatar={{uri: imguri}}
                   title={list.date.slice(0, 10) + " ~~~ Rp" + list.totalPrice}
                 />
               </TouchableOpacity>
