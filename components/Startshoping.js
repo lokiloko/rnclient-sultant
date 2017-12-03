@@ -155,10 +155,9 @@ export default class Startshoping extends React.Component {
     })
   }
   simpanBelanjaan () {
-    this.state.list.splice(this.state.index)
+    this.state.list.splice(this.state.index, 1, this.state.item)
     console.log('arraynya', this.state.list);
     this.setState({ isModalVisible: false })
-    // .splice(index);
   }
   render() {
     const takePictureImage = 'http://www.freeiconspng.com/uploads/camera-icon-google-images-24.jpg'
@@ -167,7 +166,7 @@ export default class Startshoping extends React.Component {
     const list = this.state.list
     this.state.totalPrice = 0
     for (var i = 0; i < list.length; i++) {
-      this.state.totalPrice += Number(list[i].price)
+      this.state.totalPrice += (Number(list[i].price * Number(list[i].qty)))
     }
     // console.log(this.state.totalPrice)
     const { hasCameraPermission } = this.state;
@@ -193,6 +192,8 @@ export default class Startshoping extends React.Component {
             </TouchableOpacity>
           </Camera>
         </View>
+
+
         <View>
         <List containerStyle={{marginBottom: 20}}>
         <Text style={styles.pembungkus}>
