@@ -9,7 +9,9 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
-  SectionList
+  SectionList,
+  Animated,
+  Easing
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 // import axios from 'axios'
@@ -29,12 +31,13 @@ class Currentballance extends React.Component {
 
   constructor(props) {
     super(props)
+    this.RotateValueHolder = new Animated.Value(0);
     this.state = {
       text: 'aman'
     }
   }
 
-  async componentWillMount() {
+  async componentWillMount () {
     await Expo.Font.loadAsync({
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
@@ -50,18 +53,46 @@ class Currentballance extends React.Component {
     })
   }
 
+  componentDidMount () {
+    this.StartImageRotateFunction()
+  }
+
+  StartImageRotateFunction () {
+    this.RotateValueHolder.setValue(0)
+
+    Animated.timing(
+      this.RotateValueHolder,
+      {
+        toValue: 1,
+        duration: 3000,
+        easing: Easing.linear
+      }
+    ).start(() => this.StartImageRotateFunction())
+
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     const lists = this.props.transactionList
     const imguri = 'https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/24129614_10210614123930346_4311928442133126805_n.jpg?_nc_eui2=v1%3AAeFmBr5_jAksHWATxU71fb1aoyFlUXlYwgk9uS3xGS22niluU6JAORQmnNPx7kDgYZSlg74KhzlOddsaygN1AmLWlzk_Hovz8kgCr55G01s7tQ&oh=a77e1a0c9437286b040cce8aa155e9fb&oe=5A9748F6'
+    const RotateData = this.RotateValueHolder.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['0deg', '360deg']
+    })
     return (
       <Image source={{uri: 'https://hdwallsource.com/img/2016/9/cash-money-wallpaper-background-49518-51193-hd-wallpapers.jpg'}}>
         <View style={styles.container}>
 
           <View style={{flexDirection: 'row', paddingTop: 20}}>
             <View style={{paddingLeft: 30}}>
-              <Image
-                style={styles.imageLogo}
+              <Animated.Image
+                style={[styles.imageLogo,
+                  {
+                    transform: [{
+                      rotate: RotateData
+                    }]
+                  }
+                ]}
                 source={require('./sultant.png')}
               />
             </View>
