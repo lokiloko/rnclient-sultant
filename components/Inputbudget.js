@@ -108,7 +108,7 @@ class Inputbudget extends React.Component {
               <View style={{flex: 1, flexDirection: 'row', paddingTop: 20}}>
                 <View style={{flex: 1}}>
                   <Button
-                  title='Cencel'
+                  title='Cancel'
                   buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
                   onPress={this._hideModal}
                   />

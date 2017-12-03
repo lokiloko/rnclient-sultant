@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { Constants, ImagePicker, Camera, Permissions, FileSystem } from 'expo';
 import { StackNavigator } from 'react-navigation';
-import { List, ListItem, Button } from 'react-native-elements';
+import { Avatar, List, ListItem, Button } from 'react-native-elements';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import { Container, Header, Content, Form, Item, Input, Label, Icon} from 'native-base';
 import Modal from 'react-native-modal'
@@ -161,6 +161,17 @@ class Startshoping extends React.Component {
     })
   }
 
+  removeItem (index) {
+    // console.log("indexnya", index);
+    let newList = this.state.list.filter((item, idx) => {
+      return idx != index
+    })
+
+    this.setState({
+      list: newList
+    })
+  }
+
   simpanBelanjaan () {
     this.state.list.splice(this.state.index, 1, this.state.item)
 
@@ -238,18 +249,27 @@ class Startshoping extends React.Component {
           <View>
             <List containerStyle={{marginBottom: 20}}>
             <Text style={styles.pembungkus}>
-              <Text style={{flex: 1, fontSize: 24, textAlign: 'center',}}>Total Price:     </Text>
+              <Text style={{flex: 1, fontSize: 24, textAlign: 'center',}}>Total Price:    Rp </Text>
               <Text style={{flex: 1, fontSize: 24, textAlign: 'right',}}>{this.state.totalPrice}</Text>
             </Text>
             { list.length != 0 ?
               this.state.list.map((item, index) => (
-                <ListItem
-                roundAvatar
-                avatar={{uri: imguri}}
-                key={index}
-                title={item.name}
-                onPress={() => this.bukamodal(item, index)}
-                />
+                <View key={index} style={{flex: 1, flexDirection: 'row', width: '100%'}}>
+                  <View style={{width: 40, marginTop:10}}>
+                    <Avatar
+                      small
+                      rounded
+                      source={{uri: imguri}}
+                      onPress={() => this.removeItem(index)}
+                    />
+                  </View>
+                  <View style={{width: '90%'}}>
+                    <ListItem
+                    title={item.name}
+                    onPress={() => this.bukamodal(item, index)}
+                    />
+                  </View>
+                </View>
               ))
             : <Text>No Item Yet</Text> }
             </List>
@@ -280,6 +300,7 @@ class Startshoping extends React.Component {
                 style={styles.textinput}
                 onChangeText={(data) => this.qty(data)}
                 value={this.state.item.qty}
+                keyboardType={'numeric'}
               />
               <Text style={styles.textinputval}>Category Barang</Text>
               <TextInput
@@ -296,7 +317,7 @@ class Startshoping extends React.Component {
             <View style={{flex: 1, flexDirection: 'row', paddingTop: 20}}>
               <View style={{flex: 1}}>
                 <Button
-                title='Cencel'
+                title='Cancel'
                 buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
                 onPress={this._hideModal}
                 />
