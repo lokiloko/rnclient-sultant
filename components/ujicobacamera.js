@@ -21,11 +21,6 @@ export default class App extends React.Component {
     uploading: false,
   };
 
-  // <Button
-  //   onPress={this._pickImage}
-  //   title="Pick an image from camera roll"
-  // />
-
   render() {
     let { image } = this.state;
 

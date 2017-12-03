@@ -1,6 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { TextInput, StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, SectionList} from 'react-native';
+import {
+  AsyncStorage,
+  TextInput,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  SectionList
+} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 // import axios from 'axios'
 import { List, ListItem } from 'react-native-elements';
@@ -29,10 +39,15 @@ class Currentballance extends React.Component {
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     });
-  }
 
-  componentDidMount() {
-    this.props.fetchTransactions()
+    AsyncStorage.getItem('iduser').then((data) => {
+      if (data) {
+        // console.log(data);
+        this.props.fetchTransactions(data)
+      }
+    }).catch((reason) => {
+      console.log(reason);
+    })
   }
 
   render() {
@@ -74,7 +89,7 @@ class Currentballance extends React.Component {
                   />
                 </TouchableOpacity>
               ))
-            : <Text>loading..</Text> }
+            : <Text>No Transaction Yet</Text> }
             </List>
 
           </Content>
@@ -112,7 +127,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchTransactions: () => dispatch(getTransactions())
+  fetchTransactions: (userid) => dispatch(getTransactions(userid))
 })
 
 // export default Currentballance

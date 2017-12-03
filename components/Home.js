@@ -25,14 +25,14 @@ import Exponent, { Constants, ImagePicker, registerRootComponent, FileSystem } f
 import Dropbox from 'dropbox'
 import axios from 'axios'
 
-import { postUser } from '../actions/index'
+import { postUser, dapatkanHasilScaKtp } from '../actions/index'
 import Inputbudget from './Inputbudget'
 
 class HomeScreen extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-     nik: 0,
+     nik: '',
      nama: '',
      provinsi: '',
      kota: '',
@@ -40,21 +40,17 @@ class HomeScreen extends React.Component {
      agama: '',
      status: '',
      tempatLahir: '',
-     tanggalLahir: '',
-     budget: 0
+     tanggalLahir: ''
     }
   }
 
 componentWillMount() {
   AsyncStorage.getItem('iduser').then((data) => {
     if (data) {
-      this.setState({
-        budget: 1
-      })
+      console.log("fuckyou", data);
+      this.props.setId({_id: data})
     } else {
-      this.setState({
-        budget: 2
-      })
+      this.props.setId({})
     }
   }).catch((reason) => {
     console.log(reason);
@@ -209,11 +205,8 @@ _handleImagePicked = async pickerResult => {
 };
 
 rendering() {
-  if (this.state.budget === 0) {
-    return (
-      <View><Text>Loading</Text></View>
-    )
-  } else if (this.state.budget === 1) {
+  if (this.props.idUser._id) {
+    // console.log("tuturuu", this.props.idUser);
     return (
       this.props.navigation.navigate('Inputbudget')
     )
@@ -221,11 +214,24 @@ rendering() {
     return (
       <Image source={{uri: 'https://i.pinimg.com/originals/9a/d0/3d/9ad03d1be00db96fe779b55c7dbc0e95.jpg'}} style={styles.backgroundImage}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
-         <View style={styles.container}>
-           <View style={styles.containerinput}>
-             <Image
-               style={styles.imageLogo}
-               source={require('./sultant.png')}/>
+        <View style={styles.container}>
+            <View style={styles.containerinput}>
+              <Image
+                style={styles.imageLogo}
+                source={require('./sultant.png')}/>
+            </View>
+
+            <View style={{flex: 1}}>
+             <Button
+                title='Scan KTP'
+                buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
+                onPress={this._takePhoto}
+             />
+
+             {this._maybeRenderImage()}
+             {this._maybeRenderUploadingOverlay()}
+
+             <StatusBar barStyle="default" />
            </View>
 
            <View style={styles.containerinput}>
@@ -293,27 +299,12 @@ rendering() {
             />
           </View>
 
-          <View style={{flexDirection: 'row', marginTop: 20, marginBottom: 20}}>
-            <View style={{flex: 1}}>
-             <Button
-                title='Scan KTP'
-                buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
-                onPress={this._takePhoto}
-             />
-
-             {this._maybeRenderImage()}
-             {this._maybeRenderUploadingOverlay()}
-
-             <StatusBar barStyle="default" />
-            </View>
-
-            <View style={{flex: 1}}>
-              <Button
-                title='Simpan'
-                buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
-                onPress={() => this.simpanDataUser()}
-              />
-            </View>
+          <View style={{flex: 1, flexDirection: 'row', alignSelf: 'center', marginTop: 20, marginBottom: 20}}>
+            <Button
+              title='Simpan'
+              buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
+              onPress={() => this.simpanDataUser()}
+            />
           </View>
         </View>
       </ScrollView>
@@ -323,6 +314,9 @@ rendering() {
 }
 
 render() {
+  let aselole = this.props.idUser._id
+  // console.log("berak", aselole);
+
   return this.rendering()
  }
 }
@@ -389,16 +383,17 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
- console.log(state)
- return {
-  // idUser: state.userReducers.dataUser._id
- }
+  // console.log(state.userReducers.dataUser._id);
+   return {
+    idUser: state.userReducers.dataUser
+   }
 }
 
 const mapDispatchToProps = (dispatch) => {
- return {
-  postUser: (object) => dispatch(postUser(object)),
- }
+   return {
+    setId: (id) => dispatch(dapatkanHasilScaKtp(id)),
+    postUser: (object) => dispatch(postUser(object)),
+   }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

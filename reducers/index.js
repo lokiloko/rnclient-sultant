@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
 
 const user = {
-  dataUser: {}
+  dataUser: {},
+  budget: 0
 }
 
 const transactionsDefaultState = {
@@ -12,6 +13,8 @@ const userReducers = (state = user, action) => {
   switch (action.type) {
     case 'DATA_SCAN_KTP':
       return {...state, dataUser: action.value}
+    case 'USER_BUDGET':
+      return {...state, budget: action.payload}
     default:
       return state;
   }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import {
   AsyncStorage,
   TextInput,
@@ -18,7 +19,9 @@ import { TextField } from 'react-native-material-textfield';
 import { Container, Header, Content, Form, Item, Input, Label } from 'native-base';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 
-export default class Inputbudget extends React.Component {
+import { setBudget } from '../actions'
+
+class Inputbudget extends React.Component {
   static navigationOptions = {
     title: 'Set Budget'
   };
@@ -27,8 +30,7 @@ export default class Inputbudget extends React.Component {
     super()
     this.state = {
       isModalVisible: false,
-      text: '',
-      budget: 0
+      text: ''
     }
   }
 
@@ -41,13 +43,9 @@ export default class Inputbudget extends React.Component {
     AsyncStorage.getItem('budget').then((data) => {
       // console.log("----------->", data);
       if (data) {
-        this.setState({
-          budget: 1
-        })
+        this.props.setBudget(data)
       } else {
-        this.setState({
-          budget: 2
-        })
+        this.props.setBudget(0)
       }
     })
   }
@@ -56,13 +54,10 @@ export default class Inputbudget extends React.Component {
     this._hideModal()
 
     if (this.state.text) {
-      AsyncStorage.setItem('budget', this.state.text).then((data) => {
-        if (data) {
-          this.props.navigation.navigate('Currentballance')
-        }
-      }).catch((reason) => {
-        console.log(reason);
-      })
+      // console.log(this.state.text);
+      AsyncStorage.setItem('budget', this.state.text)
+
+      this.props.navigation.navigate('Currentballance')
     } else {
       alert('Budget Cannot null')
     }
@@ -73,11 +68,8 @@ export default class Inputbudget extends React.Component {
   _hideModal = () => this.setState({ isModalVisible: false })
 
   rendering () {
-    if (this.state.budget === 0) {
-      return (
-        <View><Text>Loading</Text></View>
-      )
-    } else if (this.state.budget === 1) {
+    if (this.props.getBudget !== 0) {
+      console.log("---->", this.props.getBudget);
       return (
         this.props.navigation.navigate('Currentballance')
       )
@@ -109,6 +101,7 @@ export default class Inputbudget extends React.Component {
                 style={{height: 40, width: responsiveWidth(80), borderColor: 'gray', borderWidth: 1, paddingLeft: 20, paddingRight: 20}}
                 onChangeText={(text) => this.setState({text})}
                 value={this.state.text}
+                keyboardType={'numeric'}
               />
 
               </View>
@@ -137,6 +130,7 @@ export default class Inputbudget extends React.Component {
   }
 
   render() {
+  //  let joss = this.props.getBudget
     return (
       this.rendering()
     );
@@ -163,3 +157,18 @@ const styles = StyleSheet.create({
     resizeMode: 'cover'
   }
 });
+
+const mapStateToProps = (state) => {
+  // console.log(state.userReducers.budget);
+  return {
+    getBudget: state.userReducers.budget
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setBudget: (budget) => dispatch(setBudget(budget))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Inputbudget)

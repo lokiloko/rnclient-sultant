@@ -8,6 +8,13 @@ export const dapatkanHasilScaKtp = (value) => {
   }
 };
 
+export const setBudget = (budget) => {
+  return {
+    type: 'USER_BUDGET',
+    payload: budget
+  }
+}
+
 export const setTransactions = (transactionData) => {
   return {
     type: 'TRANSACTION_LIST',
@@ -31,9 +38,9 @@ export const postUser = (data) => {
   )}
 };
 
-export const getTransactions = () => {
+export const getTransactions = (userid) => {
   return (dispatch) => {
-    axios.get('https://us-central1-ian-hacktiv8.cloudfunctions.net/transactionsCRUD')
+    axios.get(`https://us-central1-ian-hacktiv8.cloudfunctions.net/transactionsCRUD?action=user&id=${userid}`)
     .then(({data}) => {
       return dispatch(setTransactions(data))
     })
