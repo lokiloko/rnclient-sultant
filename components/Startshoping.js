@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import {
+  AsyncStorage,
   ActivityIndicator,
   ScrollView,
   SectionList,
@@ -18,7 +20,10 @@ import { Container, Header, Content, Form, Item, Input, Label, Icon} from 'nativ
 import Modal from 'react-native-modal'
 import axios from 'axios'
 import Dropbox from 'dropbox'
-export default class Startshoping extends React.Component {
+
+import { postTransactions } from '../actions'
+
+class Startshoping extends React.Component {
   static navigationOptions = {
     title: 'Start Shoping',
   };
@@ -28,44 +33,36 @@ export default class Startshoping extends React.Component {
       isModalVisible: false,
       hasCameraPermission: null,
       type: Camera.Constants.Type.back,
-      items: [],
+      list: [],
       image: null,
       uploading: false,
       item: {},
       totalPrice: 0,
-      index: 0,
-      list: [
-        {
-          name: '1',
-          category: 'Food',
-          qty: '1',
-          price: '10000',
-        },
-        {
-          name: '2',
-          category: 'Food',
-          qty: '1',
-          price: '10000',
-        },
-        {
-          name: '3',
-          category: 'Food',
-          qty: '1',
-          price: '10000',
-        }
-      ],
+      index: 0
     };
   }
+
   async componentWillMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
+
     this.setState({ hasCameraPermission: status === 'granted' });
+
     FileSystem.makeDirectoryAsync(
       FileSystem.documentDirectory + 'label'
     )
     .catch(e => {
       console.log(e, 'Directory exists');
     });
+
+    AsyncStorage.getItem('budget').then((data) => {
+      this.setState({
+        budget: parseInt(data)
+      })
+    }).catch((reason) => {
+      console.log(reason);
+    })
   }
+
   _takePhoto = async () => {
     alert('Picture Taken')
     if (this.camera) {
@@ -77,6 +74,7 @@ export default class Startshoping extends React.Component {
       alert('Take Picture Error')
     }
   };
+
   _handleImagePicked = async pickerResult => {
     try {
       // alert('hai')
@@ -99,10 +97,13 @@ export default class Startshoping extends React.Component {
               axios.post("https://us-central1-ian-hacktiv8.cloudfunctions.net/ocrGoogleVision", {imageUri: data.link})
               .then((axiosResponse) => {
                 // console.log(axiosResponse.data.object);
-                let newItems = self.state.items.slice()
-                newItems.push(axiosResponse.data.object)
+                let newItems = self.state.list.slice()
+                axiosResponse.data.object.qty = '1'
+
+                newItems.unshift(axiosResponse.data.object)
+
                 self.setState({
-                  items: newItems
+                  list: newItems
                 })
               }).catch((err) => {
                 console.error('error axios', err)
@@ -123,11 +124,14 @@ export default class Startshoping extends React.Component {
       this.setState({ uploading: false });
     }
   };
+
   _showModal = function (data) {
     this.setState({ item: data });
     this.setState({ isModalVisible: true })
   }
+
   _hideModal = () => this.setState({ isModalVisible: false })
+
   bukamodal (data, dataIndex) {
     console.log(dataIndex)
     let item = {
@@ -141,6 +145,7 @@ export default class Startshoping extends React.Component {
     this.setState({ isModalVisible: true })
     console.log('in', this.state.index);
   }
+
   qty (datanya) {
     // this.price(datanya)
     let item = {
@@ -150,23 +155,59 @@ export default class Startshoping extends React.Component {
       price: this.state.item.price,
       total: Number(this.state.item.price * datanya)
     }
+
     this.setState({item}, () => {
       console.log('sata', this.state.item);
     })
   }
+
   simpanBelanjaan () {
     this.state.list.splice(this.state.index, 1, this.state.item)
-    console.log('arraynya', this.state.list);
+
+    // console.log('arraynya', this.state.list);
     this.setState({ isModalVisible: false })
   }
+
+  belanja () {
+    let newBudget = this.state.budget - this.state.totalPrice
+
+    this.setState({
+      budget: newBudget
+    })
+
+    // alert(newBudget)
+
+    AsyncStorage.setItem('budget', newBudget.toString())
+    AsyncStorage.getItem('iduser').then((data) => {
+      let obj = {
+        totalPrice: this.state.totalPrice,
+        user: data,
+        items: this.state.list
+      }
+
+      this.props.updateTransaction(obj)
+
+      AsyncStorage.getItem('budget').then((data) => {
+        // alert('bazingan' + data)
+        this.props.navigation.navigate('Currentballance')
+      })
+    })
+  }
+
   render() {
     const takePictureImage = 'http://www.freeiconspng.com/uploads/camera-icon-google-images-24.jpg'
-    const imguri = 'https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/24129614_10210614123930346_4311928442133126805_n.jpg?_nc_eui2=v1%3AAeFmBr5_jAksHWATxU71fb1aoyFlUXlYwgk9uS3xGS22niluU6JAORQmnNPx7kDgYZSlg74KhzlOddsaygN1AmLWlzk_Hovz8kgCr55G01s7tQ&oh=a77e1a0c9437286b040cce8aa155e9fb&oe=5A9748F6'
+    const imguri = 'http://downloadicons.net/sites/default/files/recycle-bin-logo-icon-66421.png'
     // const list = this.state.items
     const list = this.state.list
     this.state.totalPrice = 0
     for (var i = 0; i < list.length; i++) {
       this.state.totalPrice += (Number(list[i].price * Number(list[i].qty)))
+
+      if (i === list.length-1) {
+        if (this.state.budget - this.state.totalPrice <= 0) {
+          alert('Aseloleeeeeee Cuuukkkk')
+        }
+      }
     }
     // console.log(this.state.totalPrice)
     const { hasCameraPermission } = this.state;
@@ -178,41 +219,48 @@ export default class Startshoping extends React.Component {
       return (
         <ScrollView contentContainerStyle={styles.contentContainer}>
         <View>
-        <View style={{ paddingTop: 20, paddingLeft: 10, paddingRight: 10,}}>
-          <Camera
-          ref={ref => { this.camera = ref }}
-          style={{ backgroundColor: 'red'}}
-          type={this.state.type}
-          autoFocus={Camera.Constants.AutoFocus.on}>
-            <TouchableOpacity onPress={() => this._takePhoto()}>
-              <Image
-                style={{width: 40, height: 40, borderRadius: 40, alignSelf: 'center', marginTop: 150}}
-                source={{uri: takePictureImage}}
-               />
-            </TouchableOpacity>
-          </Camera>
-        </View>
+          <View style={{ paddingTop: 20, paddingLeft: 10, paddingRight: 10,}}>
+            <Camera
+            ref={ref => { this.camera = ref }}
+            style={{ backgroundColor: 'red'}}
+            type={this.state.type}
+            autoFocus={Camera.Constants.AutoFocus.on}>
+              <TouchableOpacity onPress={() => this._takePhoto()}>
+                <Image
+                  style={{width: 40, height: 40, borderRadius: 40, alignSelf: 'center', marginTop: 150}}
+                  source={{uri: takePictureImage}}
+                 />
+              </TouchableOpacity>
+            </Camera>
+          </View>
 
 
-        <View>
-        <List containerStyle={{marginBottom: 20}}>
-        <Text style={styles.pembungkus}>
-          <Text style={{flex: 1, fontSize: 24, textAlign: 'center',}}>Total Price:     </Text>
-          <Text style={{flex: 1, fontSize: 24, textAlign: 'right',}}>{this.state.totalPrice}</Text>
-        </Text>
-        { list.length != 0 ?
-          this.state.list.map((item, index) => (
-            <ListItem
-            roundAvatar
-            avatar={{uri: imguri}}
-            key={index}
-            title={item.name}
-            onPress={() => this.bukamodal(item, index)}
-            />
-          ))
-        : <Text>No Item Yet</Text> }
-        </List>
-        </View>
+          <View>
+            <List containerStyle={{marginBottom: 20}}>
+            <Text style={styles.pembungkus}>
+              <Text style={{flex: 1, fontSize: 24, textAlign: 'center',}}>Total Price:     </Text>
+              <Text style={{flex: 1, fontSize: 24, textAlign: 'right',}}>{this.state.totalPrice}</Text>
+            </Text>
+            { list.length != 0 ?
+              this.state.list.map((item, index) => (
+                <ListItem
+                roundAvatar
+                avatar={{uri: imguri}}
+                key={index}
+                title={item.name}
+                onPress={() => this.bukamodal(item, index)}
+                />
+              ))
+            : <Text>No Item Yet</Text> }
+            </List>
+            <View>
+              <Button
+              title='Save Belanjaan'
+              buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
+              onPress={() => this.belanja() }
+              />
+            </View>
+          </View>
         </View>
         <View>
             <Modal
@@ -257,11 +305,7 @@ export default class Startshoping extends React.Component {
                 <Button
                 title='Save'
                 buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
-                onPress={
-                  () => {
-                    this.simpanBelanjaan()
-                  }
-                }
+                onPress={() => this.simpanBelanjaan()}
                 />
               </View>
             </View>
@@ -307,3 +351,11 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
 });
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateTransaction: (transaction) => dispatch(postTransactions(transaction))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Startshoping)
