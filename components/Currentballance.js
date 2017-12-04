@@ -102,29 +102,29 @@ class Currentballance extends React.Component {
           </View>
 
           <View style={{paddingTop: 20, paddingLeft: 30, paddingRight: 30, flexDirection: 'row'}}>
-          <Container>
-          <Content>
-            <Button block success rounded
-            onPress={() => navigate('Startshoping')}>
-              <Text>Start Shoping</Text>
-            </Button>
+            <Container>
+              <Content>
+                <Button block success rounded
+                onPress={() => navigate('Startshoping')}>
+                  <Text>Start Shoping</Text>
+                </Button>
 
-            <List containerStyle={{marginBottom: 20}}>
-            { lists.length != 0 ?
-              lists.map((list, index) => (
-                <TouchableOpacity key={ index } onPress={() => navigate('Detailtransaksi', { list })}>
-                  <ListItem
-                    roundAvatar
-                    avatar={{uri: imguri}}
-                    title={list.date.slice(0, 10) + " ~~~ Rp" + list.totalPrice}
-                  />
-                </TouchableOpacity>
-              ))
-            : <Text>No Transaction Yet</Text> }
-            </List>
+                <List containerStyle={{marginBottom: 20}}>
+                { lists.length != 0 ?
+                  lists.reverse().map((list, index) => (
+                    <TouchableOpacity key={ index } onPress={() => navigate('Detailtransaksi', { list })}>
+                      <ListItem
+                        roundAvatar
+                        avatar={{uri: imguri}}
+                        title={list.date.slice(0, 10) + " ~~~ Rp" + list.totalPrice}
+                      />
+                    </TouchableOpacity>
+                  ))
+                : <Text>No Transaction Yet</Text> }
+                </List>
 
-          </Content>
-          </Container>
+              </Content>
+            </Container>
           </View>
 
         </View>
