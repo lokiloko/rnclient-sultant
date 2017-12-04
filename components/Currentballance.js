@@ -33,7 +33,9 @@ class Currentballance extends React.Component {
     super(props)
     this.RotateValueHolder = new Animated.Value(0);
     this.state = {
-      text: 'aman'
+      text: 'aman',
+      budgetAwal: '',
+      budgetSementara: '',
     }
   }
 
@@ -48,6 +50,13 @@ class Currentballance extends React.Component {
         // console.log(data);
         this.props.fetchTransactions(data)
       }
+    }).catch((reason) => {
+      console.log(reason);
+    })
+
+    AsyncStorage.getItem('budget').then((data) => {
+      this.state.budgetAwal = data
+      console.log('datauang', this.state.budgetAwal)
     }).catch((reason) => {
       console.log(reason);
     })
@@ -71,7 +80,24 @@ class Currentballance extends React.Component {
 
   }
 
+  tambah (inputan) {
+    this.setState({budgetSementara: Number(inputan)})
+  }
+
+  tambahbudget () {
+    let tambah = Number(this.state.budgetSementara) + Number(this.state.budgetAwal)
+    let konfString = tambah.toString()
+    // this.setState({budgetSementara: konfString})
+    // console.log('halo', typeof konfString);
+    AsyncStorage.setItem('budget', konfString);
+    this.setState({
+      budgetSementara: '',
+      budgetAwal: konfString
+    })
+  }
+
   render() {
+    // console.log(this.state.budgetSementara);
     const { navigate } = this.props.navigation;
     const lists = this.props.transactionList
     const imguri = 'https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/24129614_10210614123930346_4311928442133126805_n.jpg?_nc_eui2=v1%3AAeFmBr5_jAksHWATxU71fb1aoyFlUXlYwgk9uS3xGS22niluU6JAORQmnNPx7kDgYZSlg74KhzlOddsaygN1AmLWlzk_Hovz8kgCr55G01s7tQ&oh=a77e1a0c9437286b040cce8aa155e9fb&oe=5A9748F6'
@@ -99,6 +125,24 @@ class Currentballance extends React.Component {
             <View style={{flex: 1}}>
               <Text style={styles.appName}>SULTANT</Text>
             </View>
+          </View>
+
+          <View style={{flexDirection: 'row', paddingTop: 2}}>
+            <Text style={styles.infobudget}>Sisa uang kamu: {this.state.budgetAwal}</Text>
+          </View>
+
+          <View style={{flexDirection: 'row', paddingTop: 10}}>
+            <TextInput
+               style={styles.textinput}
+               onChangeText={(tambahbudget) => this.tambah(tambahbudget)}
+               value={this.state.budgetSementara}
+            />
+          </View>
+
+          <View style={{paddingTop: 0, paddingLeft: 30, paddingRight: 30, flexDirection: 'row'}}>
+          <TouchableOpacity onPress={() => this.tambahbudget()}>
+            <Text style={styles.infobudget}>Tambah Budget</Text>
+          </TouchableOpacity>
           </View>
 
           <View style={{paddingTop: 20, paddingLeft: 30, paddingRight: 30, flexDirection: 'row'}}>
@@ -148,7 +192,25 @@ const styles = StyleSheet.create({
     fontSize: 20,
     alignSelf: 'center',
     color: 'white'
-  }
+  },
+  infobudget: {
+    paddingTop: 20,
+    fontSize: 15,
+    color: 'white'
+  },
+  textinputval: {
+   color: '#ffffff'
+  },
+  textinput: {
+   height: 40,
+   width: responsiveWidth(80),
+   borderColor: 'white',
+   borderWidth: 2,
+   paddingTop: 10,
+   paddingLeft: 20,
+   paddingRight: 20,
+   color: '#ffffff',
+  },
 });
 
 const mapStateToProps = (state) => {

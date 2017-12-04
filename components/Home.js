@@ -13,6 +13,7 @@ import {
   Clipboard,
   Share,
   StatusBar,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { Button } from 'react-native-elements';
@@ -214,6 +215,10 @@ rendering() {
     return (
       <Image source={{uri: 'https://i.pinimg.com/originals/9a/d0/3d/9ad03d1be00db96fe779b55c7dbc0e95.jpg'}} style={styles.backgroundImage}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
+      <KeyboardAvoidingView
+      style={styles.container}
+      behavior="padding"
+      >
         <View style={styles.container}>
             <View style={styles.containerinput}>
               <Image
@@ -307,6 +312,7 @@ rendering() {
             />
           </View>
         </View>
+        </KeyboardAvoidingView>
       </ScrollView>
      </Image>
     );
