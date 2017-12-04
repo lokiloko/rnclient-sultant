@@ -7,7 +7,8 @@
     "sdkVersion": "22.0.0",
     "splash": {
       "image": "./splash.png",
-      "backgroundColor": "#0b8b00ff"
+      "backgroundColor": "#0b8b00ff",
+      "resizeMode": "cover"
     },
     "ios": {
       "bundleIdentifier": "com.hacktiv8.sultant"

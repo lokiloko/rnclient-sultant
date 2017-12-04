@@ -21,6 +21,8 @@ const SimpleApp = StackNavigator({
   Detailtransaksi: { screen: Detailtransaksi },
   Startshoping: { screen: Startshoping },
   ujicobacamera: { screen: ujicobacamera }
+}, {
+  headerMode: 'none'
 });
 
 export default class App extends React.Component {
