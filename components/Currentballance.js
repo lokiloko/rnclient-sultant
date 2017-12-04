@@ -13,9 +13,10 @@ import {
   Animated,
   Easing
 } from 'react-native';
+// import CheckBox from 'react-native-checkbox';
 import { StackNavigator } from 'react-navigation';
 // import axios from 'axios'
-import { List, ListItem } from 'react-native-elements';
+import { List, ListItem, Button as Buttonx, CheckBox } from 'react-native-elements';
 import Modal from 'react-native-modal'
 
 // import { TextField } from 'react-native-material-textfield';
@@ -23,6 +24,8 @@ import { Container, Header, Content, Form, Item, Input, Label, Button, Icon} fro
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 
 import { getTransactions } from '../actions'
+
+
 
 class Currentballance extends React.Component {
   static navigationOptions = {
@@ -36,6 +39,20 @@ class Currentballance extends React.Component {
       text: 'aman',
       budgetAwal: '',
       budgetSementara: '',
+      isModalVisible: false,
+      FoodMealSolutionsGrainsPastaGrainsRice: false,
+      FoodMealSolutionsGrainsPastaPastaNoodles: false,
+      FoodBeveragesPowderedDrinksMixes: false,
+      HomeBathShowerCurtains: false,
+      PersonalCareBathBodyBodyWashCleansers: false,
+      FoodBeveragesSoftDrinks: false,
+      PetsDogsDogFood: false,
+      BabyDiaperingDiapersDisposableDiapers: false,
+      FoodFreshFoodDairyEggsCheeseMilkCream: false,
+      HomeImprovementHardwareDoorHardwareDoorHinges: false,
+      FoodBakingOilShortening: false,
+      AutoTiresOilsandFluidsMotorOil: false,
+      FoodBreakfastCerealOatmealHotCereal: false,
     }
   }
 
@@ -96,6 +113,60 @@ class Currentballance extends React.Component {
     })
   }
 
+  _showModal = () => this.setState({ isModalVisible: true })
+
+  _hideModal = () => this.setState({ isModalVisible: false })
+
+  navigasiStartShoping () {
+    let priority = []
+
+    if(this.state.FoodMealSolutionsGrainsPastaGrainsRice) {
+      priority.push("Food/Meal Solutions, Grains & Pasta/Grains & Rice")
+    }
+    if(this.state.FoodMealSolutionsGrainsPastaPastaNoodles){
+      priority.push("Food/Meal Solutions, Grains & Pasta/Pasta & Noodles")
+    }
+    if(this.state.FoodBeveragesPowderedDrinksMixes) {
+      priority.push("Food/Beverages/Powdered Drinks & Mixes")
+    }
+    if(this.state.HomeBathShowerCurtains) {
+      priority.push("Home/Bath/Shower Curtains")
+    }
+    if(this.state.PersonalCareBathBodyBodyWashCleansers) {
+      priority.push("Personal Care/Bath & Body/Body Wash & Cleansers")
+    }
+    if(this.state.FoodBeveragesSoftDrinks) {
+      priority.push("Food/Beverages/Soft Drinks")
+    }
+    if(this.state.PetsDogsDogFood) {
+      priority.push("Pets/Dogs/Dog Food")
+    }
+    if(this.state.BabyDiaperingDiapersDisposableDiapers) {
+      priority.push("Baby/Diapering/Diapers/Disposable Diapers")
+    }
+    if(this.state.FoodFreshFoodDairyEggsCheeseMilkCream) {
+      priority.push("Food/Fresh Food/Dairy, Eggs & Cheese/Milk & Cream")
+    }
+    if(this.state.HomeImprovementHardwareDoorHardwareDoorHinges){
+      priority.push("Home Improvement/Hardware/Door Hardware/Door Hinges")
+    }
+    if(this.state.FoodBakingOilShortening) {
+      priority.push("Food/Baking/Oil & Shortening")
+    }
+    if(this.state.AutoTiresOilsandFluidsMotorOil) {
+      priority.push("Auto & Tires/Oils and Fluids/Motor Oil")
+    }
+    if(this.state.FoodBreakfastCerealOatmealHotCereal) {
+      priority.push("Food/Breakfast & Cereal/Oatmeal & Hot Cereal",)
+    }
+    this._hideModal()
+    this.props.navigation.navigate('Startshoping', {priority:priority})
+  }
+
+  ganticheck (masukan) {
+    console.log(masukan);
+  }
+
   render() {
     // console.log(this.state.budgetSementara);
     const { navigate } = this.props.navigation;
@@ -133,9 +204,10 @@ class Currentballance extends React.Component {
 
           <View style={{flexDirection: 'row', paddingTop: 10}}>
             <TextInput
-               style={styles.textinput}
-               onChangeText={(tambahbudget) => this.tambah(tambahbudget)}
-               value={this.state.budgetSementara}
+            keyboardType={"numeric"}
+            style={styles.textinput}
+            onChangeText={(tambahbudget) => this.tambah(tambahbudget)}
+            value={this.state.budgetSementara}
             />
           </View>
 
@@ -149,7 +221,7 @@ class Currentballance extends React.Component {
             <Container>
               <Content>
                 <Button block success rounded
-                onPress={() => navigate('Startshoping')}>
+                  onPress={() => this._showModal()}>
                   <Text>Start Shoping</Text>
                 </Button>
 
@@ -170,7 +242,108 @@ class Currentballance extends React.Component {
               </Content>
             </Container>
           </View>
+          <View>
+            <Modal
+            isVisible={this.state.isModalVisible}
+            style={styles.bottomModal}
+            animationIn={'slideInLeft'}
+            animationOut={'slideOutRight'}
+            >
+            <View>
+            <ScrollView contentContainerStyle={styles.contentContainer}>
 
+              <CheckBox
+                title='Food/Breakfast & Cereal/Oatmeal & Hot Cereal'
+                checked={this.state.FoodBreakfastCerealOatmealHotCereal}
+                onPress={() => {
+                  this.setState({FoodBreakfastCerealOatmealHotCereal: !this.state.FoodBreakfastCerealOatmealHotCereal})
+                  this.ganticheck('Food/Breakfast & Cereal/Oatmeal & Hot Cereal')
+                }}
+              />
+              <CheckBox
+                title='Food/Meal Solutions, Grains & Pasta/Grains & Rice'
+                checked={this.state.FoodMealSolutionsGrainsPastaGrainsRice}
+                onPress={() => this.setState({FoodMealSolutionsGrainsPastaGrainsRice: !this.state.FoodMealSolutionsGrainsPastaGrainsRice})}
+              />
+              <CheckBox
+                title='Food/Meal Solutions, Grains & Pasta/Pasta & Noodles'
+                checked={this.state.FoodMealSolutionsGrainsPastaPastaNoodles}
+                onPress={() => this.setState({FoodMealSolutionsGrainsPastaPastaNoodles: !this.state.FoodMealSolutionsGrainsPastaPastaNoodles})}
+              />
+              <CheckBox
+                title='Food/Beverages/Powdered Drinks & Mixes'
+                checked={this.state.FoodBeveragesPowderedDrinksMixes}
+                onPress={() => this.setState({FoodBeveragesPowderedDrinksMixes: !this.state.FoodBeveragesPowderedDrinksMixes})}
+              />
+              <CheckBox
+                title='Home/Bath/Shower Curtains'
+                checked={this.state.HomeBathShowerCurtains}
+                onPress={() => this.setState({HomeBathShowerCurtains: !this.state.HomeBathShowerCurtains})}
+              />
+              <CheckBox
+                title='Personal Care/Bath & Body/Body Wash & Cleansers'
+                checked={this.state.PersonalCareBathBodyBodyWashCleansers}
+                onPress={() => this.setState({PersonalCareBathBodyBodyWashCleansers: !this.state.PersonalCareBathBodyBodyWashCleansers})}
+              />
+              <CheckBox
+                title='Food/Beverages/Soft Drinks'
+                checked={this.state.FoodBeveragesSoftDrinks}
+                onPress={() => this.setState({FoodBeveragesSoftDrinks: !this.state.FoodBeveragesSoftDrinks})}
+              />
+              <CheckBox
+                title='Pets/Dogs/Dog Food'
+                checked={this.state.PetsDogsDogFood}
+                onPress={() => this.setState({PetsDogsDogFood: !this.state.PetsDogsDogFood})}
+              />
+              <CheckBox
+                title='Baby/Diapering/Diapers/Disposable Diapers'
+                checked={this.state.BabyDiaperingDiapersDisposableDiapers}
+                onPress={() => this.setState({BabyDiaperingDiapersDisposableDiapers: !this.state.BabyDiaperingDiapersDisposableDiapers})}
+              />
+              <CheckBox
+                title='Food/Fresh Food/Dairy, Eggs & Cheese/Milk & Cream'
+                checked={this.state.FoodFreshFoodDairyEggsCheeseMilkCream}
+                onPress={() => this.setState({FoodFreshFoodDairyEggsCheeseMilkCream: !this.state.FoodFreshFoodDairyEggsCheeseMilkCream})}
+              />
+              <CheckBox
+                title='Home Improvement/Hardware/Door Hardware/Door Hinges'
+                checked={this.state.HomeImprovementHardwareDoorHardwareDoorHinges}
+                onPress={() => this.setState({HomeImprovementHardwareDoorHardwareDoorHinges: !this.state.HomeImprovementHardwareDoorHardwareDoorHinges})}
+              />
+              <CheckBox
+                title='Food/Baking/Oil & Shortening'
+                checked={this.state.FoodBakingOilShortening}
+                onPress={() => this.setState({FoodBakingOilShortening: !this.state.FoodBakingOilShortening})}
+              />
+              <CheckBox
+                title='Auto & Tires/Oils and Fluids/Motor Oil'
+                checked={this.state.AutoTiresOilsandFluidsMotorOil}
+                onPress={() => this.setState({AutoTiresOilsandFluidsMotorOil: !this.state.AutoTiresOilsandFluidsMotorOil})}
+              />
+
+            <View style={{flex: 1, flexDirection: 'row', paddingTop: 20, alignItems: 'center',}}>
+
+              <View style={{}}>
+                <Buttonx
+                title='Cancel'
+                buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
+                onPress={this._hideModal}
+                />
+              </View>
+              <View style={{}}>
+                <Buttonx
+                title='Save'
+                buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
+                onPress={() => this.navigasiStartShoping()}
+                />
+              </View>
+
+            </View>
+
+            </ScrollView>
+            </View>
+            </Modal>
+          </View>
         </View>
       </Image>
     );
@@ -210,6 +383,14 @@ const styles = StyleSheet.create({
    paddingLeft: 20,
    paddingRight: 20,
    color: '#ffffff',
+  },
+  bottomModal: {
+    backgroundColor: 'white',
+    padding: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
   },
 });
 

@@ -31,6 +31,7 @@ class Startshoping extends React.Component {
     super()
     this.state = {
       isModalVisible: false,
+      isModalVisibleX: false,
       hasCameraPermission: null,
       type: Camera.Constants.Type.back,
       list: [],
@@ -205,7 +206,11 @@ class Startshoping extends React.Component {
     })
   }
 
+  _showModalX = () => this.setState({ isModalVisibleX: true })
+  _hideModalX = () => this.setState({ isModalVisibleX: false })
+
   render() {
+    console.log(this.props.navigation.state.params.priority);
     const takePictureImage = 'http://www.freeiconspng.com/uploads/camera-icon-google-images-24.jpg'
     const imguri = 'http://downloadicons.net/sites/default/files/recycle-bin-logo-icon-66421.png'
     // const list = this.state.items
@@ -329,6 +334,21 @@ class Startshoping extends React.Component {
                 onPress={() => this.simpanBelanjaan()}
                 />
               </View>
+            </View>
+            </Modal>
+            <Modal
+            isVisible={this.state.isModalVisibleX}
+            style={styles.bottomModal}
+            animationIn={'slideInLeft'}
+            animationOut={'slideOutRight'}
+            >
+            <View>
+            <List containerStyle={{marginBottom: 20}}>
+            <Text style={styles.pembungkus}>
+              <Text style={{flex: 1, fontSize: 24, textAlign: 'center',}}>Halo</Text>
+            </Text>
+
+            </List>
             </View>
             </Modal>
         </View>

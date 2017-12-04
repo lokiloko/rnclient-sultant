@@ -1,12 +1,7 @@
 {
   "expoServerPort": 19000,
-<<<<<<< HEAD
   "packagerPort": 19002,
   "packagerPid": 10237,
-=======
-  "packagerPort": 19001,
-  "packagerPid": 3168,
->>>>>>> c721f9fd9b62557b92c8be965a79e6c106e55155
   "expoServerNgrokUrl": "https://uz-tgp.terrathe2.rnclient-sultant.exp.direct",
   "packagerNgrokUrl": "https://packager.uz-tgp.terrathe2.rnclient-sultant.exp.direct",
   "ngrokPid": 3241
