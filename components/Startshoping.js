@@ -58,6 +58,7 @@ class Startshoping extends React.Component {
     this.RotateValueHolder = new Animated.Value(0);
     this.state = {
       isModalVisible: false,
+      isModalVisibleX: false,
       hasCameraPermission: null,
       type: Camera.Constants.Type.back,
       list: [],
@@ -268,6 +269,9 @@ class Startshoping extends React.Component {
     })
   }
 
+  _showModalX = () => this.setState({ isModalVisibleX: true })
+  _hideModalX = () => this.setState({ isModalVisibleX: false })
+
   render() {
     const { hasCameraPermission, isLoading } = this.state;
     const takePictureImage = 'http://www.freeiconspng.com/uploads/camera-icon-google-images-24.jpg'
@@ -398,6 +402,7 @@ class Startshoping extends React.Component {
                 />
                 <Text style={styles.textinputval}>Total Price:   {this.state.item.total}</Text>
               </View>
+
               <View style={{flex: 1, flexDirection: 'row', paddingTop: 20}}>
                 <View style={{flex: 1}}>
                   <Button
@@ -415,6 +420,34 @@ class Startshoping extends React.Component {
                 </View>
               </View>
               </Modal>
+
+              <Modal
+              isVisible={this.state.isModalVisibleX}
+              style={styles.bottomModal}
+              animationIn={'slideInLeft'}
+              animationOut={'slideOutRight'}>
+                <View>
+                  <List containerStyle={{marginBottom: 20}}>
+                    <Text style={styles.pembungkus}>
+                      <Text style={{flex: 1, fontSize: 24, textAlign: 'center',}}>Halo</Text>
+                    </Text>
+                  </List>
+                </View>
+              </Modal>
+
+              <Modal
+              isVisible={this.state.isModalVisibleX}
+              style={styles.bottomModal}
+              animationIn={'slideInLeft'}
+              animationOut={'slideOutRight'}>
+                <View>
+                  <List containerStyle={{marginBottom: 20}}>
+                    <Text style={styles.pembungkus}>
+                      <Text style={{flex: 1, fontSize: 24, textAlign: 'center',}}>Halo</Text>
+                    </Text>
+                  </List>
+                </View>
+              </Modal>
           </View>
           </ScrollView>
         );
@@ -422,6 +455,7 @@ class Startshoping extends React.Component {
     }
   }
 }
+
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
