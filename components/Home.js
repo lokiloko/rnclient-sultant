@@ -14,6 +14,8 @@ import {
   Share,
   StatusBar,
   KeyboardAvoidingView,
+  Animated,
+  Easing
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { Button } from 'react-native-elements';
@@ -32,6 +34,7 @@ import Inputbudget from './Inputbudget'
 class HomeScreen extends React.Component {
   constructor(props) {
     super(props)
+    this.RotateValueHolder = new Animated.Value(0);
     this.state = {
      nik: '',
      nama: '',
@@ -41,7 +44,8 @@ class HomeScreen extends React.Component {
      agama: '',
      status: '',
      tempatLahir: '',
-     tanggalLahir: ''
+     tanggalLahir: '',
+     isLoading: false
     }
   }
 
@@ -56,6 +60,24 @@ componentWillMount() {
   }).catch((reason) => {
     console.log(reason);
   })
+}
+
+componentDidMount () {
+  this.StartImageRotateFunction()
+}
+
+StartImageRotateFunction () {
+  this.RotateValueHolder.setValue(0)
+
+  Animated.timing(
+    this.RotateValueHolder,
+    {
+      toValue: 1,
+      duration: 3000,
+      easing: Easing.linear
+    }
+  ).start(() => this.StartImageRotateFunction())
+
 }
 
 simpanDataUser () {
@@ -153,9 +175,13 @@ _takePhoto = async () => {
 
 _handleImagePicked = async pickerResult => {
   try {
-    this.setState({ uploading: true });
+    this.setState({
+      uploading: true,
+      isLoading: true
+    });
 
     if (!pickerResult.cancelled) {
+
       let localUri = pickerResult.uri;
       let filename = localUri.split('/').pop();
 
@@ -184,9 +210,14 @@ _handleImagePicked = async pickerResult => {
                 status: axiosResponse.data.object.status,
                 tempatLahir: axiosResponse.data.object.tempatLahir,
                 tanggalLahir: axiosResponse.data.object.tanggalLahir,
+                isLoading: false
               })
             }).catch((err) => {
-              console.error('error axios', err)
+              // console.error('error axios', err)
+              alert('Sorry couldnt proccess your request')
+              self.setState({
+                isLoading: false
+              })
             })
           }).catch(err => {
             console.error(err)
@@ -206,116 +237,138 @@ _handleImagePicked = async pickerResult => {
 };
 
 rendering() {
-  if (this.props.idUser._id) {
-    // console.log("tuturuu", this.props.idUser);
+  if (this.state.isLoading) {
+    const RotateData = this.RotateValueHolder.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['0deg', '360deg']
+    })
     return (
-      this.props.navigation.navigate('Inputbudget')
+      <Image source={{uri: 'https://i.pinimg.com/originals/9a/d0/3d/9ad03d1be00db96fe779b55c7dbc0e95.jpg'}} style={styles.backgroundLoading}>
+        <Animated.Image
+          style={[styles.imageLoading,
+            {
+              transform: [{
+                rotate: RotateData
+              }]
+            }
+          ]}
+          source={require('./sultant.png')}
+        />
+        <Text style={{color: 'white'}}>Proccessing, please wait...</Text>
+      </Image>
     )
   } else {
-    return (
-      <Image source={{uri: 'https://i.pinimg.com/originals/9a/d0/3d/9ad03d1be00db96fe779b55c7dbc0e95.jpg'}} style={styles.backgroundImage}>
-      <ScrollView contentContainerStyle={styles.contentContainer}>
-      <KeyboardAvoidingView
-      style={styles.container}
-      behavior="padding"
-      >
-        <View style={styles.container}>
-            <View style={styles.containerinput}>
-              <Image
-                style={styles.imageLogo}
-                source={require('./sultant.png')}/>
+    if (this.props.idUser._id) {
+      // console.log("tuturuu", this.props.idUser);
+      return (
+        this.props.navigation.navigate('Inputbudget')
+      )
+    } else {
+      return (
+        <Image source={{uri: 'https://i.pinimg.com/originals/9a/d0/3d/9ad03d1be00db96fe779b55c7dbc0e95.jpg'}} style={styles.backgroundImage}>
+        <ScrollView contentContainerStyle={styles.contentContainer}>
+        <KeyboardAvoidingView
+        style={styles.container}
+        behavior="padding"
+        >
+          <View style={styles.container}>
+              <View style={styles.containerinput}>
+                <Image
+                  style={styles.imageLogo}
+                  source={require('./sultant.png')}/>
+              </View>
+
+              <View style={{flex: 1}}>
+               <Button
+                  title='Scan KTP'
+                  buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
+                  onPress={this._takePhoto}
+               />
+
+               {this._maybeRenderImage()}
+               {this._maybeRenderUploadingOverlay()}
+
+               <StatusBar barStyle="default" />
+             </View>
+
+             <View style={styles.containerinput}>
+               <Text style={styles.textinputval}>NIK</Text>
+               <TextInput
+                 style={styles.textinput}
+                 onChangeText={(nik) => this.setState({nik})}
+                 value={this.state.nik}
+               />
+
+               <Text style={styles.textinputval}>Nama</Text>
+               <TextInput
+                 style={styles.textinput}
+                 onChangeText={(nama) => this.setState({nama})}
+                 value={this.state.nama}
+               />
+
+              <Text style={styles.textinputval}>Jenis Kelamin</Text>
+              <TextInput
+                 style={styles.textinput}
+                 onChangeText={(jenisKelamin) => this.setState({jenisKelamin})}
+                 value={this.state.jenisKelamin}
+              />
+
+              <Text style={styles.textinputval}>Provinsi</Text>
+              <TextInput
+                 style={styles.textinput}
+                 onChangeText={(provinsi) => this.setState({provinsi})}
+                 value={this.state.provinsi}
+              />
+
+              <Text style={styles.textinputval}>Kota</Text>
+              <TextInput
+                 style={styles.textinput}
+                 onChangeText={(kota) => this.setState({kota})}
+                 value={this.state.kota}
+              />
+
+              <Text style={styles.textinputval}>Agama</Text>
+              <TextInput
+                 style={styles.textinput}
+                 onChangeText={(agama) => this.setState({agama})}
+                 value={this.state.agama}
+              />
+
+              <Text style={styles.textinputval}>Status</Text>
+              <TextInput
+                 style={styles.textinput}
+                 onChangeText={(status) => this.setState({status})}
+                 value={this.state.status}
+              />
+
+              <Text style={styles.textinputval}>Tempat Lahir</Text>
+              <TextInput
+                 style={styles.textinput}
+                 onChangeText={(tempatLahir) => this.setState({tempatLahir})}
+                 value={this.state.tempatLahir}
+              />
+
+              <Text style={styles.textinputval}>Tanggal Lahir</Text>
+              <TextInput
+                 style={styles.textinput}
+                 onChangeText={(tanggalLahir) => this.setState({tanggalLahir})}
+                 value={this.state.tanggalLahir}
+              />
             </View>
 
-            <View style={{flex: 1}}>
-             <Button
-                title='Scan KTP'
+            <View style={{flex: 1, flexDirection: 'row', alignSelf: 'center', marginTop: 20, marginBottom: 20}}>
+              <Button
+                title='Simpan'
                 buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
-                onPress={this._takePhoto}
-             />
-
-             {this._maybeRenderImage()}
-             {this._maybeRenderUploadingOverlay()}
-
-             <StatusBar barStyle="default" />
-           </View>
-
-           <View style={styles.containerinput}>
-             <Text style={styles.textinputval}>NIK</Text>
-             <TextInput
-               style={styles.textinput}
-               onChangeText={(nik) => this.setState({nik})}
-               value={this.state.nik}
-             />
-
-             <Text style={styles.textinputval}>Nama</Text>
-             <TextInput
-               style={styles.textinput}
-               onChangeText={(nama) => this.setState({nama})}
-               value={this.state.nama}
-             />
-
-            <Text style={styles.textinputval}>Jenis Kelamin</Text>
-            <TextInput
-               style={styles.textinput}
-               onChangeText={(jenisKelamin) => this.setState({jenisKelamin})}
-               value={this.state.jenisKelamin}
-            />
-
-            <Text style={styles.textinputval}>Provinsi</Text>
-            <TextInput
-               style={styles.textinput}
-               onChangeText={(provinsi) => this.setState({provinsi})}
-               value={this.state.provinsi}
-            />
-
-            <Text style={styles.textinputval}>Kota</Text>
-            <TextInput
-               style={styles.textinput}
-               onChangeText={(kota) => this.setState({kota})}
-               value={this.state.kota}
-            />
-
-            <Text style={styles.textinputval}>Agama</Text>
-            <TextInput
-               style={styles.textinput}
-               onChangeText={(agama) => this.setState({agama})}
-               value={this.state.agama}
-            />
-
-            <Text style={styles.textinputval}>Status</Text>
-            <TextInput
-               style={styles.textinput}
-               onChangeText={(status) => this.setState({status})}
-               value={this.state.status}
-            />
-
-            <Text style={styles.textinputval}>Tempat Lahir</Text>
-            <TextInput
-               style={styles.textinput}
-               onChangeText={(tempatLahir) => this.setState({tempatLahir})}
-               value={this.state.tempatLahir}
-            />
-
-            <Text style={styles.textinputval}>Tanggal Lahir</Text>
-            <TextInput
-               style={styles.textinput}
-               onChangeText={(tanggalLahir) => this.setState({tanggalLahir})}
-               value={this.state.tanggalLahir}
-            />
+                onPress={() => this.simpanDataUser()}
+              />
+            </View>
           </View>
-
-          <View style={{flex: 1, flexDirection: 'row', alignSelf: 'center', marginTop: 20, marginBottom: 20}}>
-            <Button
-              title='Simpan'
-              buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
-              onPress={() => this.simpanDataUser()}
-            />
-          </View>
-        </View>
-        </KeyboardAvoidingView>
-      </ScrollView>
-     </Image>
-    );
+          </KeyboardAvoidingView>
+        </ScrollView>
+       </Image>
+      );
+    }
   }
 }
 
@@ -355,7 +408,17 @@ const styles = StyleSheet.create({
   flex: 1,
   width: null,
   height: null,
-  resizeMode: 'cover'
+  resizeMode: 'cover',
+ },
+
+ backgroundLoading: {
+   flex: 1,
+   width: null,
+   height: null,
+   resizeMode: 'cover',
+   flexDirection: 'column',
+   alignItems: 'center',
+   paddingTop: '50%'
  },
 
  textinputval: {
@@ -366,6 +429,13 @@ const styles = StyleSheet.create({
   width: 150,
   height: 150,
   resizeMode: Image.resizeMode.contain,
+ },
+
+ imageLoading: {
+   width: 100,
+   height: 100,
+   resizeMode: Image.resizeMode.contain,
+   marginBottom: 20
  },
 
  imageLogin: {
