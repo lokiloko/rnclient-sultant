@@ -231,7 +231,8 @@ class Currentballance extends React.Component {
             animationOut={'slideOutRight'}
             >
             <View>
-            <ScrollView contentContainerStyle={styles.contentContainer}>
+              <Text style={{textAlign: 'center', paddingBottom: 15, fontSize: 20, fontWeight: 'bold', color: '#0b8b00ff'}}>Silahkan Memilih Categori dari Prioritas Belanja Anda</Text>
+              <ScrollView contentContainerStyle={styles.contentContainer}>
               <CheckBox
                 title='Food/Breakfast & Cereal/Oatmeal & Hot Cereal'
                 checked={this.state.FoodBreakfastCerealOatmealHotCereal}
