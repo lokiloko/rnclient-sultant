@@ -20,15 +20,10 @@ const SimpleApp = StackNavigator({
   Currentballance: { screen: Currentballance },
   Detailtransaksi: { screen: Detailtransaksi },
   Startshoping: { screen: Startshoping },
-  ujicobacamera: { screen: ujicobacamera }
-<<<<<<< HEAD
-},
-{
-=======
+  ujicobacamera: { screen: ujicobacamera },
 }, {
->>>>>>> 5efaeba38ede57720e68258ae962cdb9884818c2
   headerMode: 'none'
-});
+})
 
 export default class App extends React.Component {
   render() {
