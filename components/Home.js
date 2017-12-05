@@ -277,10 +277,11 @@ rendering() {
                 source={require('./sultant.png')}/>
             </View>
 
-            <View>
+            <View style={{backgroundColor: '#0b8b00ff', paddingBottom: 20}}>
              <Button
                 title='Scan KTP'
-                buttonStyle={{backgroundColor: '#0b8b00ff', borderRadius: 10}}
+                color='white'
+                buttonStyle={{backgroundColor: 'red', borderRadius: 10}}
                 onPress={this._takePhoto}
              />
 
@@ -289,7 +290,6 @@ rendering() {
 
              <StatusBar barStyle="default" />
            </View>
-
 
              <ScrollView style={{paddingLeft: 35, paddingRight: 35, marginTop: 10}}>
                 <View style={styles.containerinput}>
@@ -369,12 +369,13 @@ rendering() {
                   <View style={{flex: 1, flexDirection: 'row', alignSelf: 'center', marginBottom: 20}}>
                     <Button
                       title='Simpan'
-                      color='#0b8b00ff'
+                      color='white'
                       buttonStyle={{
-                        backgroundColor: 'white',
+                        backgroundColor: '#0b8b00ff',
                         borderRadius: 10,
-                        borderColor: '#0b8b00ff',
-                        borderWidth: 2
+                        borderColor: 'transparent',
+                        borderWidth: 2,
+                        width: 200
                       }}
                       onPress={() => this.simpanDataUser()}
                     />
@@ -398,9 +399,10 @@ render() {
 
 const styles = StyleSheet.create({
  logo: {
-  alignItems: 'center',
-  marginBottom: 10,
-  paddingTop: 20
+   backgroundColor: '#0b8b00ff',
+   alignItems: 'center',
+   paddingBottom: 10,
+   paddingTop: 20
  },
 
  containerinput: {
@@ -426,7 +428,6 @@ const styles = StyleSheet.create({
    flex: 1,
    width: null,
    height: null,
-  //  resizeMode: 'cover',
    flexDirection: 'column',
    alignItems: 'center',
    paddingTop: '60%',
