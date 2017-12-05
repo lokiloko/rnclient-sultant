@@ -177,10 +177,12 @@ _handleImagePicked = async pickerResult => {
   try {
     this.setState({
       uploading: true,
-      isLoading: true
     });
 
     if (!pickerResult.cancelled) {
+      this.setState({
+        isLoading: true
+      })
 
       let localUri = pickerResult.uri;
       let filename = localUri.split('/').pop();
@@ -243,7 +245,7 @@ rendering() {
       outputRange: ['0deg', '360deg']
     })
     return (
-      <Image source={{uri: 'https://i.pinimg.com/originals/9a/d0/3d/9ad03d1be00db96fe779b55c7dbc0e95.jpg'}} style={styles.backgroundLoading}>
+      <View style={styles.backgroundLoading}>
         <Animated.Image
           style={[styles.imageLoading,
             {
@@ -255,7 +257,7 @@ rendering() {
           source={require('./sultant.png')}
         />
         <Text style={{color: 'white'}}>Proccessing, please wait...</Text>
-      </Image>
+      </View>
     )
   } else {
     if (this.props.idUser._id) {
@@ -265,108 +267,123 @@ rendering() {
       )
     } else {
       return (
-        <Image source={{uri: 'https://i.pinimg.com/originals/9a/d0/3d/9ad03d1be00db96fe779b55c7dbc0e95.jpg'}} style={styles.backgroundImage}>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
         <KeyboardAvoidingView
-        style={styles.container}
-        behavior="padding"
-        >
-          <View style={styles.container}>
-              <View style={styles.containerinput}>
-                <Image
-                  style={styles.imageLogo}
-                  source={require('./sultant.png')}/>
-              </View>
-
-              <View style={{flex: 1}}>
-               <Button
-                  title='Scan KTP'
-                  buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
-                  onPress={this._takePhoto}
-               />
-
-               {this._maybeRenderImage()}
-               {this._maybeRenderUploadingOverlay()}
-
-               <StatusBar barStyle="default" />
-             </View>
-
-             <View style={styles.containerinput}>
-               <Text style={styles.textinputval}>NIK</Text>
-               <TextInput
-                 style={styles.textinput}
-                 onChangeText={(nik) => this.setState({nik})}
-                 value={this.state.nik}
-               />
-
-               <Text style={styles.textinputval}>Nama</Text>
-               <TextInput
-                 style={styles.textinput}
-                 onChangeText={(nama) => this.setState({nama})}
-                 value={this.state.nama}
-               />
-
-              <Text style={styles.textinputval}>Jenis Kelamin</Text>
-              <TextInput
-                 style={styles.textinput}
-                 onChangeText={(jenisKelamin) => this.setState({jenisKelamin})}
-                 value={this.state.jenisKelamin}
-              />
-
-              <Text style={styles.textinputval}>Provinsi</Text>
-              <TextInput
-                 style={styles.textinput}
-                 onChangeText={(provinsi) => this.setState({provinsi})}
-                 value={this.state.provinsi}
-              />
-
-              <Text style={styles.textinputval}>Kota</Text>
-              <TextInput
-                 style={styles.textinput}
-                 onChangeText={(kota) => this.setState({kota})}
-                 value={this.state.kota}
-              />
-
-              <Text style={styles.textinputval}>Agama</Text>
-              <TextInput
-                 style={styles.textinput}
-                 onChangeText={(agama) => this.setState({agama})}
-                 value={this.state.agama}
-              />
-
-              <Text style={styles.textinputval}>Status</Text>
-              <TextInput
-                 style={styles.textinput}
-                 onChangeText={(status) => this.setState({status})}
-                 value={this.state.status}
-              />
-
-              <Text style={styles.textinputval}>Tempat Lahir</Text>
-              <TextInput
-                 style={styles.textinput}
-                 onChangeText={(tempatLahir) => this.setState({tempatLahir})}
-                 value={this.state.tempatLahir}
-              />
-
-              <Text style={styles.textinputval}>Tanggal Lahir</Text>
-              <TextInput
-                 style={styles.textinput}
-                 onChangeText={(tanggalLahir) => this.setState({tanggalLahir})}
-                 value={this.state.tanggalLahir}
-              />
+          style={{flex: 1}}
+          behavior="padding">
+          <View style={{ flex: 1, backgroundColor: 'white'}}>
+            <View style={styles.logo}>
+              <Image
+                style={styles.imageLogo}
+                source={require('./sultant.png')}/>
             </View>
 
-            <View style={{flex: 1, flexDirection: 'row', alignSelf: 'center', marginTop: 20, marginBottom: 20}}>
-              <Button
-                title='Simpan'
-                buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
-                onPress={() => this.simpanDataUser()}
-              />
-            </View>
-          </View>
-          </KeyboardAvoidingView>
-        </ScrollView>
-       </Image>
+            <View style={{backgroundColor: '#0b8b00ff', paddingBottom: 20}}>
+             <Button
+                title='Scan KTP'
+                color='white'
+                buttonStyle={{backgroundColor: 'red', borderRadius: 10}}
+                onPress={this._takePhoto}
+             />
+
+             {this._maybeRenderImage()}
+             {this._maybeRenderUploadingOverlay()}
+
+             <StatusBar barStyle="default" />
+           </View>
+
+             <ScrollView style={{paddingLeft: 35, paddingRight: 35, marginTop: 10}}>
+                <View style={styles.containerinput}>
+                   <Text style={styles.textinputval}>NIK</Text>
+                   <TextInput
+                     underlineColorAndroid="#0b8b00ff"
+                     keyboardType={'numeric'}
+                     style={styles.textinput}
+                     onChangeText={(nik) => this.setState({nik})}
+                     value={this.state.nik}
+                   />
+
+                   <Text style={styles.textinputval}>Nama</Text>
+                   <TextInput
+                     underlineColorAndroid="#0b8b00ff"
+                     style={styles.textinput}
+                     onChangeText={(nama) => this.setState({nama})}
+                     value={this.state.nama}
+                   />
+
+                  <Text style={styles.textinputval}>Jenis Kelamin</Text>
+                  <TextInput
+                     underlineColorAndroid="#0b8b00ff"
+                     style={styles.textinput}
+                     onChangeText={(jenisKelamin) => this.setState({jenisKelamin})}
+                     value={this.state.jenisKelamin}
+                  />
+
+                  <Text style={styles.textinputval}>Provinsi</Text>
+                  <TextInput
+                     underlineColorAndroid="#0b8b00ff"
+                     style={styles.textinput}
+                     onChangeText={(provinsi) => this.setState({provinsi})}
+                     value={this.state.provinsi}
+                  />
+
+                  <Text style={styles.textinputval}>Kota</Text>
+                  <TextInput
+                     underlineColorAndroid="#0b8b00ff"
+                     style={styles.textinput}
+                     onChangeText={(kota) => this.setState({kota})}
+                     value={this.state.kota}
+                  />
+
+                  <Text style={styles.textinputval}>Agama</Text>
+                  <TextInput
+                     underlineColorAndroid="#0b8b00ff"
+                     style={styles.textinput}
+                     onChangeText={(agama) => this.setState({agama})}
+                     value={this.state.agama}
+                  />
+
+                  <Text style={styles.textinputval}>Status</Text>
+                  <TextInput
+                     underlineColorAndroid="#0b8b00ff"
+                     style={styles.textinput}
+                     onChangeText={(status) => this.setState({status})}
+                     value={this.state.status}
+                  />
+
+                  <Text style={styles.textinputval}>Tempat Lahir</Text>
+                  <TextInput
+                     underlineColorAndroid="#0b8b00ff"
+                     style={styles.textinput}
+                     onChangeText={(tempatLahir) => this.setState({tempatLahir})}
+                     value={this.state.tempatLahir}
+                  />
+
+                  <Text style={styles.textinputval}>Tanggal Lahir</Text>
+                  <TextInput
+                     underlineColorAndroid="#0b8b00ff"
+                     style={styles.textinput}
+                     onChangeText={(tanggalLahir) => this.setState({tanggalLahir})}
+                     value={this.state.tanggalLahir}
+                  />
+
+                  <View style={{flex: 1, flexDirection: 'row', alignSelf: 'center', marginBottom: 20}}>
+                    <Button
+                      title='Simpan'
+                      color='white'
+                      buttonStyle={{
+                        backgroundColor: '#0b8b00ff',
+                        borderRadius: 10,
+                        borderColor: 'transparent',
+                        borderWidth: 2,
+                        width: 200
+                      }}
+                      onPress={() => this.simpanDataUser()}
+                    />
+                  </View>
+                </View>
+            </ScrollView>
+         </View>
+       </KeyboardAvoidingView>
       );
     }
   }
@@ -381,53 +398,45 @@ render() {
 }
 
 const styles = StyleSheet.create({
- container: {
-  alignItems: 'center'
- },
-
- contentContainer: {
-
- },
-
- textinput: {
-  height: 40,
-  width: responsiveWidth(80),
-  borderColor: 'white',
-  borderWidth: 2,
-  paddingLeft: 20,
-  paddingRight: 20,
-  marginBottom: 10,
-  color: '#ffffff',
+ logo: {
+   backgroundColor: '#0b8b00ff',
+   alignItems: 'center',
+   paddingBottom: 10,
+   paddingTop: 20
  },
 
  containerinput: {
-  paddingTop: 20,
+   flex: 1,
+   alignItems: 'flex-start',
+   paddingTop: 10,
  },
 
- backgroundImage: {
-  flex: 1,
-  width: null,
-  height: null,
-  resizeMode: 'cover',
+ textinputval: {
+   paddingLeft: 3,
+   color: '#0b8b00ff'
+ },
+
+ textinput: {
+    height: 40,
+    width: responsiveWidth(80),
+    marginBottom: 10,
+    paddingLeft: 3,
+    color: 'black'
  },
 
  backgroundLoading: {
    flex: 1,
    width: null,
    height: null,
-   resizeMode: 'cover',
    flexDirection: 'column',
    alignItems: 'center',
-   paddingTop: '50%'
- },
-
- textinputval: {
-  color: '#ffffff'
+   paddingTop: '60%',
+   backgroundColor: '#0b8b00ff'
  },
 
  imageLogo: {
-  width: 150,
-  height: 150,
+  width: 100,
+  height: 100,
   resizeMode: Image.resizeMode.contain,
  },
 
