@@ -199,8 +199,254 @@ class Currentballance extends React.Component {
   render() {
     // console.log(this.state.budgetSementara);
     const { navigate } = this.props.navigation;
-    const lists = this.props.transactionList
-    const imguri = 'https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/24129614_10210614123930346_4311928442133126805_n.jpg?_nc_eui2=v1%3AAeFmBr5_jAksHWATxU71fb1aoyFlUXlYwgk9uS3xGS22niluU6JAORQmnNPx7kDgYZSlg74KhzlOddsaygN1AmLWlzk_Hovz8kgCr55G01s7tQ&oh=a77e1a0c9437286b040cce8aa155e9fb&oe=5A9748F6'
+    // const lists = this.props.transactionList
+    const lists = [{
+        "_id": "5a1ea9eb2675070002911df3",
+        "totalPrice": 100000,
+        "user": "5a1e8b34261a720002687e06",
+        "__v": 0,
+        "items": [
+            {
+                "name": "nama barang",
+                "qty": 1,
+                "category": "food",
+                "price": 10000,
+                "_id": "5a1ea9eb2675070002911df4"
+            }
+        ],
+        "date": "2017-11-29T12:36:59.486Z"
+    },
+    {
+        "_id": "5a1f86cfe5627900027256ef",
+        "totalPrice": 150000,
+        "user": "5a1e8b34261a720002687e06",
+        "__v": 0,
+        "items": [
+            {
+                "name": "susu",
+                "category": "drink",
+                "qty": 1,
+                "price": 100000,
+                "_id": "5a1f86cfe5627900027256f1"
+            },
+            {
+                "name": "popok",
+                "category": "kids",
+                "qty": 1,
+                "price": 50000,
+                "_id": "5a1f86cfe5627900027256f0"
+            }
+        ],
+        "date": "2017-11-30T04:19:27.012Z"
+    },
+    {
+        "_id": "5a2120f669ac9300024c7706",
+        "totalPrice": 150000,
+        "user": "5a1e8b34261a720002687e06",
+        "__v": 0,
+        "items": [
+            {
+                "name": "susu",
+                "category": "drink",
+                "qty": 1,
+                "price": 100000,
+                "_id": "5a2120f669ac9300024c7708"
+            },
+            {
+                "name": "popok",
+                "category": "kids",
+                "qty": 1,
+                "price": 50000,
+                "_id": "5a2120f669ac9300024c7707"
+            }
+        ],
+        "date": "2017-12-01T09:29:26.159Z"
+    },
+    {
+        "_id": "5a22f022358a040002cc6bff",
+        "totalPrice": 150000,
+        "user": "5a1e8b34261a720002687e06",
+        "__v": 0,
+        "items": [
+            {
+                "name": "susu",
+                "category": "drink",
+                "qty": 1,
+                "price": 100000,
+                "_id": "5a22f022358a040002cc6c01"
+            },
+            {
+                "name": "popok",
+                "category": "kids",
+                "qty": 1,
+                "price": 50000,
+                "_id": "5a22f022358a040002cc6c00"
+            }
+        ],
+        "date": "2017-12-02T18:25:38.955Z"
+    },
+    {
+        "_id": "5a22f2c1358a040002cc6c11",
+        "totalPrice": 150000,
+        "user": "5a1e8b34261a720002687e06",
+        "__v": 0,
+        "items": [
+            {
+                "name": "susu",
+                "category": "drink",
+                "qty": 1,
+                "price": 100000,
+                "_id": "5a22f2c1358a040002cc6c13"
+            },
+            {
+                "name": "popok",
+                "category": "kids",
+                "qty": 1,
+                "price": 50000,
+                "_id": "5a22f2c1358a040002cc6c12"
+            }
+        ],
+        "date": "2017-12-02T18:36:49.156Z"
+    },
+    {
+        "_id": "5a22f5f2358a040002cc6c1f",
+        "totalPrice": 150000,
+        "user": "5a1e8b34261a720002687e06",
+        "__v": 0,
+        "items": [
+            {
+                "name": "susu",
+                "category": "drink",
+                "qty": 1,
+                "price": 100000,
+                "_id": "5a22f5f2358a040002cc6c21"
+            },
+            {
+                "name": "popok",
+                "category": "kids",
+                "qty": 1,
+                "price": 50000,
+                "_id": "5a22f5f2358a040002cc6c20"
+            }
+        ],
+        "date": "2017-12-02T18:50:26.158Z"
+    },
+    {
+        "_id": "5a22f8b8358a040002cc6c46",
+        "totalPrice": 150000,
+        "user": "5a1e8b34261a720002687e06",
+        "__v": 0,
+        "items": [
+            {
+                "name": "susu",
+                "category": "drink",
+                "qty": 1,
+                "price": 100000,
+                "_id": "5a22f8b8358a040002cc6c48"
+            },
+            {
+                "name": "popok",
+                "category": "kids",
+                "qty": 1,
+                "price": 50000,
+                "_id": "5a22f8b8358a040002cc6c47"
+            }
+        ],
+        "date": "2017-12-02T19:02:16.756Z"
+    },
+    {
+        "_id": "5a235a49358a040002cc6c70",
+        "totalPrice": 150000,
+        "user": "5a1e8b34261a720002687e06",
+        "__v": 0,
+        "items": [
+            {
+                "name": "susu",
+                "category": "drink",
+                "qty": 1,
+                "price": 100000,
+                "_id": "5a235a49358a040002cc6c72"
+            },
+            {
+                "name": "popok",
+                "category": "kids",
+                "qty": 1,
+                "price": 50000,
+                "_id": "5a235a49358a040002cc6c71"
+            }
+        ],
+        "date": "2017-12-03T01:58:33.856Z"
+    },
+    {
+        "_id": "5a24c4ff358a040002cc6cf5",
+        "totalPrice": 150000,
+        "user": "5a1e8b34261a720002687e06",
+        "__v": 0,
+        "items": [
+            {
+                "name": "susu",
+                "category": "drink",
+                "qty": 1,
+                "price": 100000,
+                "_id": "5a24c4ff358a040002cc6cf7"
+            },
+            {
+                "name": "popok",
+                "category": "kids",
+                "qty": 1,
+                "price": 50000,
+                "_id": "5a24c4ff358a040002cc6cf6"
+            }
+        ],
+        "date": "2017-12-04T03:46:07.956Z"
+    },
+    {
+        "_id": "5a24d124358a040002cc6d1f",
+        "totalPrice": 150000,
+        "user": "5a1e8b34261a720002687e06",
+        "__v": 0,
+        "items": [
+            {
+                "name": "susu",
+                "category": "drink",
+                "qty": 1,
+                "price": 100000,
+                "_id": "5a24d124358a040002cc6d21"
+            },
+            {
+                "name": "popok",
+                "category": "kids",
+                "qty": 1,
+                "price": 50000,
+                "_id": "5a24d124358a040002cc6d20"
+            }
+        ],
+        "date": "2017-12-04T04:37:56.920Z"
+    },
+    {
+        "_id": "5a24f8b5358a040002cc6d7a",
+        "totalPrice": 150000,
+        "user": "5a1e8b34261a720002687e06",
+        "__v": 0,
+        "items": [
+            {
+                "name": "susu",
+                "category": "drink",
+                "qty": 1,
+                "price": 100000,
+                "_id": "5a24f8b5358a040002cc6d7c"
+            },
+            {
+                "name": "popok",
+                "category": "kids",
+                "qty": 1,
+                "price": 50000,
+                "_id": "5a24f8b5358a040002cc6d7b"
+            }
+        ],
+        "date": "2017-12-04T07:26:45.430Z"
+    }]
+    const imguri = 'http://images.all-free-download.com/images/graphiclarge/green_shopping_cart_icon_vector_280755.jpg'
 
     if (this.state.isLoading) {
       const RotateData = this.RotateValueHolder.interpolate({
@@ -232,15 +478,15 @@ class Currentballance extends React.Component {
               />
             </View>
 
-            <View style={{backgroundColor: 'white', padding: 30}}>
+            <View style={{backgroundColor: 'white', paddingLeft: 30, paddingRight: 30, paddingTop: 10, width: '100%'}}>
               <View style={{flexDirection: 'row', paddingTop: 2}}>
-                <Text style={styles.infobudget}>Sisa uang kamu: <Text style={{color: 'red'}}>{formatRupiah(this.state.budgetAwal)}</Text></Text>
+                <Text style={styles.infobudget}>Current Budget : <Text style={{color: 'red'}}>{formatRupiah(this.state.budgetAwal)}</Text></Text>
               </View>
 
-              <View style={{marginTop: 20}}>
+              <View style={{marginTop: 10, paddingBottom: 20}}>
                 <TextInput
                   underlineColorAndroid="#0b8b00ff"
-                  placeholder="Type here.."
+                  placeholder="Input here.. (use - to decrease your budget)"
                   keyboardType={"numeric"}
                   style={styles.textinput}
                   onChangeText={(tambahbudget) => this.tambah(tambahbudget)}
@@ -248,43 +494,41 @@ class Currentballance extends React.Component {
                 />
 
                 <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-                  <View style={{paddingTop: 10, marginRight: 5}}>
                   <ButtonY
                     onPress={() => this.tambahbudget()}
-                    title="Update Budget"
+                    title="Add Budget"
                     color="#0b8b00ff"
+                    buttonStyle={{borderWidth: 2, borderColor: '#0b8b00ff', borderRadius: 40, backgroundColor: 'white'}}
                   />
-                  </View>
 
-                  <View style={{paddingTop: 10, marginLeft: 5}}>
                   <ButtonY
                     onPress={() => this._showModal()}
                     title="Start Shoping"
-                    color="red"
+                    color="white"
+                    buttonStyle={{borderWidth: 2, borderColor: '#0b8b00ff', borderRadius: 40, backgroundColor: '#0b8b00ff'}}
                   />
-                  </View>
                 </View>
               </View>
 
-              <View style={{paddingTop: 5, paddingLeft: 30, paddingRight: 30, flexDirection: 'row'}}>
+              <View style={{flexDirection: 'row'}}>
                 <Container>
-                <Content>
-                <ScrollView contentContainerStyle={styles.contentContainer}>
-                    <List containerStyle={{marginBottom: 20}}>
-                    { lists.length != 0 ?
-                      lists.reverse().map((list, index) => (
-                        <TouchableOpacity key={ index } onPress={() => navigate('Detailtransaksi', { list })}>
-                          <ListItem
-                            roundAvatar
-                            avatar={{uri: imguri}}
-                            title={list.date.slice(0, 10) + " Total belanja Rp" + list.totalPrice}
-                          />
-                        </TouchableOpacity>
-                      ))
-                    : <Text>No Transaction Yet</Text> }
-                    </List>
-                </ScrollView>
-                </Content>
+                  <Content>
+                    <ScrollView contentContainerStyle={styles.contentContainer}>
+                        <List containerStyle={{marginBottom: 20}}>
+                        { lists.length != 0 ?
+                          lists.reverse().map((list, index) => (
+                            <TouchableOpacity key={ index } onPress={() => navigate('Detailtransaksi', { list })}>
+                              <ListItem
+                                roundAvatar
+                                avatar={{uri: imguri}}
+                                title={list.date.slice(0, 10) + " Total belanja Rp" + list.totalPrice}
+                              />
+                            </TouchableOpacity>
+                          ))
+                        : <Text style={{alignSelf: 'center', marginTop: 10}}>No Transaction Yet</Text> }
+                        </List>
+                    </ScrollView>
+                  </Content>
                 </Container>
               </View>
             </View>
@@ -468,7 +712,8 @@ const styles = StyleSheet.create({
   textinput: {
    height: 40,
    width: responsiveWidth(80),
-   paddingLeft: 3
+   paddingLeft: 3,
+   marginBottom: 10
   },
 
   bottomModal: {

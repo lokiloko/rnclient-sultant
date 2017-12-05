@@ -309,7 +309,7 @@ rendering() {
                      value={this.state.nik}
                    />
 
-                   <Text style={styles.textinputval}>Nama</Text>
+                   <Text style={styles.textinputval}>Name</Text>
                    <TextInput
                      underlineColorAndroid="#0b8b00ff"
                      style={styles.textinput}
@@ -317,7 +317,7 @@ rendering() {
                      value={this.state.nama}
                    />
 
-                  <Text style={styles.textinputval}>Jenis Kelamin</Text>
+                  <Text style={styles.textinputval}>Gender</Text>
                   <TextInput
                      underlineColorAndroid="#0b8b00ff"
                      style={styles.textinput}
@@ -325,7 +325,7 @@ rendering() {
                      value={this.state.jenisKelamin}
                   />
 
-                  <Text style={styles.textinputval}>Provinsi</Text>
+                  <Text style={styles.textinputval}>Province</Text>
                   <TextInput
                      underlineColorAndroid="#0b8b00ff"
                      style={styles.textinput}
@@ -333,7 +333,7 @@ rendering() {
                      value={this.state.provinsi}
                   />
 
-                  <Text style={styles.textinputval}>Kota</Text>
+                  <Text style={styles.textinputval}>City</Text>
                   <TextInput
                      underlineColorAndroid="#0b8b00ff"
                      style={styles.textinput}
@@ -341,7 +341,7 @@ rendering() {
                      value={this.state.kota}
                   />
 
-                  <Text style={styles.textinputval}>Agama</Text>
+                  <Text style={styles.textinputval}>Religion</Text>
                   <TextInput
                      underlineColorAndroid="#0b8b00ff"
                      style={styles.textinput}
@@ -357,7 +357,7 @@ rendering() {
                      value={this.state.status}
                   />
 
-                  <Text style={styles.textinputval}>Tempat Lahir</Text>
+                  <Text style={styles.textinputval}>Birth Place</Text>
                   <TextInput
                      underlineColorAndroid="#0b8b00ff"
                      style={styles.textinput}
@@ -365,7 +365,7 @@ rendering() {
                      value={this.state.tempatLahir}
                   />
 
-                  <Text style={styles.textinputval}>Tanggal Lahir</Text>
+                  <Text style={styles.textinputval}>Birth Date</Text>
                   <TextInput
                      underlineColorAndroid="#0b8b00ff"
                      style={styles.textinput}
