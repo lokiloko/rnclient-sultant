@@ -222,11 +222,18 @@ _handleImagePicked = async pickerResult => {
               })
             })
           }).catch(err => {
-            console.error(err)
+            // console.error(err)
+            alert('Sorry couldnt proccess your request')
+            self.setState({
+              isLoading: false
+            })
           })
-        })
-        .catch(function(error) {
-          console.error(error);
+        }).catch(function(error) {
+          // console.error(error);
+          alert('Sorry couldnt proccess your request')
+          self.setState({
+            isLoading: false
+          })
         });
       // console.log(dbx)
     }
