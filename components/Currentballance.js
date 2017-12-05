@@ -212,7 +212,7 @@ class Currentballance extends React.Component {
                       <ListItem
                         roundAvatar
                         avatar={{uri: imguri}}
-                        title={list.date.slice(0, 10) + " ~~~ Rp" + list.totalPrice}
+                        title={list.date.slice(0, 10) + " Total belanja Rp" + list.totalPrice}
                       />
                     </TouchableOpacity>
                   ))
