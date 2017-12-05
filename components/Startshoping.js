@@ -26,7 +26,8 @@ import {
   Avatar,
   List,
   ListItem,
-  Button
+  Button,
+  Card
 } from 'react-native-elements';
 import {
   responsiveHeight,
@@ -334,7 +335,7 @@ class Startshoping extends React.Component {
   render() {
     const { hasCameraPermission, isLoading } = this.state;
     const takePictureImage = 'http://www.freeiconspng.com/uploads/camera-icon-google-images-24.jpg'
-    const imguri = 'http://downloadicons.net/sites/default/files/recycle-bin-logo-icon-66421.png'
+    const imguri = 'https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_delete_48px-128.png'
     const list = this.state.list
     const RotateData = this.RotateValueHolder.interpolate({
       inputRange: [0, 1],
@@ -377,7 +378,7 @@ class Startshoping extends React.Component {
         return (
           <ScrollView contentContainerStyle={styles.contentContainer}>
           <View>
-            <View style={{ paddingTop: 20, paddingLeft: 10, paddingRight: 10,}}>
+            <View style={{ paddingTop: 30, paddingLeft: 10, paddingRight: 10,}}>
               <Camera
               ref={ref => { this.camera = ref }}
               style={{ backgroundColor: 'red'}}
@@ -393,7 +394,7 @@ class Startshoping extends React.Component {
             </View>
 
 
-            <View>
+            <View style={{ paddingTop: 10, paddingLeft: 10, paddingRight: 10,}}>
               <List containerStyle={{marginBottom: 20}}>
               <Text style={styles.pembungkus}>
                 <Text style={{flex: 1, fontSize: 24, textAlign: 'center',}}>Total Price:    Rp </Text>
@@ -401,8 +402,8 @@ class Startshoping extends React.Component {
               </Text>
               { list.length != 0 ?
                 this.state.list.map((item, index) => (
-                  <View key={index} style={{flex: 1, flexDirection: 'row', width: '100%'}}>
-                    <View style={{width: 40, marginTop:10}}>
+                  <View key={index} style={{borderBottomWidth: 1,flex: 1, flexDirection: 'row', width: '100%'}}>
+                    <View style={{paddingLeft: 10, width: 0, marginTop:10}}>
                       <Avatar
                         small
                         rounded
@@ -410,8 +411,9 @@ class Startshoping extends React.Component {
                         onPress={() => this.removeItem(index)}
                       />
                     </View>
-                    <View style={{width: '90%'}}>
+                    <View style={{width: '100%', paddingLeft: 20}}>
                       <ListItem
+                      containerStyle={{borderBottomWidth: 0, borderBottomColor: '#ffffff'}}
                       title={item.name}
                       onPress={() => this.bukamodal(item, index)}
                       />
@@ -490,15 +492,21 @@ class Startshoping extends React.Component {
               style={styles.bottomModal}
               animationIn={'slideInLeft'}
               animationOut={'slideOutRight'}>
+                <Text style={{textAlign: 'center', paddingBottom: 15, fontSize: 20, fontWeight: 'bold', color: '#0b8b00ff'}}>Kami memiliki rekomendasi untuk anda.</Text>
                 <View>
                   <Text>Yg tetap dibeli</Text>
                   <List containerStyle={{marginBottom: 20}}>
                     {
                       this.state.suggestionKeep.map((item, i) => (
-                        <ListItem
-                          key={i}
-                          title={item}
-                        />
+                        <Card containerStyle={{padding: 0}} >
+                          {
+                            <ListItem
+                              hideChevron={true}
+                              key={i}
+                              title={item}
+                            />
+                          }
+                        </Card>
                       ))
                     }
                   </List>
@@ -506,10 +514,15 @@ class Startshoping extends React.Component {
                   <List containerStyle={{marginBottom: 20}}>
                     {
                       this.state.suggestionRemove.map((item, i) => (
-                        <ListItem
-                          key={i}
-                          title={item}
-                        />
+                        <Card containerStyle={{padding: 0}} >
+                          {
+                            <ListItem
+                              hideChevron={true}
+                              key={i}
+                              title={item}
+                            />
+                          }
+                        </Card>
                       ))
                     }
                   </List>
@@ -535,7 +548,11 @@ const styles = StyleSheet.create({
   },
   pembungkus: {
     flexDirection: 'row',
+    paddingBottom: 20,
     paddingHorizontal: 10,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#000000',
   },
   kontainer: {
     flex: 1,

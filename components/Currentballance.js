@@ -23,7 +23,7 @@ import { Container, Header, Content, Form, Item, Input, Label, Button, Icon} fro
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 
 import { getTransactions } from '../actions'
-
+import formatRupiah from '../helpers/formatRupiah'
 
 
 class Currentballance extends React.Component {
@@ -168,7 +168,7 @@ class Currentballance extends React.Component {
           </View>
 
           <View style={{flexDirection: 'row', paddingTop: 2}}>
-            <Text style={styles.infobudget}>Sisa uang kamu: <Text style={{color: 'red'}}>{this.state.budgetAwal}</Text></Text>
+            <Text style={styles.infobudget}>Sisa uang kamu: <Text style={{color: 'red'}}>{formatRupiah(this.state.budgetAwal)}</Text></Text>
           </View>
 
           <View style={{paddingTop: 20}}>

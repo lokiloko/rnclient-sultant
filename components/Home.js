@@ -263,7 +263,7 @@ rendering() {
     if (this.props.idUser._id) {
       // console.log("tuturuu", this.props.idUser);
       return (
-        this.props.navigation.navigate('Inputbudget')
+        this.props.navigation.navigate('Currentballance')
       )
     } else {
       return (
