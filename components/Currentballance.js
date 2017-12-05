@@ -25,6 +25,7 @@ import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-nat
 
 import { getTransactions } from '../actions'
 import formatRupiah from '../helpers/formatRupiah'
+import formatTanggal from '../helpers/formatTanggal'
 
 
 class Currentballance extends React.Component {
@@ -521,7 +522,8 @@ class Currentballance extends React.Component {
                               <ListItem
                                 roundAvatar
                                 avatar={{uri: imguri}}
-                                title={list.date.slice(0, 10) + " Total belanja Rp" + list.totalPrice}
+                                title={formatTanggal(list.date.slice(0, 10))}
+                                subtitle={" Total : Rp" + list.totalPrice}
                               />
                             </TouchableOpacity>
                           ))
