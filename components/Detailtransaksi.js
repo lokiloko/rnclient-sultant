@@ -38,19 +38,19 @@ export default class Detailtransaksi extends React.Component {
     const list = this.props.navigation.state.params.list.items
 
     return (
-      <Image source={{uri: 'https://hdwallsource.com/img/2016/9/cash-money-wallpaper-background-49518-51193-hd-wallpapers.jpg'}}>
-        <View style={styles.container}>
-          <View style={{paddingTop: 20, paddingLeft: 30, paddingRight: 30, flexDirection: 'row'}}>
+          <View style={{paddingTop: 20, paddingLeft: 15, paddingRight: 15, flexDirection: 'row'}}>
           <Container>
           <Content>
+
             <List containerStyle={{marginBottom: 20}}>
             {
               list.map((item, index) => (
                 <ListItem
                 roundAvatar
+                hideChevron={true}
                 avatar={{uri:'https://i1.sndcdn.com/artworks-000066312689-d7quy2-t500x500.jpg'}}
                 key={index}
-                title={item.name + " ~ Qty:" + item.qty + " ~ Price:" + item.price}
+                title={item.name + " Price: " + item.price + " ("+item.qty+")"}
                 />
               ))
             }
@@ -58,8 +58,6 @@ export default class Detailtransaksi extends React.Component {
           </Content>
           </Container>
           </View>
-        </View>
-      </Image>
     );
   }
 }

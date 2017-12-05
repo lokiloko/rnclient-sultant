@@ -10,6 +10,7 @@ import {
   ScrollView,
   Image,
   SectionList,
+  Button as ButtonY,
 } from 'react-native';
 // import CheckBox from 'react-native-checkbox';
 import { StackNavigator } from 'react-navigation';
@@ -153,11 +154,9 @@ class Currentballance extends React.Component {
     const imguri = 'https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/24129614_10210614123930346_4311928442133126805_n.jpg?_nc_eui2=v1%3AAeFmBr5_jAksHWATxU71fb1aoyFlUXlYwgk9uS3xGS22niluU6JAORQmnNPx7kDgYZSlg74KhzlOddsaygN1AmLWlzk_Hovz8kgCr55G01s7tQ&oh=a77e1a0c9437286b040cce8aa155e9fb&oe=5A9748F6'
 
     return (
-      <Image source={{uri: 'https://hdwallsource.com/img/2016/9/cash-money-wallpaper-background-49518-51193-hd-wallpapers.jpg'}}>
         <View style={styles.container}>
-
           <View style={{flexDirection: 'row', paddingTop: 20}}>
-            <View style={{paddingLeft: 30}}>
+            <View style={{paddingLeft: 80}}>
               <Image
                 style={styles.imageLogo}
                 source={require('./sultant.png')}
@@ -169,31 +168,42 @@ class Currentballance extends React.Component {
           </View>
 
           <View style={{flexDirection: 'row', paddingTop: 2}}>
-            <Text style={styles.infobudget}>Sisa uang kamu: {this.state.budgetAwal}</Text>
+            <Text style={styles.infobudget}>Sisa uang kamu: <Text style={{color: 'red'}}>{this.state.budgetAwal}</Text></Text>
           </View>
 
-          <View style={{flexDirection: 'row', paddingTop: 10}}>
-            <TextInput
-            keyboardType={"numeric"}
-            style={styles.textinput}
-            onChangeText={(tambahbudget) => this.tambah(tambahbudget)}
-            value={this.state.budgetSementara}
-            />
+          <View style={{paddingTop: 20}}>
+            <Text style={styles.textinputval}>Tambah Budget</Text>
+              <TextInput
+              keyboardType={"numeric"}
+              style={styles.textinput}
+              onChangeText={(tambahbudget) => this.tambah(tambahbudget)}
+              value={this.state.budgetSementara}
+              />
+
+            <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+              <View style={{paddingTop: 10, marginRight: 5}}>
+              <ButtonY
+                onPress={() => this.tambahbudget()}
+                title="Tambah Budget"
+                color="#0b8b00ff"
+              />
+              </View>
+
+              <View style={{paddingTop: 10, marginLeft: 5}}>
+              <ButtonY
+                onPress={() => this._showModal()}
+                title="Start Shoping"
+                color="red"
+              />
+              </View>
+            </View>
           </View>
 
-          <View style={{paddingTop: 0, paddingLeft: 30, paddingRight: 30, flexDirection: 'row'}}>
-          <TouchableOpacity onPress={() => this.tambahbudget()}>
-            <Text style={styles.infobudget}>Tambah Budget</Text>
-          </TouchableOpacity>
-          </View>
-
-          <View style={{paddingTop: 20, paddingLeft: 30, paddingRight: 30, flexDirection: 'row'}}>
+          <View style={{paddingTop: 5, paddingLeft: 30, paddingRight: 30, flexDirection: 'row'}}>
             <Container>
-              <Content>
-                <Button block success rounded
-                  onPress={() => this._showModal()}>
-                  <Text>Start Shoping</Text>
-                </Button>
+            <Content>
+            <ScrollView contentContainerStyle={styles.contentContainer}>
+
 
                 <List containerStyle={{marginBottom: 20}}>
                 { lists.length != 0 ?
@@ -208,10 +218,11 @@ class Currentballance extends React.Component {
                   ))
                 : <Text>No Transaction Yet</Text> }
                 </List>
-
-              </Content>
+            </ScrollView>
+            </Content>
             </Container>
           </View>
+
           <View>
             <Modal
             isVisible={this.state.isModalVisible}
@@ -221,7 +232,6 @@ class Currentballance extends React.Component {
             >
             <View>
             <ScrollView contentContainerStyle={styles.contentContainer}>
-
               <CheckBox
                 title='Food/Breakfast & Cereal/Oatmeal & Hot Cereal'
                 checked={this.state.FoodBreakfastCerealOatmealHotCereal}
@@ -291,23 +301,25 @@ class Currentballance extends React.Component {
                 onPress={() => this.setState({AutoTiresOilsandFluidsMotorOil: !this.state.AutoTiresOilsandFluidsMotorOil})}
               />
 
-            <View style={{flex: 1, flexDirection: 'row', paddingTop: 20, alignItems: 'center',}}>
-
-              <View style={{}}>
-                <Buttonx
-                title='Cancel'
-                buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
-                onPress={this._hideModal}
-                />
-              </View>
-              <View style={{}}>
-                <Buttonx
-                title='Save'
-                buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
-                onPress={() => this.navigasiStartShoping()}
+            <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+              <View style={{paddingTop: 10, marginRight: 5}}>
+                <ButtonY
+                  style={{marginRight: 15, paddingLeft: 20, paddingRight: 20}}
+                  onPress={this._hideModal}
+                  title="Cancel"
+                  color="red"
                 />
               </View>
 
+              <View style={{paddingTop: 10, marginLeft: 5}}>
+                <ButtonY
+                  style={{marginLeft: 15, paddingLeft: 20, paddingRight: 20}}
+                  onPress={() => this.navigasiStartShoping()}
+                  title="Save"
+                  color="#0b8b00ff"
+                />
+
+              </View>
             </View>
 
             </ScrollView>
@@ -315,7 +327,8 @@ class Currentballance extends React.Component {
             </Modal>
           </View>
         </View>
-      </Image>
+
+
     );
   }
 }
@@ -323,6 +336,8 @@ class Currentballance extends React.Component {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    paddingTop: 20,
+    backgroundColor: "white"
   },
   imageLogo: {
     width: 50,
@@ -334,12 +349,13 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     fontSize: 20,
     alignSelf: 'center',
-    color: 'white'
+    fontWeight: 'bold',
   },
   infobudget: {
-    paddingTop: 20,
+    paddingTop: 10,
     fontSize: 15,
-    color: 'white'
+    color: 'black',
+    fontWeight: 'bold',
   },
   textinputval: {
    color: '#ffffff'
@@ -347,12 +363,12 @@ const styles = StyleSheet.create({
   textinput: {
    height: 40,
    width: responsiveWidth(80),
-   borderColor: 'white',
-   borderWidth: 2,
+   // borderColor: 'white',
+   // borderWidth: 2,
    paddingTop: 10,
    paddingLeft: 20,
    paddingRight: 20,
-   color: '#ffffff',
+   // color: '#ffffff',
   },
   bottomModal: {
     backgroundColor: 'white',
@@ -362,6 +378,13 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
+  textinputval: {
+    fontSize: 12,
+    color: '#0b8b00ff'
+  },
+  contentContainer: {
+    paddingBottom: 250
+  }
 });
 
 const mapStateToProps = (state) => {
