@@ -50,7 +50,8 @@ export default class Detailtransaksi extends React.Component {
                 hideChevron={true}
                 avatar={{uri:'https://i1.sndcdn.com/artworks-000066312689-d7quy2-t500x500.jpg'}}
                 key={index}
-                title={item.name + " Price: " + item.price + " ("+item.qty+")"}
+                title={item.name}
+                subtitle={"Rp." + item.price + " ("+item.qty+")"}
                 />
               ))
             }
