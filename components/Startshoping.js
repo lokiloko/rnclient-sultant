@@ -26,7 +26,8 @@ import {
   Avatar,
   List,
   ListItem,
-  Button
+  Button,
+  Card
 } from 'react-native-elements';
 import {
   responsiveHeight,
@@ -61,7 +62,21 @@ class Startshoping extends React.Component {
       isModalVisibleX: false,
       hasCameraPermission: null,
       type: Camera.Constants.Type.back,
-      list: [],
+      list: [{
+        name: 'aaa',
+        price: '1000',
+        qty: '1',
+        total: 1000,
+        category: 'Home Improvement/Hardware/Door Hardware/Door Hinges'
+      }, {
+        "name":"sabun",
+				"category":"Personal Care/Bath & Body/Body Wash & Cleansers",
+				"qty": '1',
+				"price": '20000',
+        total: 20000
+      }],
+      suggestionKeep: [],
+      suggestionRemove: [],
       image: null,
       uploading: false,
       item: {},
@@ -115,7 +130,7 @@ class Startshoping extends React.Component {
 
     if (this.camera) {
       let pickerResult = await this.camera.takePictureAsync({
-        quality: 0.5
+        quality: 0.15
       })
 
       this._handleImagePicked(pickerResult);
@@ -162,7 +177,32 @@ class Startshoping extends React.Component {
                 self.setState({
                   list: newItems,
                   isLoading: false
+                }, () => {
+                  console.log(self.state.budget)
+                  console.log(self.state.totalPrice)
+                  console.log(self.state.budget - self.state.totalPrice)
+                  if (self.state.budget - (self.state.totalPrice) <= 0) {
+                    axios.post("https://us-central1-pure-faculty-187614.cloudfunctions.net/shopSuggestion", {
+                      priority: self.props.navigation.state.params.priority,
+                      items: self.state.list
+                    }).then((axiosResponseSuggestion) => {
+                      self.setState({
+                        suggestionKeep: axiosResponseSuggestion.data.suggest_keep,
+                        suggestionRemove: axiosResponseSuggestion.data.suggest_remove
+                      }, () => {
+                        self._showModalX()
+                      })
+                    }).catch((err) => {
+                      console.log(err)
+                    })
+                  }
                 })
+                // if ((self.state.totalPrice + axiosResponse.data.object.price) - )
+                // console.log('tututuuuuruuuuuu', self.state.budget)
+                // console.log('tututuuuuruuuuuu', self.state.totalPrice)
+                // console.log('tututuuuuruuuuuu', axiosResponse.data.object.price)
+                // console.log('tututuuuuruuuuuu', self.state.budget - (self.state.totalPrice + axiosResponse.data.object.price))
+
               }).catch((err) => {
                 // console.error('error axios', err)
                 alert('Sorry couldnt proccess you request')
@@ -219,9 +259,29 @@ class Startshoping extends React.Component {
       price: this.state.item.price,
       total: Number(this.state.item.price * datanya)
     }
-
     this.setState({item}, () => {
-      console.log('sata', this.state.item);
+      // console.log('tututuuuuruuuuuu', this.state.budget)
+      // console.log('tututuuuuruuuuuu', this.state.totalPrice)
+      // console.log('tututuuuuruuuuuu', item.total)
+      // console.log('tututuuuuruuuuuu', this.state.budget - (this.state.totalPrice + item.total))
+      // console.log(this.props.navigation.state.params.priority)
+      // console.log(this.state.list)
+      // console.log('==============--------------------==============')
+      if (this.state.budget - (this.state.totalPrice + item.total) <= 0) {
+        axios.post("https://us-central1-pure-faculty-187614.cloudfunctions.net/shopSuggestion", {
+          priority: this.props.navigation.state.params.priority,
+          items: this.state.list
+        }).then((axiosResponse) => {
+          this.setState({
+            suggestionKeep: axiosResponse.data.suggest_keep,
+            suggestionRemove: axiosResponse.data.suggest_remove
+          }, () => {
+            this._showModalX()
+          })
+        }).catch((err) => {
+          console.log(err)
+        })
+      }
     })
   }
 
@@ -275,7 +335,7 @@ class Startshoping extends React.Component {
   render() {
     const { hasCameraPermission, isLoading } = this.state;
     const takePictureImage = 'http://www.freeiconspng.com/uploads/camera-icon-google-images-24.jpg'
-    const imguri = 'http://downloadicons.net/sites/default/files/recycle-bin-logo-icon-66421.png'
+    const imguri = 'https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_delete_48px-128.png'
     const list = this.state.list
     const RotateData = this.RotateValueHolder.interpolate({
       inputRange: [0, 1],
@@ -286,11 +346,11 @@ class Startshoping extends React.Component {
     for (var i = 0; i < list.length; i++) {
       this.state.totalPrice += (Number(list[i].price * Number(list[i].qty)))
 
-      if (i === list.length-1) {
-        if (this.state.budget - this.state.totalPrice <= 0) {
-          alert('Aseloleeeeeee Cuuukkkk')
-        }
-      }
+      // if (i === list.length-1) {
+      //   if (this.state.budget - this.state.totalPrice <= 0) {
+      //     alert('Aseloleeeeeee Cuuukkkk')
+      //   }
+      // }
     }
     // console.log(this.state.totalPrice)
     if(isLoading) {
@@ -318,7 +378,7 @@ class Startshoping extends React.Component {
         return (
           <ScrollView contentContainerStyle={styles.contentContainer}>
           <View>
-            <View style={{ paddingTop: 20, paddingLeft: 10, paddingRight: 10,}}>
+            <View style={{ paddingTop: 30, paddingLeft: 10, paddingRight: 10,}}>
               <Camera
               ref={ref => { this.camera = ref }}
               style={{ backgroundColor: 'red'}}
@@ -334,7 +394,7 @@ class Startshoping extends React.Component {
             </View>
 
 
-            <View>
+            <View style={{ paddingTop: 10, paddingLeft: 10, paddingRight: 10,}}>
               <List containerStyle={{marginBottom: 20}}>
               <Text style={styles.pembungkus}>
                 <Text style={{flex: 1, fontSize: 24, textAlign: 'center',}}>Total Price:    Rp </Text>
@@ -342,8 +402,8 @@ class Startshoping extends React.Component {
               </Text>
               { list.length != 0 ?
                 this.state.list.map((item, index) => (
-                  <View key={index} style={{flex: 1, flexDirection: 'row', width: '100%'}}>
-                    <View style={{width: 40, marginTop:10}}>
+                  <View key={index} style={{borderBottomWidth: 1,flex: 1, flexDirection: 'row', width: '100%'}}>
+                    <View style={{paddingLeft: 10, width: 0, marginTop:10}}>
                       <Avatar
                         small
                         rounded
@@ -351,8 +411,9 @@ class Startshoping extends React.Component {
                         onPress={() => this.removeItem(index)}
                       />
                     </View>
-                    <View style={{width: '90%'}}>
+                    <View style={{width: '100%', paddingLeft: 20}}>
                       <ListItem
+                      containerStyle={{borderBottomWidth: 0, borderBottomColor: '#ffffff'}}
                       title={item.name}
                       onPress={() => this.bukamodal(item, index)}
                       />
@@ -366,6 +427,11 @@ class Startshoping extends React.Component {
                 title='Save Belanjaan'
                 buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
                 onPress={() => this.belanja() }
+                />
+                <Button
+                title='Save'
+                buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
+                onPress={() => this._showModalX()}
                 />
               </View>
             </View>
@@ -426,28 +492,48 @@ class Startshoping extends React.Component {
               style={styles.bottomModal}
               animationIn={'slideInLeft'}
               animationOut={'slideOutRight'}>
+                <Text style={{textAlign: 'center', paddingBottom: 15, fontSize: 20, fontWeight: 'bold', color: '#0b8b00ff'}}>Kami memiliki rekomendasi untuk anda.</Text>
                 <View>
+                  <Text>Yg tetap dibeli</Text>
                   <List containerStyle={{marginBottom: 20}}>
-                    <Text style={styles.pembungkus}>
-                      <Text style={{flex: 1, fontSize: 24, textAlign: 'center',}}>Halo</Text>
-                    </Text>
+                    {
+                      this.state.suggestionKeep.map((item, i) => (
+                        <Card containerStyle={{padding: 0}} >
+                          {
+                            <ListItem
+                              hideChevron={true}
+                              key={i}
+                              title={item}
+                            />
+                          }
+                        </Card>
+                      ))
+                    }
                   </List>
+                  <Text>Yg sebaiknya dibuang</Text>
+                  <List containerStyle={{marginBottom: 20}}>
+                    {
+                      this.state.suggestionRemove.map((item, i) => (
+                        <Card containerStyle={{padding: 0}} >
+                          {
+                            <ListItem
+                              hideChevron={true}
+                              key={i}
+                              title={item}
+                            />
+                          }
+                        </Card>
+                      ))
+                    }
+                  </List>
+                  <Button
+                  title='Bodo Amat, Gw Tajir Boss!'
+                  buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
+                  onPress={() => this._hideModalX()}
+                  />
                 </View>
               </Modal>
 
-              <Modal
-              isVisible={this.state.isModalVisibleX}
-              style={styles.bottomModal}
-              animationIn={'slideInLeft'}
-              animationOut={'slideOutRight'}>
-                <View>
-                  <List containerStyle={{marginBottom: 20}}>
-                    <Text style={styles.pembungkus}>
-                      <Text style={{flex: 1, fontSize: 24, textAlign: 'center',}}>Halo</Text>
-                    </Text>
-                  </List>
-                </View>
-              </Modal>
           </View>
           </ScrollView>
         );
@@ -462,7 +548,11 @@ const styles = StyleSheet.create({
   },
   pembungkus: {
     flexDirection: 'row',
+    paddingBottom: 20,
     paddingHorizontal: 10,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#000000',
   },
   kontainer: {
     flex: 1,
