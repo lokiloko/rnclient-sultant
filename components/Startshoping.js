@@ -61,7 +61,21 @@ class Startshoping extends React.Component {
       isModalVisibleX: false,
       hasCameraPermission: null,
       type: Camera.Constants.Type.back,
-      list: [],
+      list: [{
+        name: 'aaa',
+        price: '1000',
+        qty: '1',
+        total: 1000,
+        category: 'Home Improvement/Hardware/Door Hardware/Door Hinges'
+      }, {
+        "name":"sabun",
+				"category":"Personal Care/Bath & Body/Body Wash & Cleansers",
+				"qty": '1',
+				"price": '20000',
+        total: 20000
+      }],
+      suggestionKeep: [],
+      suggestionRemove: [],
       image: null,
       uploading: false,
       item: {},
@@ -115,7 +129,7 @@ class Startshoping extends React.Component {
 
     if (this.camera) {
       let pickerResult = await this.camera.takePictureAsync({
-        quality: 0.5
+        quality: 0.15
       })
 
       this._handleImagePicked(pickerResult);
@@ -162,7 +176,32 @@ class Startshoping extends React.Component {
                 self.setState({
                   list: newItems,
                   isLoading: false
+                }, () => {
+                  console.log(self.state.budget)
+                  console.log(self.state.totalPrice)
+                  console.log(self.state.budget - self.state.totalPrice)
+                  if (self.state.budget - (self.state.totalPrice) <= 0) {
+                    axios.post("https://us-central1-pure-faculty-187614.cloudfunctions.net/shopSuggestion", {
+                      priority: self.props.navigation.state.params.priority,
+                      items: self.state.list
+                    }).then((axiosResponseSuggestion) => {
+                      self.setState({
+                        suggestionKeep: axiosResponseSuggestion.data.suggest_keep,
+                        suggestionRemove: axiosResponseSuggestion.data.suggest_remove
+                      }, () => {
+                        self._showModalX()
+                      })
+                    }).catch((err) => {
+                      console.log(err)
+                    })
+                  }
                 })
+                // if ((self.state.totalPrice + axiosResponse.data.object.price) - )
+                // console.log('tututuuuuruuuuuu', self.state.budget)
+                // console.log('tututuuuuruuuuuu', self.state.totalPrice)
+                // console.log('tututuuuuruuuuuu', axiosResponse.data.object.price)
+                // console.log('tututuuuuruuuuuu', self.state.budget - (self.state.totalPrice + axiosResponse.data.object.price))
+
               }).catch((err) => {
                 // console.error('error axios', err)
                 alert('Sorry couldnt proccess you request')
@@ -219,9 +258,29 @@ class Startshoping extends React.Component {
       price: this.state.item.price,
       total: Number(this.state.item.price * datanya)
     }
-
     this.setState({item}, () => {
-      console.log('sata', this.state.item);
+      // console.log('tututuuuuruuuuuu', this.state.budget)
+      // console.log('tututuuuuruuuuuu', this.state.totalPrice)
+      // console.log('tututuuuuruuuuuu', item.total)
+      // console.log('tututuuuuruuuuuu', this.state.budget - (this.state.totalPrice + item.total))
+      // console.log(this.props.navigation.state.params.priority)
+      // console.log(this.state.list)
+      // console.log('==============--------------------==============')
+      if (this.state.budget - (this.state.totalPrice + item.total) <= 0) {
+        axios.post("https://us-central1-pure-faculty-187614.cloudfunctions.net/shopSuggestion", {
+          priority: this.props.navigation.state.params.priority,
+          items: this.state.list
+        }).then((axiosResponse) => {
+          this.setState({
+            suggestionKeep: axiosResponse.data.suggest_keep,
+            suggestionRemove: axiosResponse.data.suggest_remove
+          }, () => {
+            this._showModalX()
+          })
+        }).catch((err) => {
+          console.log(err)
+        })
+      }
     })
   }
 
@@ -286,11 +345,11 @@ class Startshoping extends React.Component {
     for (var i = 0; i < list.length; i++) {
       this.state.totalPrice += (Number(list[i].price * Number(list[i].qty)))
 
-      if (i === list.length-1) {
-        if (this.state.budget - this.state.totalPrice <= 0) {
-          alert('Aseloleeeeeee Cuuukkkk')
-        }
-      }
+      // if (i === list.length-1) {
+      //   if (this.state.budget - this.state.totalPrice <= 0) {
+      //     alert('Aseloleeeeeee Cuuukkkk')
+      //   }
+      // }
     }
     // console.log(this.state.totalPrice)
     if(isLoading) {
@@ -367,6 +426,11 @@ class Startshoping extends React.Component {
                 buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
                 onPress={() => this.belanja() }
                 />
+                <Button
+                title='Save'
+                buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
+                onPress={() => this._showModalX()}
+                />
               </View>
             </View>
           </View>
@@ -427,27 +491,36 @@ class Startshoping extends React.Component {
               animationIn={'slideInLeft'}
               animationOut={'slideOutRight'}>
                 <View>
+                  <Text>Yg tetap dibeli</Text>
                   <List containerStyle={{marginBottom: 20}}>
-                    <Text style={styles.pembungkus}>
-                      <Text style={{flex: 1, fontSize: 24, textAlign: 'center',}}>Halo</Text>
-                    </Text>
+                    {
+                      this.state.suggestionKeep.map((item, i) => (
+                        <ListItem
+                          key={i}
+                          title={item}
+                        />
+                      ))
+                    }
                   </List>
+                  <Text>Yg sebaiknya dibuang</Text>
+                  <List containerStyle={{marginBottom: 20}}>
+                    {
+                      this.state.suggestionRemove.map((item, i) => (
+                        <ListItem
+                          key={i}
+                          title={item}
+                        />
+                      ))
+                    }
+                  </List>
+                  <Button
+                  title='Bodo Amat, Gw Tajir Boss!'
+                  buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
+                  onPress={() => this._hideModalX()}
+                  />
                 </View>
               </Modal>
 
-              <Modal
-              isVisible={this.state.isModalVisibleX}
-              style={styles.bottomModal}
-              animationIn={'slideInLeft'}
-              animationOut={'slideOutRight'}>
-                <View>
-                  <List containerStyle={{marginBottom: 20}}>
-                    <Text style={styles.pembungkus}>
-                      <Text style={{flex: 1, fontSize: 24, textAlign: 'center',}}>Halo</Text>
-                    </Text>
-                  </List>
-                </View>
-              </Modal>
           </View>
           </ScrollView>
         );
