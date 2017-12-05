@@ -80,17 +80,7 @@ export default class Detailtransaksi extends React.Component {
         list.push(dataMentah[i])
       }
     }
-
-    // function objekBuild (data) {
-    //   let object = {
-    //     name: data.name,
-    //     price: data.price,
-    //     qty: data.qty,
-    //     avatar: data
-    //   }
-    //   return object
-    // }
-
+    
     return (
           <View style={{paddingTop: 20, paddingLeft: 15, paddingRight: 15, flexDirection: 'row'}}>
           <Container>
