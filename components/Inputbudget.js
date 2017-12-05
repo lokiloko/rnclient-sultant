@@ -96,7 +96,6 @@ class Inputbudget extends React.Component {
               animationOut={'slideOutRight'}
               >
               <View>
-
               <TextInput
                 style={{height: 40, width: responsiveWidth(80), borderColor: 'gray', borderWidth: 1, paddingLeft: 20, paddingRight: 20}}
                 onChangeText={(text) => this.setState({text})}

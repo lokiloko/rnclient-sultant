@@ -1,8 +1,8 @@
 {
   "expoServerPort": 19000,
-  "packagerPort": 19002,
-  "packagerPid": 11225,
-  "expoServerNgrokUrl": "https://em-fz3.terrathe2.rnclient-sultant.exp.direct",
-  "packagerNgrokUrl": "https://packager.em-fz3.terrathe2.rnclient-sultant.exp.direct",
-  "ngrokPid": 11300
+  "packagerPort": 19001,
+  "packagerPid": 13085,
+  "expoServerNgrokUrl": "https://ui-6bv.terrathe2.rnclient-sultant.exp.direct",
+  "packagerNgrokUrl": "https://packager.ui-6bv.terrathe2.rnclient-sultant.exp.direct",
+  "ngrokPid": 13133
 }

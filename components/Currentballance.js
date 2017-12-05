@@ -10,12 +10,13 @@ import {
   ScrollView,
   Image,
   SectionList,
-  Button as ButtonY,
+  Animated,
+  Easing
 } from 'react-native';
 // import CheckBox from 'react-native-checkbox';
 import { StackNavigator } from 'react-navigation';
 // import axios from 'axios'
-import { List, ListItem, Button as Buttonx, CheckBox } from 'react-native-elements';
+import { List, ListItem, CheckBox, Button as ButtonY } from 'react-native-elements';
 import Modal from 'react-native-modal'
 
 // import { TextField } from 'react-native-material-textfield';
@@ -33,11 +34,13 @@ class Currentballance extends React.Component {
 
   constructor(props) {
     super(props)
+    this.RotateValueHolder = new Animated.Value(0);
     this.state = {
-      text: 'aman',
+      text: '',
       budgetAwal: '',
       budgetSementara: '',
       isModalVisible: false,
+      isModalVisibleFirstBudget: false,
       FoodMealSolutionsGrainsPastaGrainsRice: false,
       FoodMealSolutionsGrainsPastaPastaNoodles: false,
       FoodBeveragesPowderedDrinksMixes: false,
@@ -51,10 +54,15 @@ class Currentballance extends React.Component {
       FoodBakingOilShortening: false,
       AutoTiresOilsandFluidsMotorOil: false,
       FoodBreakfastCerealOatmealHotCereal: false,
+      isLoading: false
     }
   }
 
   async componentWillMount () {
+    this.setState({
+      isLoading: true
+    })
+
     await Expo.Font.loadAsync({
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
@@ -70,11 +78,50 @@ class Currentballance extends React.Component {
     })
 
     AsyncStorage.getItem('budget').then((data) => {
-      this.state.budgetAwal = data
-      console.log('datauang', this.state.budgetAwal)
+      if (data) {
+        this.state.budgetAwal = data
+      } else {
+        this._showModalFirstBudget()
+      }
+
+      this.setState({
+        isLoading: false
+      })
+      // console.log('datauang', this.state.budgetAwal)
     }).catch((reason) => {
       console.log(reason);
     })
+  }
+
+  componentDidMount () {
+    this.StartImageRotateFunction()
+  }
+
+  StartImageRotateFunction () {
+    this.RotateValueHolder.setValue(0)
+
+    Animated.timing(
+      this.RotateValueHolder,
+      {
+        toValue: 1,
+        duration: 3000,
+        easing: Easing.linear
+      }
+    ).start(() => this.StartImageRotateFunction())
+
+  }
+
+  simpanBudget () {
+    if (this.state.text) {
+      AsyncStorage.setItem('budget', this.state.text)
+      this.setState({
+        budgetAwal: this.state.text
+      })
+
+      this._hideModalFirstBudget()
+    } else {
+      alert('Budget Cannot null')
+    }
   }
 
   tambah (inputan) {
@@ -94,8 +141,10 @@ class Currentballance extends React.Component {
   }
 
   _showModal = () => this.setState({ isModalVisible: true })
+  _showModalFirstBudget = () => this.setState({ isModalVisibleFirstBudget: true })
 
   _hideModal = () => this.setState({ isModalVisible: false })
+  _hideModalFirstBudget = () => this.setState({ isModalVisibleFirstBudget: false })
 
   navigasiStartShoping () {
     let priority = []
@@ -153,184 +202,238 @@ class Currentballance extends React.Component {
     const lists = this.props.transactionList
     const imguri = 'https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/24129614_10210614123930346_4311928442133126805_n.jpg?_nc_eui2=v1%3AAeFmBr5_jAksHWATxU71fb1aoyFlUXlYwgk9uS3xGS22niluU6JAORQmnNPx7kDgYZSlg74KhzlOddsaygN1AmLWlzk_Hovz8kgCr55G01s7tQ&oh=a77e1a0c9437286b040cce8aa155e9fb&oe=5A9748F6'
 
-    return (
-        <View style={styles.container}>
-          <View style={{flexDirection: 'row', paddingTop: 20}}>
-            <View style={{paddingLeft: 80}}>
+    if (this.state.isLoading) {
+      const RotateData = this.RotateValueHolder.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '360deg']
+      })
+      return (
+        <View style={styles.backgroundLoading}>
+          <Animated.Image
+            style={[styles.imageLoading,
+              {
+                transform: [{
+                  rotate: RotateData
+                }]
+              }
+            ]}
+            source={require('./sultant.png')}
+          />
+          <Text style={{color: 'white'}}>Proccessing, please wait...</Text>
+        </View>
+      )
+    } else {
+      return (
+          <View style={styles.container}>
+            <View style={{flexDirection: 'row', padding: 10, backgroundColor: '#0b8b00ff'}}>
               <Image
                 style={styles.imageLogo}
-                source={require('./sultant.png')}
+                source={require('./sultant_header.png')}
               />
             </View>
-            <View style={{flex: 1}}>
-              <Text style={styles.appName}>SULTANT</Text>
-            </View>
-          </View>
 
-          <View style={{flexDirection: 'row', paddingTop: 2}}>
-            <Text style={styles.infobudget}>Sisa uang kamu: <Text style={{color: 'red'}}>{this.state.budgetAwal}</Text></Text>
-          </View>
-
-          <View style={{paddingTop: 20}}>
-            <Text style={styles.textinputval}>Tambah Budget</Text>
-              <TextInput
-              keyboardType={"numeric"}
-              style={styles.textinput}
-              onChangeText={(tambahbudget) => this.tambah(tambahbudget)}
-              value={this.state.budgetSementara}
-              />
-
-            <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-              <View style={{paddingTop: 10, marginRight: 5}}>
-              <ButtonY
-                onPress={() => this.tambahbudget()}
-                title="Tambah Budget"
-                color="#0b8b00ff"
-              />
+            <View style={{backgroundColor: 'white', padding: 30}}>
+              <View style={{flexDirection: 'row', paddingTop: 2}}>
+                <Text style={styles.infobudget}>Current Ballance : <Text style={{color: 'red'}}>{this.state.budgetAwal}</Text></Text>
               </View>
 
-              <View style={{paddingTop: 10, marginLeft: 5}}>
-              <ButtonY
-                onPress={() => this._showModal()}
-                title="Start Shoping"
-                color="red"
-              />
+              <View style={{marginTop: 20}}>
+                <TextInput
+                  underlineColorAndroid="#0b8b00ff"
+                  placeholder="Type here.."
+                  keyboardType={"numeric"}
+                  style={styles.textinput}
+                  onChangeText={(tambahbudget) => this.tambah(tambahbudget)}
+                  value={this.state.budgetSementara}
+                />
+
+                <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+                  <View style={{paddingTop: 10, marginRight: 5}}>
+                  <ButtonY
+                    onPress={() => this.tambahbudget()}
+                    title="Update Budget"
+                    color="#0b8b00ff"
+                  />
+                  </View>
+
+                  <View style={{paddingTop: 10, marginLeft: 5}}>
+                  <ButtonY
+                    onPress={() => this._showModal()}
+                    title="Start Shoping"
+                    color="red"
+                  />
+                  </View>
+                </View>
+              </View>
+
+              <View style={{paddingTop: 5, paddingLeft: 30, paddingRight: 30, flexDirection: 'row'}}>
+                <Container>
+                <Content>
+                <ScrollView contentContainerStyle={styles.contentContainer}>
+                    <List containerStyle={{marginBottom: 20}}>
+                    { lists.length != 0 ?
+                      lists.reverse().map((list, index) => (
+                        <TouchableOpacity key={ index } onPress={() => navigate('Detailtransaksi', { list })}>
+                          <ListItem
+                            roundAvatar
+                            avatar={{uri: imguri}}
+                            title={list.date.slice(0, 10) + " Total belanja Rp" + list.totalPrice}
+                          />
+                        </TouchableOpacity>
+                      ))
+                    : <Text>No Transaction Yet</Text> }
+                    </List>
+                </ScrollView>
+                </Content>
+                </Container>
               </View>
             </View>
-          </View>
 
-          <View style={{paddingTop: 5, paddingLeft: 30, paddingRight: 30, flexDirection: 'row'}}>
-            <Container>
-            <Content>
-            <ScrollView contentContainerStyle={styles.contentContainer}>
-
-
-                <List containerStyle={{marginBottom: 20}}>
-                { lists.length != 0 ?
-                  lists.reverse().map((list, index) => (
-                    <TouchableOpacity key={ index } onPress={() => navigate('Detailtransaksi', { list })}>
-                      <ListItem
-                        roundAvatar
-                        avatar={{uri: imguri}}
-                        title={list.date.slice(0, 10) + " Total belanja Rp" + list.totalPrice}
-                      />
-                    </TouchableOpacity>
-                  ))
-                : <Text>No Transaction Yet</Text> }
-                </List>
-            </ScrollView>
-            </Content>
-            </Container>
-          </View>
-
-          <View>
             <Modal
-            isVisible={this.state.isModalVisible}
-            style={styles.bottomModal}
+            isVisible={this.state.isModalVisibleFirstBudget}
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              backgroundColor: 'transparent',
+              padding: 22,
+              justifyContent: 'center'
+            }}
             animationIn={'slideInLeft'}
-            animationOut={'slideOutRight'}
-            >
-            <View>
-              <Text style={{textAlign: 'center', paddingBottom: 15, fontSize: 20, fontWeight: 'bold', color: '#0b8b00ff'}}>Silahkan Memilih Categori dari Prioritas Belanja Anda</Text>
-              <ScrollView contentContainerStyle={styles.contentContainer}>
-              <CheckBox
-                title='Food/Breakfast & Cereal/Oatmeal & Hot Cereal'
-                checked={this.state.FoodBreakfastCerealOatmealHotCereal}
-                onPress={() => {
-                  this.setState({FoodBreakfastCerealOatmealHotCereal: !this.state.FoodBreakfastCerealOatmealHotCereal})
-                  this.ganticheck('Food/Breakfast & Cereal/Oatmeal & Hot Cereal')
-                }}
-              />
-              <CheckBox
-                title='Food/Meal Solutions, Grains & Pasta/Grains & Rice'
-                checked={this.state.FoodMealSolutionsGrainsPastaGrainsRice}
-                onPress={() => this.setState({FoodMealSolutionsGrainsPastaGrainsRice: !this.state.FoodMealSolutionsGrainsPastaGrainsRice})}
-              />
-              <CheckBox
-                title='Food/Meal Solutions, Grains & Pasta/Pasta & Noodles'
-                checked={this.state.FoodMealSolutionsGrainsPastaPastaNoodles}
-                onPress={() => this.setState({FoodMealSolutionsGrainsPastaPastaNoodles: !this.state.FoodMealSolutionsGrainsPastaPastaNoodles})}
-              />
-              <CheckBox
-                title='Food/Beverages/Powdered Drinks & Mixes'
-                checked={this.state.FoodBeveragesPowderedDrinksMixes}
-                onPress={() => this.setState({FoodBeveragesPowderedDrinksMixes: !this.state.FoodBeveragesPowderedDrinksMixes})}
-              />
-              <CheckBox
-                title='Home/Bath/Shower Curtains'
-                checked={this.state.HomeBathShowerCurtains}
-                onPress={() => this.setState({HomeBathShowerCurtains: !this.state.HomeBathShowerCurtains})}
-              />
-              <CheckBox
-                title='Personal Care/Bath & Body/Body Wash & Cleansers'
-                checked={this.state.PersonalCareBathBodyBodyWashCleansers}
-                onPress={() => this.setState({PersonalCareBathBodyBodyWashCleansers: !this.state.PersonalCareBathBodyBodyWashCleansers})}
-              />
-              <CheckBox
-                title='Food/Beverages/Soft Drinks'
-                checked={this.state.FoodBeveragesSoftDrinks}
-                onPress={() => this.setState({FoodBeveragesSoftDrinks: !this.state.FoodBeveragesSoftDrinks})}
-              />
-              <CheckBox
-                title='Pets/Dogs/Dog Food'
-                checked={this.state.PetsDogsDogFood}
-                onPress={() => this.setState({PetsDogsDogFood: !this.state.PetsDogsDogFood})}
-              />
-              <CheckBox
-                title='Baby/Diapering/Diapers/Disposable Diapers'
-                checked={this.state.BabyDiaperingDiapersDisposableDiapers}
-                onPress={() => this.setState({BabyDiaperingDiapersDisposableDiapers: !this.state.BabyDiaperingDiapersDisposableDiapers})}
-              />
-              <CheckBox
-                title='Food/Fresh Food/Dairy, Eggs & Cheese/Milk & Cream'
-                checked={this.state.FoodFreshFoodDairyEggsCheeseMilkCream}
-                onPress={() => this.setState({FoodFreshFoodDairyEggsCheeseMilkCream: !this.state.FoodFreshFoodDairyEggsCheeseMilkCream})}
-              />
-              <CheckBox
-                title='Home Improvement/Hardware/Door Hardware/Door Hinges'
-                checked={this.state.HomeImprovementHardwareDoorHardwareDoorHinges}
-                onPress={() => this.setState({HomeImprovementHardwareDoorHardwareDoorHinges: !this.state.HomeImprovementHardwareDoorHardwareDoorHinges})}
-              />
-              <CheckBox
-                title='Food/Baking/Oil & Shortening'
-                checked={this.state.FoodBakingOilShortening}
-                onPress={() => this.setState({FoodBakingOilShortening: !this.state.FoodBakingOilShortening})}
-              />
-              <CheckBox
-                title='Auto & Tires/Oils and Fluids/Motor Oil'
-                checked={this.state.AutoTiresOilsandFluidsMotorOil}
-                onPress={() => this.setState({AutoTiresOilsandFluidsMotorOil: !this.state.AutoTiresOilsandFluidsMotorOil})}
-              />
+            animationOut={'slideOutRight'}>
 
-            <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-              <View style={{paddingTop: 10, marginRight: 5}}>
-                <ButtonY
-                  style={{marginRight: 15, paddingLeft: 20, paddingRight: 20}}
-                  onPress={this._hideModal}
-                  title="Cancel"
-                  color="red"
-                />
+              <View style={{
+                height: 200,
+                backgroundColor: 'white',
+                borderRadius: 4,
+                padding: 10,
+                borderColor: 'rgba(0, 0, 0, 0.1)',
+              }}>
+                <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-around'}}>
+                  <Text style={{color: '#0b8b00ff', marginBottom: 10, alignSelf: 'center'}}>Please input Your Budget</Text>
+                  <TextInput
+                    style={{textAlign: 'center',  fontSize: 18, height: 40, width: responsiveWidth(80), paddingLeft: 20, paddingRight: 20, marginBottom: 30}}
+                    underlineColorAndroid="#0b8b00ff"
+                    onChangeText={(text) => this.setState({text})}
+                    value={this.state.text}
+                    keyboardType={'numeric'}
+                  />
+
+                  <ButtonY
+                    buttonStyle={{backgroundColor: '#0b8b00ff', borderRadius: 30, padding: 10}}
+                    title="Save"
+                    color="white"
+                    onPress={() => this.simpanBudget()}
+                  />
+                </View>
               </View>
-
-              <View style={{paddingTop: 10, marginLeft: 5}}>
-                <ButtonY
-                  style={{marginLeft: 15, paddingLeft: 20, paddingRight: 20}}
-                  onPress={() => this.navigasiStartShoping()}
-                  title="Save"
-                  color="#0b8b00ff"
-                />
-
-              </View>
-            </View>
-
-            </ScrollView>
-            </View>
             </Modal>
+
+            <View>
+              <Modal
+              isVisible={this.state.isModalVisible}
+              style={styles.bottomModal}
+              animationIn={'slideInLeft'}
+              animationOut={'slideOutRight'}
+              >
+              <View>
+                <Text style={{textAlign: 'center', paddingBottom: 15, fontSize: 20, fontWeight: 'bold', color: '#0b8b00ff'}}>Silahkan Memilih Categori dari Prioritas Belanja Anda</Text>
+                <ScrollView contentContainerStyle={styles.contentContainer}>
+                <CheckBox
+                  title='Food/Breakfast & Cereal/Oatmeal & Hot Cereal'
+                  checked={this.state.FoodBreakfastCerealOatmealHotCereal}
+                  onPress={() => {
+                    this.setState({FoodBreakfastCerealOatmealHotCereal: !this.state.FoodBreakfastCerealOatmealHotCereal})
+                    this.ganticheck('Food/Breakfast & Cereal/Oatmeal & Hot Cereal')
+                  }}
+                />
+                <CheckBox
+                  title='Food/Meal Solutions, Grains & Pasta/Grains & Rice'
+                  checked={this.state.FoodMealSolutionsGrainsPastaGrainsRice}
+                  onPress={() => this.setState({FoodMealSolutionsGrainsPastaGrainsRice: !this.state.FoodMealSolutionsGrainsPastaGrainsRice})}
+                />
+                <CheckBox
+                  title='Food/Meal Solutions, Grains & Pasta/Pasta & Noodles'
+                  checked={this.state.FoodMealSolutionsGrainsPastaPastaNoodles}
+                  onPress={() => this.setState({FoodMealSolutionsGrainsPastaPastaNoodles: !this.state.FoodMealSolutionsGrainsPastaPastaNoodles})}
+                />
+                <CheckBox
+                  title='Food/Beverages/Powdered Drinks & Mixes'
+                  checked={this.state.FoodBeveragesPowderedDrinksMixes}
+                  onPress={() => this.setState({FoodBeveragesPowderedDrinksMixes: !this.state.FoodBeveragesPowderedDrinksMixes})}
+                />
+                <CheckBox
+                  title='Home/Bath/Shower Curtains'
+                  checked={this.state.HomeBathShowerCurtains}
+                  onPress={() => this.setState({HomeBathShowerCurtains: !this.state.HomeBathShowerCurtains})}
+                />
+                <CheckBox
+                  title='Personal Care/Bath & Body/Body Wash & Cleansers'
+                  checked={this.state.PersonalCareBathBodyBodyWashCleansers}
+                  onPress={() => this.setState({PersonalCareBathBodyBodyWashCleansers: !this.state.PersonalCareBathBodyBodyWashCleansers})}
+                />
+                <CheckBox
+                  title='Food/Beverages/Soft Drinks'
+                  checked={this.state.FoodBeveragesSoftDrinks}
+                  onPress={() => this.setState({FoodBeveragesSoftDrinks: !this.state.FoodBeveragesSoftDrinks})}
+                />
+                <CheckBox
+                  title='Pets/Dogs/Dog Food'
+                  checked={this.state.PetsDogsDogFood}
+                  onPress={() => this.setState({PetsDogsDogFood: !this.state.PetsDogsDogFood})}
+                />
+                <CheckBox
+                  title='Baby/Diapering/Diapers/Disposable Diapers'
+                  checked={this.state.BabyDiaperingDiapersDisposableDiapers}
+                  onPress={() => this.setState({BabyDiaperingDiapersDisposableDiapers: !this.state.BabyDiaperingDiapersDisposableDiapers})}
+                />
+                <CheckBox
+                  title='Food/Fresh Food/Dairy, Eggs & Cheese/Milk & Cream'
+                  checked={this.state.FoodFreshFoodDairyEggsCheeseMilkCream}
+                  onPress={() => this.setState({FoodFreshFoodDairyEggsCheeseMilkCream: !this.state.FoodFreshFoodDairyEggsCheeseMilkCream})}
+                />
+                <CheckBox
+                  title='Home Improvement/Hardware/Door Hardware/Door Hinges'
+                  checked={this.state.HomeImprovementHardwareDoorHardwareDoorHinges}
+                  onPress={() => this.setState({HomeImprovementHardwareDoorHardwareDoorHinges: !this.state.HomeImprovementHardwareDoorHardwareDoorHinges})}
+                />
+                <CheckBox
+                  title='Food/Baking/Oil & Shortening'
+                  checked={this.state.FoodBakingOilShortening}
+                  onPress={() => this.setState({FoodBakingOilShortening: !this.state.FoodBakingOilShortening})}
+                />
+                <CheckBox
+                  title='Auto & Tires/Oils and Fluids/Motor Oil'
+                  checked={this.state.AutoTiresOilsandFluidsMotorOil}
+                  onPress={() => this.setState({AutoTiresOilsandFluidsMotorOil: !this.state.AutoTiresOilsandFluidsMotorOil})}
+                />
+
+              <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+                <View style={{paddingTop: 10, marginRight: 5}}>
+                  <ButtonY
+                    style={{marginRight: 15, paddingLeft: 20, paddingRight: 20}}
+                    onPress={this._hideModal}
+                    title="Cancel"
+                    color="red"
+                  />
+                </View>
+
+                <View style={{paddingTop: 10, marginLeft: 5}}>
+                  <ButtonY
+                    style={{marginLeft: 15, paddingLeft: 20, paddingRight: 20}}
+                    onPress={() => this.navigasiStartShoping()}
+                    title="Save"
+                    color="#0b8b00ff"
+                  />
+                </View>
+              </View>
+
+              </ScrollView>
+              </View>
+              </Modal>
+            </View>
           </View>
-        </View>
-
-
-    );
+      );
+    }
   }
 }
 
@@ -338,13 +441,15 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     paddingTop: 20,
-    backgroundColor: "white"
+    backgroundColor: "#0b8b00ff"
   },
+
   imageLogo: {
-    width: 50,
-    height: 50,
+    width: 200,
+    height: 80,
     resizeMode: Image.resizeMode.contain
   },
+
   appName: {
     paddingRight: 30,
     paddingTop: 20,
@@ -352,25 +457,20 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontWeight: 'bold',
   },
+
   infobudget: {
     paddingTop: 10,
     fontSize: 15,
     color: 'black',
     fontWeight: 'bold',
   },
-  textinputval: {
-   color: '#ffffff'
-  },
+
   textinput: {
    height: 40,
    width: responsiveWidth(80),
-   // borderColor: 'white',
-   // borderWidth: 2,
-   paddingTop: 10,
-   paddingLeft: 20,
-   paddingRight: 20,
-   // color: '#ffffff',
+   paddingLeft: 3
   },
+
   bottomModal: {
     backgroundColor: 'white',
     padding: 22,
@@ -379,13 +479,27 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
-  textinputval: {
-    fontSize: 12,
-    color: '#0b8b00ff'
-  },
+
   contentContainer: {
     paddingBottom: 250
-  }
+  },
+
+  backgroundLoading: {
+    flex: 1,
+    width: null,
+    height: null,
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingTop: '60%',
+    backgroundColor: '#0b8b00ff'
+  },
+
+  imageLoading: {
+    width: 100,
+    height: 100,
+    resizeMode: Image.resizeMode.contain,
+    marginBottom: 20
+  },
 });
 
 const mapStateToProps = (state) => {

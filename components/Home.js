@@ -409,7 +409,7 @@ const styles = StyleSheet.create({
    backgroundColor: '#0b8b00ff',
    alignItems: 'center',
    paddingBottom: 10,
-   paddingTop: 20
+   paddingTop: 30
  },
 
  containerinput: {
