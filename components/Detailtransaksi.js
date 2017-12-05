@@ -36,6 +36,7 @@ export default class Detailtransaksi extends React.Component {
 
   render() {
     const dataMentah = this.props.navigation.state.params.list.items
+    // console.log(dataMentah);
     const list = []
 
     for (var i = 0; i < dataMentah.length; i++) {
@@ -78,29 +79,32 @@ export default class Detailtransaksi extends React.Component {
       } else if (dataMentah[i].category == 'Food/Breakfast & Cereal/Oatmeal & Hot Cereal') {
         dataMentah[i].avatar = 'https://cdn3.iconfinder.com/data/icons/breakfast-icons/580/Cereal_Bowl_And_Spoon-512.png'
         list.push(dataMentah[i])
+      } else {
+        dataMentah[i].avatar = 'https://hacktiv8students.slack.com/files/U6JQ2CW9K/F89V16E2K/logo.png'
+        list.push(dataMentah[i])
       }
     }
-    
+
     return (
           <View style={{paddingTop: 20, paddingLeft: 15, paddingRight: 15, flexDirection: 'row'}}>
           <Container>
-          <Content>
+            <Content>
 
-            <List containerStyle={{marginBottom: 20}}>
-            {
-              list.map((item, index) => (
-                <ListItem
-                roundAvatar
-                hideChevron={true}
-                avatar={{uri:item.avatar}}
-                key={index}
-                title={item.name}
-                subtitle={"Rp." + item.price + " ("+item.qty+")"}
-                />
-              ))
-            }
-            </List>
-          </Content>
+              <List containerStyle={{marginBottom: 20}}>
+              {
+                list.map((item, index) => (
+                  <ListItem
+                  roundAvatar
+                  hideChevron={true}
+                  avatar={{uri:item.avatar}}
+                  key={index}
+                  title={item.name}
+                  subtitle={"Rp." + item.price + " ("+item.qty+")"}
+                  />
+                ))
+              }
+              </List>
+            </Content>
           </Container>
           </View>
     );
