@@ -35,8 +35,35 @@ export default class Detailtransaksi extends React.Component {
   }
 
   render() {
-    const list = this.props.navigation.state.params.list.items
+    const dataMentah = this.props.navigation.state.params.list.items
+    const list = dataMentah
 
+    // for (var i = 0; i < dataMentah.length; i++) {
+    //   if (true) {
+    //
+    //   } else if (true) {
+    //
+    //   } else if (true) {
+    //
+    //   } else if (true) {
+    //
+    //   } else if (true) {
+    //
+    //   } else if (true) {
+    //
+    //   } else if (true) {
+    //
+    //   } else if (true) {
+    //
+    //   } else if (true) {
+    //
+    //   } else if (true) {
+    //
+    //   } else if (true) {
+    //
+    //   }
+    // }
+    
     return (
           <View style={{paddingTop: 20, paddingLeft: 15, paddingRight: 15, flexDirection: 'row'}}>
           <Container>
