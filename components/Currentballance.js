@@ -200,253 +200,8 @@ class Currentballance extends React.Component {
   render() {
     // console.log(this.state.budgetSementara);
     const { navigate } = this.props.navigation;
-    // const lists = this.props.transactionList
-    const lists = [{
-        "_id": "5a1ea9eb2675070002911df3",
-        "totalPrice": 100000,
-        "user": "5a1e8b34261a720002687e06",
-        "__v": 0,
-        "items": [
-            {
-                "name": "nama barang",
-                "qty": 1,
-                "category": "food",
-                "price": 10000,
-                "_id": "5a1ea9eb2675070002911df4"
-            }
-        ],
-        "date": "2017-11-29T12:36:59.486Z"
-    },
-    {
-        "_id": "5a1f86cfe5627900027256ef",
-        "totalPrice": 150000,
-        "user": "5a1e8b34261a720002687e06",
-        "__v": 0,
-        "items": [
-            {
-                "name": "susu",
-                "category": "drink",
-                "qty": 1,
-                "price": 100000,
-                "_id": "5a1f86cfe5627900027256f1"
-            },
-            {
-                "name": "popok",
-                "category": "kids",
-                "qty": 1,
-                "price": 50000,
-                "_id": "5a1f86cfe5627900027256f0"
-            }
-        ],
-        "date": "2017-11-30T04:19:27.012Z"
-    },
-    {
-        "_id": "5a2120f669ac9300024c7706",
-        "totalPrice": 150000,
-        "user": "5a1e8b34261a720002687e06",
-        "__v": 0,
-        "items": [
-            {
-                "name": "susu",
-                "category": "drink",
-                "qty": 1,
-                "price": 100000,
-                "_id": "5a2120f669ac9300024c7708"
-            },
-            {
-                "name": "popok",
-                "category": "kids",
-                "qty": 1,
-                "price": 50000,
-                "_id": "5a2120f669ac9300024c7707"
-            }
-        ],
-        "date": "2017-12-01T09:29:26.159Z"
-    },
-    {
-        "_id": "5a22f022358a040002cc6bff",
-        "totalPrice": 150000,
-        "user": "5a1e8b34261a720002687e06",
-        "__v": 0,
-        "items": [
-            {
-                "name": "susu",
-                "category": "drink",
-                "qty": 1,
-                "price": 100000,
-                "_id": "5a22f022358a040002cc6c01"
-            },
-            {
-                "name": "popok",
-                "category": "kids",
-                "qty": 1,
-                "price": 50000,
-                "_id": "5a22f022358a040002cc6c00"
-            }
-        ],
-        "date": "2017-12-02T18:25:38.955Z"
-    },
-    {
-        "_id": "5a22f2c1358a040002cc6c11",
-        "totalPrice": 150000,
-        "user": "5a1e8b34261a720002687e06",
-        "__v": 0,
-        "items": [
-            {
-                "name": "susu",
-                "category": "drink",
-                "qty": 1,
-                "price": 100000,
-                "_id": "5a22f2c1358a040002cc6c13"
-            },
-            {
-                "name": "popok",
-                "category": "kids",
-                "qty": 1,
-                "price": 50000,
-                "_id": "5a22f2c1358a040002cc6c12"
-            }
-        ],
-        "date": "2017-12-02T18:36:49.156Z"
-    },
-    {
-        "_id": "5a22f5f2358a040002cc6c1f",
-        "totalPrice": 150000,
-        "user": "5a1e8b34261a720002687e06",
-        "__v": 0,
-        "items": [
-            {
-                "name": "susu",
-                "category": "drink",
-                "qty": 1,
-                "price": 100000,
-                "_id": "5a22f5f2358a040002cc6c21"
-            },
-            {
-                "name": "popok",
-                "category": "kids",
-                "qty": 1,
-                "price": 50000,
-                "_id": "5a22f5f2358a040002cc6c20"
-            }
-        ],
-        "date": "2017-12-02T18:50:26.158Z"
-    },
-    {
-        "_id": "5a22f8b8358a040002cc6c46",
-        "totalPrice": 150000,
-        "user": "5a1e8b34261a720002687e06",
-        "__v": 0,
-        "items": [
-            {
-                "name": "susu",
-                "category": "drink",
-                "qty": 1,
-                "price": 100000,
-                "_id": "5a22f8b8358a040002cc6c48"
-            },
-            {
-                "name": "popok",
-                "category": "kids",
-                "qty": 1,
-                "price": 50000,
-                "_id": "5a22f8b8358a040002cc6c47"
-            }
-        ],
-        "date": "2017-12-02T19:02:16.756Z"
-    },
-    {
-        "_id": "5a235a49358a040002cc6c70",
-        "totalPrice": 150000,
-        "user": "5a1e8b34261a720002687e06",
-        "__v": 0,
-        "items": [
-            {
-                "name": "susu",
-                "category": "drink",
-                "qty": 1,
-                "price": 100000,
-                "_id": "5a235a49358a040002cc6c72"
-            },
-            {
-                "name": "popok",
-                "category": "kids",
-                "qty": 1,
-                "price": 50000,
-                "_id": "5a235a49358a040002cc6c71"
-            }
-        ],
-        "date": "2017-12-03T01:58:33.856Z"
-    },
-    {
-        "_id": "5a24c4ff358a040002cc6cf5",
-        "totalPrice": 150000,
-        "user": "5a1e8b34261a720002687e06",
-        "__v": 0,
-        "items": [
-            {
-                "name": "susu",
-                "category": "drink",
-                "qty": 1,
-                "price": 100000,
-                "_id": "5a24c4ff358a040002cc6cf7"
-            },
-            {
-                "name": "popok",
-                "category": "kids",
-                "qty": 1,
-                "price": 50000,
-                "_id": "5a24c4ff358a040002cc6cf6"
-            }
-        ],
-        "date": "2017-12-04T03:46:07.956Z"
-    },
-    {
-        "_id": "5a24d124358a040002cc6d1f",
-        "totalPrice": 150000,
-        "user": "5a1e8b34261a720002687e06",
-        "__v": 0,
-        "items": [
-            {
-                "name": "susu",
-                "category": "drink",
-                "qty": 1,
-                "price": 100000,
-                "_id": "5a24d124358a040002cc6d21"
-            },
-            {
-                "name": "popok",
-                "category": "kids",
-                "qty": 1,
-                "price": 50000,
-                "_id": "5a24d124358a040002cc6d20"
-            }
-        ],
-        "date": "2017-12-04T04:37:56.920Z"
-    },
-    {
-        "_id": "5a24f8b5358a040002cc6d7a",
-        "totalPrice": 150000,
-        "user": "5a1e8b34261a720002687e06",
-        "__v": 0,
-        "items": [
-            {
-                "name": "susu",
-                "category": "drink",
-                "qty": 1,
-                "price": 100000,
-                "_id": "5a24f8b5358a040002cc6d7c"
-            },
-            {
-                "name": "popok",
-                "category": "kids",
-                "qty": 1,
-                "price": 50000,
-                "_id": "5a24f8b5358a040002cc6d7b"
-            }
-        ],
-        "date": "2017-12-04T07:26:45.430Z"
-    }]
+    const lists = this.props.transactionList
+    // const lists = []
     const imguri = 'http://images.all-free-download.com/images/graphiclarge/green_shopping_cart_icon_vector_280755.jpg'
 
     if (this.state.isLoading) {
@@ -523,7 +278,7 @@ class Currentballance extends React.Component {
                                 roundAvatar
                                 avatar={{uri: imguri}}
                                 title={formatTanggal(list.date.slice(0, 10))}
-                                subtitle={" Total : Rp" + list.totalPrice}
+                                subtitle={" Total : " + formatRupiah(list.totalPrice)}
                               />
                             </TouchableOpacity>
                           ))
@@ -579,102 +334,99 @@ class Currentballance extends React.Component {
               isVisible={this.state.isModalVisible}
               style={styles.bottomModal}
               animationIn={'slideInLeft'}
-              animationOut={'slideOutRight'}
-              >
-              <View>
-                <Text style={{textAlign: 'center', paddingBottom: 15, fontSize: 20, fontWeight: 'bold', color: '#0b8b00ff'}}>Silahkan Memilih Categori dari Prioritas Belanja Anda</Text>
-                <ScrollView contentContainerStyle={styles.contentContainer}>
-                <CheckBox
-                  title='Food/Breakfast & Cereal/Oatmeal & Hot Cereal'
-                  checked={this.state.FoodBreakfastCerealOatmealHotCereal}
-                  onPress={() => {
-                    this.setState({FoodBreakfastCerealOatmealHotCereal: !this.state.FoodBreakfastCerealOatmealHotCereal})
-                    this.ganticheck('Food/Breakfast & Cereal/Oatmeal & Hot Cereal')
-                  }}
-                />
-                <CheckBox
-                  title='Food/Meal Solutions, Grains & Pasta/Grains & Rice'
-                  checked={this.state.FoodMealSolutionsGrainsPastaGrainsRice}
-                  onPress={() => this.setState({FoodMealSolutionsGrainsPastaGrainsRice: !this.state.FoodMealSolutionsGrainsPastaGrainsRice})}
-                />
-                <CheckBox
-                  title='Food/Meal Solutions, Grains & Pasta/Pasta & Noodles'
-                  checked={this.state.FoodMealSolutionsGrainsPastaPastaNoodles}
-                  onPress={() => this.setState({FoodMealSolutionsGrainsPastaPastaNoodles: !this.state.FoodMealSolutionsGrainsPastaPastaNoodles})}
-                />
-                <CheckBox
-                  title='Food/Beverages/Powdered Drinks & Mixes'
-                  checked={this.state.FoodBeveragesPowderedDrinksMixes}
-                  onPress={() => this.setState({FoodBeveragesPowderedDrinksMixes: !this.state.FoodBeveragesPowderedDrinksMixes})}
-                />
-                <CheckBox
-                  title='Home/Bath/Shower Curtains'
-                  checked={this.state.HomeBathShowerCurtains}
-                  onPress={() => this.setState({HomeBathShowerCurtains: !this.state.HomeBathShowerCurtains})}
-                />
-                <CheckBox
-                  title='Personal Care/Bath & Body/Body Wash & Cleansers'
-                  checked={this.state.PersonalCareBathBodyBodyWashCleansers}
-                  onPress={() => this.setState({PersonalCareBathBodyBodyWashCleansers: !this.state.PersonalCareBathBodyBodyWashCleansers})}
-                />
-                <CheckBox
-                  title='Food/Beverages/Soft Drinks'
-                  checked={this.state.FoodBeveragesSoftDrinks}
-                  onPress={() => this.setState({FoodBeveragesSoftDrinks: !this.state.FoodBeveragesSoftDrinks})}
-                />
-                <CheckBox
-                  title='Pets/Dogs/Dog Food'
-                  checked={this.state.PetsDogsDogFood}
-                  onPress={() => this.setState({PetsDogsDogFood: !this.state.PetsDogsDogFood})}
-                />
-                <CheckBox
-                  title='Baby/Diapering/Diapers/Disposable Diapers'
-                  checked={this.state.BabyDiaperingDiapersDisposableDiapers}
-                  onPress={() => this.setState({BabyDiaperingDiapersDisposableDiapers: !this.state.BabyDiaperingDiapersDisposableDiapers})}
-                />
-                <CheckBox
-                  title='Food/Fresh Food/Dairy, Eggs & Cheese/Milk & Cream'
-                  checked={this.state.FoodFreshFoodDairyEggsCheeseMilkCream}
-                  onPress={() => this.setState({FoodFreshFoodDairyEggsCheeseMilkCream: !this.state.FoodFreshFoodDairyEggsCheeseMilkCream})}
-                />
-                <CheckBox
-                  title='Home Improvement/Hardware/Door Hardware/Door Hinges'
-                  checked={this.state.HomeImprovementHardwareDoorHardwareDoorHinges}
-                  onPress={() => this.setState({HomeImprovementHardwareDoorHardwareDoorHinges: !this.state.HomeImprovementHardwareDoorHardwareDoorHinges})}
-                />
-                <CheckBox
-                  title='Food/Baking/Oil & Shortening'
-                  checked={this.state.FoodBakingOilShortening}
-                  onPress={() => this.setState({FoodBakingOilShortening: !this.state.FoodBakingOilShortening})}
-                />
-                <CheckBox
-                  title='Auto & Tires/Oils and Fluids/Motor Oil'
-                  checked={this.state.AutoTiresOilsandFluidsMotorOil}
-                  onPress={() => this.setState({AutoTiresOilsandFluidsMotorOil: !this.state.AutoTiresOilsandFluidsMotorOil})}
-                />
+              animationOut={'slideOutRight'}>
+                <View>
+                  <Text style={{textAlign: 'center', paddingBottom: 15, fontSize: 20, fontWeight: 'bold', color: '#0b8b00ff'}}>Please, Choose Your Priority to Buy</Text>
+                    <ScrollView contentContainerStyle={styles.contentContainer}>
+                    <CheckBox
+                      title='Food/Breakfast & Cereal/Oatmeal & Hot Cereal'
+                      checked={this.state.FoodBreakfastCerealOatmealHotCereal}
+                      onPress={() => {
+                        this.setState({FoodBreakfastCerealOatmealHotCereal: !this.state.FoodBreakfastCerealOatmealHotCereal})
+                        this.ganticheck('Food/Breakfast & Cereal/Oatmeal & Hot Cereal')
+                      }}
+                    />
+                    <CheckBox
+                      title='Food/Meal Solutions, Grains & Pasta/Grains & Rice'
+                      checked={this.state.FoodMealSolutionsGrainsPastaGrainsRice}
+                      onPress={() => this.setState({FoodMealSolutionsGrainsPastaGrainsRice: !this.state.FoodMealSolutionsGrainsPastaGrainsRice})}
+                    />
+                    <CheckBox
+                      title='Food/Meal Solutions, Grains & Pasta/Pasta & Noodles'
+                      checked={this.state.FoodMealSolutionsGrainsPastaPastaNoodles}
+                      onPress={() => this.setState({FoodMealSolutionsGrainsPastaPastaNoodles: !this.state.FoodMealSolutionsGrainsPastaPastaNoodles})}
+                    />
+                    <CheckBox
+                      title='Food/Beverages/Powdered Drinks & Mixes'
+                      checked={this.state.FoodBeveragesPowderedDrinksMixes}
+                      onPress={() => this.setState({FoodBeveragesPowderedDrinksMixes: !this.state.FoodBeveragesPowderedDrinksMixes})}
+                    />
+                    <CheckBox
+                      title='Home/Bath/Shower Curtains'
+                      checked={this.state.HomeBathShowerCurtains}
+                      onPress={() => this.setState({HomeBathShowerCurtains: !this.state.HomeBathShowerCurtains})}
+                    />
+                    <CheckBox
+                      title='Personal Care/Bath & Body/Body Wash & Cleansers'
+                      checked={this.state.PersonalCareBathBodyBodyWashCleansers}
+                      onPress={() => this.setState({PersonalCareBathBodyBodyWashCleansers: !this.state.PersonalCareBathBodyBodyWashCleansers})}
+                    />
+                    <CheckBox
+                      title='Food/Beverages/Soft Drinks'
+                      checked={this.state.FoodBeveragesSoftDrinks}
+                      onPress={() => this.setState({FoodBeveragesSoftDrinks: !this.state.FoodBeveragesSoftDrinks})}
+                    />
+                    <CheckBox
+                      title='Pets/Dogs/Dog Food'
+                      checked={this.state.PetsDogsDogFood}
+                      onPress={() => this.setState({PetsDogsDogFood: !this.state.PetsDogsDogFood})}
+                    />
+                    <CheckBox
+                      title='Baby/Diapering/Diapers/Disposable Diapers'
+                      checked={this.state.BabyDiaperingDiapersDisposableDiapers}
+                      onPress={() => this.setState({BabyDiaperingDiapersDisposableDiapers: !this.state.BabyDiaperingDiapersDisposableDiapers})}
+                    />
+                    <CheckBox
+                      title='Food/Fresh Food/Dairy, Eggs & Cheese/Milk & Cream'
+                      checked={this.state.FoodFreshFoodDairyEggsCheeseMilkCream}
+                      onPress={() => this.setState({FoodFreshFoodDairyEggsCheeseMilkCream: !this.state.FoodFreshFoodDairyEggsCheeseMilkCream})}
+                    />
+                    <CheckBox
+                      title='Home Improvement/Hardware/Door Hardware/Door Hinges'
+                      checked={this.state.HomeImprovementHardwareDoorHardwareDoorHinges}
+                      onPress={() => this.setState({HomeImprovementHardwareDoorHardwareDoorHinges: !this.state.HomeImprovementHardwareDoorHardwareDoorHinges})}
+                    />
+                    <CheckBox
+                      title='Food/Baking/Oil & Shortening'
+                      checked={this.state.FoodBakingOilShortening}
+                      onPress={() => this.setState({FoodBakingOilShortening: !this.state.FoodBakingOilShortening})}
+                    />
+                    <CheckBox
+                      title='Auto & Tires/Oils and Fluids/Motor Oil'
+                      checked={this.state.AutoTiresOilsandFluidsMotorOil}
+                      onPress={() => this.setState({AutoTiresOilsandFluidsMotorOil: !this.state.AutoTiresOilsandFluidsMotorOil})}
+                    />
+                  </ScrollView>
+                  <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+                    <View style={{paddingTop: 10, marginRight: 5}}>
+                      <ButtonY
+                        buttonStyle={{width: 100, paddingLeft: 20, paddingRight: 20, backgroundColor: 'red', borderWidth: 2, borderColor: 'red', borderRadius: 40}}
+                        onPress={this._hideModal}
+                        title="Cancel"
+                        color="white"
+                      />
+                    </View>
 
-              <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-                <View style={{paddingTop: 10, marginRight: 5}}>
-                  <ButtonY
-                    style={{marginRight: 15, paddingLeft: 20, paddingRight: 20}}
-                    onPress={this._hideModal}
-                    title="Cancel"
-                    color="red"
-                  />
+                    <View style={{paddingTop: 10, marginLeft: 5}}>
+                      <ButtonY
+                        buttonStyle={{width: 100, paddingLeft: 20, paddingRight: 20, backgroundColor: '#0b8b00ff', borderWidth: 2, borderColor: '#0b8b00ff', borderRadius: 40}}
+                        onPress={() => this.navigasiStartShoping()}
+                        title="Save"
+                        color="white"
+                      />
+                    </View>
+                  </View>
                 </View>
-
-                <View style={{paddingTop: 10, marginLeft: 5}}>
-                  <ButtonY
-                    style={{marginLeft: 15, paddingLeft: 20, paddingRight: 20}}
-                    onPress={() => this.navigasiStartShoping()}
-                    title="Save"
-                    color="#0b8b00ff"
-                  />
-                </View>
-              </View>
-
-              </ScrollView>
-              </View>
               </Modal>
             </View>
           </View>
@@ -728,7 +480,7 @@ const styles = StyleSheet.create({
   },
 
   contentContainer: {
-    paddingBottom: 250
+    paddingBottom: 10
   },
 
   backgroundLoading: {

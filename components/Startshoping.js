@@ -49,6 +49,7 @@ import axios from 'axios'
 import Dropbox from 'dropbox'
 
 import { postTransactions } from '../actions'
+import formatRupiah from '../helpers/formatRupiah'
 
 class Startshoping extends React.Component {
   static navigationOptions = {
@@ -62,19 +63,7 @@ class Startshoping extends React.Component {
       isModalVisibleX: false,
       hasCameraPermission: null,
       type: Camera.Constants.Type.back,
-      list: [{
-        name: 'aaa',
-        price: '1000',
-        qty: '1',
-        total: 1000,
-        category: 'Home Improvement/Hardware/Door Hardware/Door Hinges'
-      }, {
-        "name":"sabun",
-				"category":"Personal Care/Bath & Body/Body Wash & Cleansers",
-				"qty": '1',
-				"price": '20000',
-        total: 20000
-      }],
+      list: [],
       suggestionKeep: [],
       suggestionRemove: [],
       image: null,
@@ -178,9 +167,6 @@ class Startshoping extends React.Component {
                   list: newItems,
                   isLoading: false
                 }, () => {
-                  console.log(self.state.budget)
-                  console.log(self.state.totalPrice)
-                  console.log(self.state.budget - self.state.totalPrice)
                   if (self.state.budget - (self.state.totalPrice) <= 0) {
                     axios.post("https://us-central1-pure-faculty-187614.cloudfunctions.net/shopSuggestion", {
                       priority: self.props.navigation.state.params.priority,
@@ -197,11 +183,6 @@ class Startshoping extends React.Component {
                     })
                   }
                 })
-                // if ((self.state.totalPrice + axiosResponse.data.object.price) - )
-                // console.log('tututuuuuruuuuuu', self.state.budget)
-                // console.log('tututuuuuruuuuuu', self.state.totalPrice)
-                // console.log('tututuuuuruuuuuu', axiosResponse.data.object.price)
-                // console.log('tututuuuuruuuuuu', self.state.budget - (self.state.totalPrice + axiosResponse.data.object.price))
 
               }).catch((err) => {
                 // console.error('error axios', err)
@@ -260,13 +241,6 @@ class Startshoping extends React.Component {
       total: Number(this.state.item.price * datanya)
     }
     this.setState({item}, () => {
-      // console.log('tututuuuuruuuuuu', this.state.budget)
-      // console.log('tututuuuuruuuuuu', this.state.totalPrice)
-      // console.log('tututuuuuruuuuuu', item.total)
-      // console.log('tututuuuuruuuuuu', this.state.budget - (this.state.totalPrice + item.total))
-      // console.log(this.props.navigation.state.params.priority)
-      // console.log(this.state.list)
-      // console.log('==============--------------------==============')
       if (this.state.budget - (this.state.totalPrice + item.total) <= 0) {
         axios.post("https://us-central1-pure-faculty-187614.cloudfunctions.net/shopSuggestion", {
           priority: this.props.navigation.state.params.priority,
@@ -329,13 +303,30 @@ class Startshoping extends React.Component {
     })
   }
 
+  ShowSuggestion () {
+    let self = this
+    axios.post("https://us-central1-pure-faculty-187614.cloudfunctions.net/shopSuggestion", {
+      priority: self.props.navigation.state.params.priority,
+      items: self.state.list
+    }).then((axiosResponseSuggestion) => {
+      self.setState({
+        suggestionKeep: axiosResponseSuggestion.data.suggest_keep,
+        suggestionRemove: axiosResponseSuggestion.data.suggest_remove
+      }, () => {
+        self._showModalX()
+      })
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
+
   _showModalX = () => this.setState({ isModalVisibleX: true })
   _hideModalX = () => this.setState({ isModalVisibleX: false })
 
   render() {
     const { hasCameraPermission, isLoading } = this.state;
     const takePictureImage = 'http://www.freeiconspng.com/uploads/camera-icon-google-images-24.jpg'
-    const imguri = 'https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_delete_48px-128.png'
+    const imguri = 'http://files.softicons.com/download/system-icons/windows-8-metro-icons-by-dakirby309/png/512x512/Folders%20&%20OS/Recycle%20Bin%20Full.png'
     const list = this.state.list
     const RotateData = this.RotateValueHolder.interpolate({
       inputRange: [0, 1],
@@ -345,17 +336,11 @@ class Startshoping extends React.Component {
     this.state.totalPrice = 0
     for (var i = 0; i < list.length; i++) {
       this.state.totalPrice += (Number(list[i].price * Number(list[i].qty)))
-
-      // if (i === list.length-1) {
-      //   if (this.state.budget - this.state.totalPrice <= 0) {
-      //     alert('Aseloleeeeeee Cuuukkkk')
-      //   }
-      // }
     }
     // console.log(this.state.totalPrice)
     if(isLoading) {
       return (
-        <Image source={{uri: 'https://i.pinimg.com/originals/9a/d0/3d/9ad03d1be00db96fe779b55c7dbc0e95.jpg'}} style={styles.backgroundImage}>
+        <View style={styles.backgroundLoading}>
           <Animated.Image
             style={[styles.imageLogo,
               {
@@ -367,7 +352,7 @@ class Startshoping extends React.Component {
             source={require('./sultant.png')}
           />
           <Text style={{color: 'white'}}>Proccessing, please wait...</Text>
-        </Image>
+        </View>
       )
     } else {
       if (hasCameraPermission === null) {
@@ -376,14 +361,14 @@ class Startshoping extends React.Component {
         return <Text>No access to camera</Text>;
       } else {
         return (
-          <ScrollView contentContainerStyle={styles.contentContainer}>
-          <View>
-            <View style={{ paddingTop: 30, paddingLeft: 10, paddingRight: 10,}}>
+          <View style={{backgroundColor: 'white', height: '100%'}}>
+            <View style={{ paddingTop: 30, paddingLeft: 10, paddingRight: 10, backgroundColor: '#0b8b00ff'}}>
               <Camera
               ref={ref => { this.camera = ref }}
               style={{ backgroundColor: 'red'}}
               type={this.state.type}
-              autoFocus={Camera.Constants.AutoFocus.on}>
+              autoFocus={Camera.Constants.AutoFocus.on}
+              focusDepth={1}>
                 <TouchableOpacity onPress={() => this._takePhoto()}>
                   <Image
                     style={{width: 40, height: 40, borderRadius: 40, alignSelf: 'center', marginTop: 150}}
@@ -393,149 +378,163 @@ class Startshoping extends React.Component {
               </Camera>
             </View>
 
+            <Text style={styles.pembungkus}>
+              <Text style={{flex: 1, fontSize: 24, textAlign: 'center', color: '#0b8b00ff'}}>Total Price : </Text>
+              <Text style={{flex: 1, fontSize: 24, textAlign: 'right',}}>{this.state.totalPrice ? formatRupiah(this.state.totalPrice) : formatRupiah('0')}</Text>
+            </Text>
 
-            <View style={{ paddingTop: 10, paddingLeft: 10, paddingRight: 10,}}>
-              <List containerStyle={{marginBottom: 20}}>
-              <Text style={styles.pembungkus}>
-                <Text style={{flex: 1, fontSize: 24, textAlign: 'center',}}>Total Price:    Rp </Text>
-                <Text style={{flex: 1, fontSize: 24, textAlign: 'right',}}>{this.state.totalPrice}</Text>
-              </Text>
-              { list.length != 0 ?
-                this.state.list.map((item, index) => (
-                  <View key={index} style={{borderBottomWidth: 1,flex: 1, flexDirection: 'row', width: '100%'}}>
-                    <View style={{paddingLeft: 10, width: 0, marginTop:10}}>
-                      <Avatar
-                        small
-                        rounded
-                        source={{uri: imguri}}
-                        onPress={() => this.removeItem(index)}
-                      />
-                    </View>
-                    <View style={{width: '100%', paddingLeft: 20}}>
-                      <ListItem
-                      containerStyle={{borderBottomWidth: 0, borderBottomColor: '#ffffff'}}
-                      title={item.name}
-                      onPress={() => this.bukamodal(item, index)}
-                      />
-                    </View>
-                  </View>
-                ))
-              : <Text>No Item Yet</Text> }
-              </List>
-              <View>
-                <Button
+            <View style={styles.contentContainer}>
+              <ScrollView>
+                <View style={{ paddingTop: 10, paddingLeft: 10, paddingRight: 10,}}>
+                  <List containerStyle={{marginBottom: 20}}>
+                  { list.length != 0 ?
+                    this.state.list.map((item, index) => (
+                      <View key={index} style={{borderBottomWidth: 1,flex: 1, flexDirection: 'row', width: '100%'}}>
+                        <View style={{paddingLeft: 10, width: 0, marginTop: 5}}>
+                          <Avatar
+                            small
+                            rounded
+                            source={{uri: imguri}}
+                            onPress={() => this.removeItem(index)}
+                          />
+                        </View>
+                        <View style={{width: '100%', paddingLeft: 30}}>
+                          <ListItem
+                          containerStyle={{borderBottomWidth: 0, borderBottomColor: '#ffffff'}}
+                          title={item.name}
+                          onPress={() => this.bukamodal(item, index)}
+                          />
+                        </View>
+                      </View>
+                    ))
+                  : <Text>No Item Yet</Text> }
+                  </List>
+                </View>
+              </ScrollView>
+            </View>
+
+            <View style={{backgroundColor: 'white', flexDirection: 'row', alignItems: 'center'}}>
+              <Button
+                title='Suggestion'
+                buttonStyle={{width: 150, backgroundColor: 'white', borderRadius: 10, borderWidth: 2, borderColor: '#0b8b00ff'}}
+                color="#0b8b00ff"
+                onPress={() => this.ShowSuggestion()}
+              />
+
+              <Button
                 title='Save Belanjaan'
-                buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
+                buttonStyle={{width: 150, backgroundColor: '#0b8b00ff', borderRadius: 10, borderWidth: 2, borderColor: '#0b8b00ff'}}
+                color='white'
                 onPress={() => this.belanja() }
-                />
-                <Button
-                title='Save'
-                buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
-                onPress={() => this._showModalX()}
-                />
-              </View>
+              />
+            </View>
+
+            <View>
+                <Modal
+                isVisible={this.state.isModalVisible}
+                style={styles.bottomModal}
+                animationIn={'slideInLeft'}
+                animationOut={'slideOutRight'}
+                >
+                <View>
+                  <Text style={styles.textinputval}>Item Name</Text>
+                  <TextInput
+                    underlineColorAndroid="#0b8b00ff"
+                    style={styles.textinput}
+                    value={this.state.item.name}
+                  />
+                  <Text style={styles.textinputval}>Quantity</Text>
+                  <TextInput
+                    underlineColorAndroid="#0b8b00ff"
+                    style={styles.textinput}
+                    onChangeText={(data) => this.qty(data)}
+                    value={this.state.item.qty}
+                    keyboardType={'numeric'}
+                  />
+                  <Text style={styles.textinputval}>Item Category</Text>
+                  <TextInput
+                    underlineColorAndroid="#0b8b00ff"
+                    style={styles.textinput}
+                    value={this.state.item.category}
+                  />
+                  <Text style={styles.textinputval}>Item Price</Text>
+                  <TextInput
+                    underlineColorAndroid="#0b8b00ff"
+                    style={styles.textinput}
+                    value={this.state.item.price ? formatRupiah(this.state.item.price) : formatRupiah('0')}
+                  />
+                  <Text style={{color: 'black', fontSize: 16, fontWeight: 'bold'}}>Total Price : {this.state.item.total ? formatRupiah(this.state.item.total) : formatRupiah('0')}</Text>
+                </View>
+
+                <View style={{flex: 1, flexDirection: 'row', paddingTop: 20}}>
+                  <View style={{flex: 1}}>
+                    <Button
+                    title='Cancel'
+                    buttonStyle={{backgroundColor: 'red', borderRadius: 10, borderWidth: 2, borderColor: 'red'}}
+                    onPress={this._hideModal}
+                    />
+                  </View>
+                  <View style={{flex: 1}}>
+                    <Button
+                    title='Save'
+                    buttonStyle={{backgroundColor: '#0b8b00ff', borderRadius: 10, borderWidth: 2, borderColor: '#0b8b00ff'}}
+                    onPress={() => this.simpanBelanjaan()}
+                    />
+                  </View>
+                </View>
+                </Modal>
+
+                <Modal
+                isVisible={this.state.isModalVisibleX}
+                style={styles.bottomModal}
+                animationIn={'slideInLeft'}
+                animationOut={'slideOutRight'}>
+                  <Text style={{textAlign: 'center', paddingBottom: 15, fontSize: 20, fontWeight: 'bold', color: '#0b8b00ff'}}>
+                    We have recommendation for you.
+                  </Text>
+                  <View>
+                    <Text>Should be keep</Text>
+                    <List containerStyle={{marginBottom: 20}}>
+                      {
+                        this.state.suggestionKeep.map((item, i) => (
+                          <Card containerStyle={{padding: 0}} >
+                            {
+                              <ListItem
+                                hideChevron={true}
+                                key={i}
+                                title={item}
+                              />
+                            }
+                          </Card>
+                        ))
+                      }
+                    </List>
+                    <Text>Should be removed</Text>
+                    <List containerStyle={{marginBottom: 20}}>
+                      {
+                        this.state.suggestionRemove.map((item, i) => (
+                          <Card containerStyle={{padding: 0}} >
+                            {
+                              <ListItem
+                                hideChevron={true}
+                                key={i}
+                                title={item}
+                              />
+                            }
+                          </Card>
+                        ))
+                      }
+                    </List>
+                    <Button
+                    title="I don't care, I'm Rich!"
+                    buttonStyle={{backgroundColor: '#0b8b00ff', borderRadius: 10, borderWidth: 2, borderColor: '#0b8b00ff'}}
+                    onPress={() => this._hideModalX()}
+                    />
+                  </View>
+                </Modal>
+
             </View>
           </View>
-          <View>
-              <Modal
-              isVisible={this.state.isModalVisible}
-              style={styles.bottomModal}
-              animationIn={'slideInLeft'}
-              animationOut={'slideOutRight'}
-              >
-              <View>
-                <Text style={styles.textinputval}>Nama Barang</Text>
-                <TextInput
-                  style={styles.textinput}
-                  value={this.state.item.name}
-                />
-                <Text style={styles.textinputval}>Quantity Barang</Text>
-                <TextInput
-                  style={styles.textinput}
-                  onChangeText={(data) => this.qty(data)}
-                  value={this.state.item.qty}
-                  keyboardType={'numeric'}
-                />
-                <Text style={styles.textinputval}>Category Barang</Text>
-                <TextInput
-                  style={styles.textinput}
-                  value={this.state.item.category}
-                />
-                <Text style={styles.textinputval}>Price Barang</Text>
-                <TextInput
-                  style={styles.textinput}
-                  value={this.state.item.price}
-                />
-                <Text style={styles.textinputval}>Total Price:   {this.state.item.total}</Text>
-              </View>
-
-              <View style={{flex: 1, flexDirection: 'row', paddingTop: 20}}>
-                <View style={{flex: 1}}>
-                  <Button
-                  title='Cancel'
-                  buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
-                  onPress={this._hideModal}
-                  />
-                </View>
-                <View style={{flex: 1}}>
-                  <Button
-                  title='Save'
-                  buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
-                  onPress={() => this.simpanBelanjaan()}
-                  />
-                </View>
-              </View>
-              </Modal>
-
-              <Modal
-              isVisible={this.state.isModalVisibleX}
-              style={styles.bottomModal}
-              animationIn={'slideInLeft'}
-              animationOut={'slideOutRight'}>
-                <Text style={{textAlign: 'center', paddingBottom: 15, fontSize: 20, fontWeight: 'bold', color: '#0b8b00ff'}}>Kami memiliki rekomendasi untuk anda.</Text>
-                <View>
-                  <Text>Yg tetap dibeli</Text>
-                  <List containerStyle={{marginBottom: 20}}>
-                    {
-                      this.state.suggestionKeep.map((item, i) => (
-                        <Card containerStyle={{padding: 0}} >
-                          {
-                            <ListItem
-                              hideChevron={true}
-                              key={i}
-                              title={item}
-                            />
-                          }
-                        </Card>
-                      ))
-                    }
-                  </List>
-                  <Text>Yg sebaiknya dibuang</Text>
-                  <List containerStyle={{marginBottom: 20}}>
-                    {
-                      this.state.suggestionRemove.map((item, i) => (
-                        <Card containerStyle={{padding: 0}} >
-                          {
-                            <ListItem
-                              hideChevron={true}
-                              key={i}
-                              title={item}
-                            />
-                          }
-                        </Card>
-                      ))
-                    }
-                  </List>
-                  <Button
-                  title='Bodo Amat, Gw Tajir Boss!'
-                  buttonStyle={{backgroundColor: 'red',borderRadius: 10}}
-                  onPress={() => this._hideModalX()}
-                  />
-                </View>
-              </Modal>
-
-          </View>
-          </ScrollView>
         );
       }
     }
@@ -546,31 +545,31 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
   },
+
   pembungkus: {
     flexDirection: 'row',
-    paddingBottom: 20,
-    paddingHorizontal: 10,
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: '#000000',
+    padding: 20
   },
+
   kontainer: {
     flex: 1,
     flexDirection:'column',
   },
+
   contentContainer: {
+    height: 300,
     // paddingVertical: 50,
-    // paddingBottom: 50,
+    paddingBottom: 10,
   },
 
-  backgroundImage: {
-   flex: 1,
-   width: null,
-   height: null,
-   resizeMode: 'cover',
-   flexDirection: 'column',
-   alignItems: 'center',
-   paddingTop: '50%'
+  backgroundLoading: {
+    flex: 1,
+    width: null,
+    height: null,
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingTop: '60%',
+    backgroundColor: '#0b8b00ff'
   },
 
   imageLogo: {
@@ -588,15 +587,17 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
+
+  textinputval: {
+    color: '#0b8b00ff'
+  },
+
   textinput: {
     height: 40,
     width: responsiveWidth(80),
-    borderColor: 'black',
-    borderWidth: 2,
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 3,
     marginBottom: 10,
-    color: '#000000',
+    color: 'black',
   },
 });
 

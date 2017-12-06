@@ -18,6 +18,8 @@ import Modal from 'react-native-modal'
 import { Container, Header, Content, Form, Item, Input, Label, Button, Icon} from 'native-base';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 
+import formatRupiah from '../helpers/formatRupiah'
+
 export default class Detailtransaksi extends React.Component {
   static navigationOptions = {
     title: 'Detail Transaksi',
@@ -80,7 +82,7 @@ export default class Detailtransaksi extends React.Component {
         dataMentah[i].avatar = 'https://cdn3.iconfinder.com/data/icons/breakfast-icons/580/Cereal_Bowl_And_Spoon-512.png'
         list.push(dataMentah[i])
       } else {
-        dataMentah[i].avatar = 'https://hacktiv8students.slack.com/files/U6JQ2CW9K/F89V16E2K/logo.png'
+        dataMentah[i].avatar = 'https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/24129614_10210614123930346_4311928442133126805_n.jpg?_nc_eui2=v1%3AAeFmBr5_jAksHWATxU71fb1aoyFlUXlYwgk9uS3xGS22niluU6JAORQmnNPx7kDgYZSlg74KhzlOddsaygN1AmLWlzk_Hovz8kgCr55G01s7tQ&oh=a77e1a0c9437286b040cce8aa155e9fb&oe=5A9748F6'
         list.push(dataMentah[i])
       }
     }
@@ -99,7 +101,7 @@ export default class Detailtransaksi extends React.Component {
                   avatar={{uri:item.avatar}}
                   key={index}
                   title={item.name}
-                  subtitle={"Rp." + item.price + " ("+item.qty+")"}
+                  subtitle={formatRupiah(item.price) + " ("+item.qty+")"}
                   />
                 ))
               }
