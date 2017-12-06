@@ -61,28 +61,17 @@ class Startshoping extends React.Component {
     this.state = {
       isModalVisible: false,
       isModalVisibleX: false,
+      isDeleteAlert: false,
       hasCameraPermission: null,
       type: Camera.Constants.Type.back,
-      list: [
-        {
-          name: "josss",
-          category: "food",
-          qty: "1",
-          price: "10000",
-          total: "10000"
-        }, {
-          name: "Aselole",
-          category: "Pampers",
-          qty: "1",
-          price: "100000",
-          total: "100000"
-        }
-      ],
+      list: [],
       suggestionKeep: [],
       suggestionRemove: [],
       image: null,
       uploading: false,
       item: {},
+      itemIndex: 0,
+      itemName: '',
       totalPrice: 0,
       index: 0,
       isLoading: false
@@ -282,6 +271,8 @@ class Startshoping extends React.Component {
       return idx != index
     })
 
+    this._hideDeleteModal()
+
     this.setState({
       list: newList
     })
@@ -337,8 +328,10 @@ class Startshoping extends React.Component {
     })
   }
 
+  _showDeleteModal = (index) => this.setState({ isDeleteAlert: true, itemIndex: index, itemName: this.state.list[index].name})
   _showModalX = () => this.setState({ isModalVisibleX: true })
   _hideModalX = () => this.setState({ isModalVisibleX: false })
+  _hideDeleteModal = () => this.setState({ isDeleteAlert: false, itemIndex: 0, itemName: '' })
 
   render() {
     const { hasCameraPermission, isLoading } = this.state;
@@ -412,7 +405,7 @@ class Startshoping extends React.Component {
                             small
                             rounded
                             source={{uri: imguri}}
-                            onPress={() => this.removeItem(index)}
+                            onPress={() => this._showDeleteModal(index)}
                           />
                         </View>
                         <View style={{width: '100%', paddingLeft: 30}}>
@@ -448,6 +441,47 @@ class Startshoping extends React.Component {
                 color='white'
                 onPress={() => this.belanja() }
               />
+            </View>
+
+            <View>
+              <Modal
+                isVisible={this.state.isDeleteAlert}
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  backgroundColor: 'transparent',
+                  padding: 22,
+                  justifyContent: 'center'
+                }}
+                animationIn={'slideInLeft'}
+                animationOut={'slideOutRight'}>
+
+                <View style={{
+                  height: 150,
+                  backgroundColor: 'white',
+                  borderRadius: 4,
+                  padding: 10,
+                  borderColor: 'rgba(0, 0, 0, 0.1)',
+                }}>
+                  <Text style={{alignSelf: 'center', fontSize: 18}}>Are you sure you want to delete {this.state.itemName} ?</Text>
+                  <View style={{flex: 1, flexDirection: 'row', paddingTop: 20, justifyContent: 'center'}}>
+                    <Button
+                      title='Cancel'
+                      fontWeight="bold"
+                      fontSize={16}
+                      buttonStyle={{width: 100, backgroundColor: 'red', borderRadius: 10, borderWidth: 2, borderColor: 'red'}}
+                      onPress={this._hideDeleteModal}
+                    />
+                    <Button
+                      title='Delete'
+                      fontWeight="bold"
+                      fontSize={16}
+                      buttonStyle={{width: 100, backgroundColor: '#0b8b00ff', borderRadius: 10, borderWidth: 2, borderColor: '#0b8b00ff'}}
+                      onPress={() => this.removeItem(this.state.itemIndex)}
+                    />
+                  </View>
+                </View>
+              </Modal>
             </View>
 
             <View>
@@ -522,11 +556,9 @@ class Startshoping extends React.Component {
                 style={styles.bottomModal}
                 animationIn={'slideInLeft'}
                 animationOut={'slideOutRight'}>
-
                 <Text style={{textAlign: 'center', paddingBottom: 15, fontSize: 20, fontWeight: 'bold', color: '#0b8b00ff'}}>
                   We have recommendation for you.
                 </Text>
-
                 <View>
                   <Text>Should be keep</Text>
                   <List containerStyle={{marginBottom: 20}}>
@@ -560,22 +592,11 @@ class Startshoping extends React.Component {
                       ))
                     }
                   </List>
-                </View>
-                <View style={{flexDirection: 'row', alignSelf: 'center'}}>
                   <Button
-                    buttonStyle={{width: 120, paddingLeft: 20, paddingRight: 20, backgroundColor: 'red', borderWidth: 2, borderColor: 'red', borderRadius: 40}}
-                    onPress={() => this._hideModalX()}
-                    title="Cancel"
+                    title="Ok, Thanks!"
                     fontWeight="bold"
                     fontSize={16}
-                    color="white"
-                  />
-
-                  <Button
-                    title="More"
-                    fontWeight="bold"
-                    fontSize={18}
-                    buttonStyle={{width: 120, paddingLeft: 20, paddingRight: 20, backgroundColor: '#0b8b00ff', borderRadius: 40, borderWidth: 2, borderColor: '#0b8b00ff'}}
+                    buttonStyle={{backgroundColor: '#0b8b00ff', borderRadius: 10, borderWidth: 2, borderColor: '#0b8b00ff'}}
                     onPress={() => this._hideModalX()}
                   />
                 </View>
