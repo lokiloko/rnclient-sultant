@@ -15,7 +15,7 @@ import { StackNavigator } from 'react-navigation';
 import { List, ListItem } from 'react-native-elements';
 import Modal from 'react-native-modal'
 
-import { Container, Header, Content, Form, Item, Input, Label, Button, Icon} from 'native-base';
+import { Container, Header, Content, Form, Item, Input, Label, Icon} from 'native-base';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 
 import formatRupiah from '../helpers/formatRupiah'

@@ -55,7 +55,7 @@ export const postTransactions = (transaction) => {
     axios.post(`https://us-central1-ian-hacktiv8.cloudfunctions.net/transactionsCRUD`, transaction)
     .then(({data}) => {
       console.log(data);
-      
+
       return dispatch(getTransactions(data.user))
     })
     .catch((reason) => {

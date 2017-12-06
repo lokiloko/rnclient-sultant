@@ -38,8 +38,10 @@ class Currentballance extends React.Component {
     this.RotateValueHolder = new Animated.Value(0);
     this.state = {
       text: '',
+      textFormated: '',
       budgetAwal: '',
       budgetSementara: '',
+      budgetSementaraFormatted: '',
       isModalVisible: false,
       isModalVisibleFirstBudget: false,
       FoodMealSolutionsGrainsPastaGrainsRice: false,
@@ -126,7 +128,25 @@ class Currentballance extends React.Component {
   }
 
   tambah (inputan) {
-    this.setState({budgetSementara: Number(inputan)})
+    if (inputan.indexOf('Rp ') > -1) {
+      inputan = inputan.split('Rp ')[1]
+    }
+    if (inputan.indexOf('.') > -1) {
+      inputan = inputan.split('.')
+      inputan = inputan.join('')
+    }
+    this.setState({budgetSementara: Number(inputan), budgetSementaraFormatted: formatRupiah(inputan)})
+  }
+
+  tambahModalFirst (inputan) {
+    if (inputan.indexOf('Rp ') > -1) {
+      inputan = inputan.split('Rp ')[1]
+    }
+    if (inputan.indexOf('.') > -1) {
+      inputan = inputan.split('.')
+      inputan = inputan.join('')
+    }
+    this.setState({text: Number(inputan), textFormated: formatRupiah(inputan)})
   }
 
   tambahbudget () {
@@ -137,8 +157,10 @@ class Currentballance extends React.Component {
     AsyncStorage.setItem('budget', konfString);
     this.setState({
       budgetSementara: '',
+      budgetSementaraFormatted: '',
       budgetAwal: konfString
     })
+    this.textInputBudgetTambahKurang.clear()
   }
 
   _showModal = () => this.setState({ isModalVisible: true })
@@ -221,7 +243,7 @@ class Currentballance extends React.Component {
             ]}
             source={require('./sultant.png')}
           />
-          <Text style={{color: 'white'}}>Proccessing, please wait...</Text>
+          <Text style={{color: 'white', fontSize: 18}}>Proccessing, please wait...</Text>
         </View>
       )
     } else {
@@ -246,13 +268,16 @@ class Currentballance extends React.Component {
                   keyboardType={"numeric"}
                   style={styles.textinput}
                   onChangeText={(tambahbudget) => this.tambah(tambahbudget)}
-                  value={this.state.budgetSementara}
+                  value={this.state.budgetSementaraFormatted}
+                  ref={input => { this.textInputBudgetTambahKurang = input }}
                 />
 
                 <View style={{flexDirection: 'row', alignSelf: 'center'}}>
                   <ButtonY
                     onPress={() => this.tambahbudget()}
                     title="Add Budget"
+                    fontWeight="bold"
+                    fontSize={16}
                     color="#0b8b00ff"
                     buttonStyle={{borderWidth: 2, borderColor: '#0b8b00ff', borderRadius: 40, backgroundColor: 'white'}}
                   />
@@ -260,6 +285,8 @@ class Currentballance extends React.Component {
                   <ButtonY
                     onPress={() => this._showModal()}
                     title="Start Shoping"
+                    fontWeight="bold"
+                    fontSize={16}
                     color="white"
                     buttonStyle={{borderWidth: 2, borderColor: '#0b8b00ff', borderRadius: 40, backgroundColor: '#0b8b00ff'}}
                   />
@@ -314,14 +341,16 @@ class Currentballance extends React.Component {
                   <TextInput
                     style={{textAlign: 'center',  fontSize: 18, height: 40, width: responsiveWidth(80), paddingLeft: 20, paddingRight: 20, marginBottom: 30}}
                     underlineColorAndroid="#0b8b00ff"
-                    onChangeText={(text) => this.setState({text})}
-                    value={this.state.text}
+                    onChangeText={(text) => this.tambahModalFirst(text)}
+                    value={this.state.textFormated}
                     keyboardType={'numeric'}
                   />
 
                   <ButtonY
                     buttonStyle={{backgroundColor: '#0b8b00ff', borderRadius: 30, padding: 10}}
                     title="Save"
+                    fontWeight="bold"
+                    fontSize={16}
                     color="white"
                     onPress={() => this.simpanBudget()}
                   />
@@ -412,6 +441,8 @@ class Currentballance extends React.Component {
                       <ButtonY
                         buttonStyle={{width: 100, paddingLeft: 20, paddingRight: 20, backgroundColor: 'red', borderWidth: 2, borderColor: 'red', borderRadius: 40}}
                         onPress={this._hideModal}
+                        fontWeight="bold"
+                        fontSize={16}
                         title="Cancel"
                         color="white"
                       />
@@ -422,6 +453,8 @@ class Currentballance extends React.Component {
                         buttonStyle={{width: 100, paddingLeft: 20, paddingRight: 20, backgroundColor: '#0b8b00ff', borderWidth: 2, borderColor: '#0b8b00ff', borderRadius: 40}}
                         onPress={() => this.navigasiStartShoping()}
                         title="Save"
+                        fontWeight="bold"
+                        fontSize={16}
                         color="white"
                       />
                     </View>

@@ -63,7 +63,21 @@ class Startshoping extends React.Component {
       isModalVisibleX: false,
       hasCameraPermission: null,
       type: Camera.Constants.Type.back,
-      list: [],
+      list: [
+        {
+          name: "josss",
+          category: "food",
+          qty: "1",
+          price: "10000",
+          total: "10000"
+        }, {
+          name: "Aselole",
+          category: "Pampers",
+          qty: "1",
+          price: "100000",
+          total: "100000"
+        }
+      ],
       suggestionKeep: [],
       suggestionRemove: [],
       image: null,
@@ -122,6 +136,10 @@ class Startshoping extends React.Component {
         quality: 0.15
       })
 
+      this.setState({
+        isLoading: true
+      })
+
       this._handleImagePicked(pickerResult);
     } else {
       alert('Take Picture Error')
@@ -133,11 +151,9 @@ class Startshoping extends React.Component {
 
   _handleImagePicked = async pickerResult => {
     try {
-      // alert('hai')
       console.log(pickerResult);
       this.setState({
         uploading: true,
-        isLoading: true
       });
 
       if (!pickerResult.cancelled) {
@@ -160,6 +176,7 @@ class Startshoping extends React.Component {
                 // console.log(axiosResponse.data.object);
                 let newItems = self.state.list.slice()
                 axiosResponse.data.object.qty = '1'
+                axiosResponse.data.object.total = Number(axiosResponse.data.object.price * axiosResponse.data.object.qty)
 
                 newItems.unshift(axiosResponse.data.object)
 
@@ -351,7 +368,7 @@ class Startshoping extends React.Component {
             ]}
             source={require('./sultant.png')}
           />
-          <Text style={{color: 'white'}}>Proccessing, please wait...</Text>
+          <Text style={{color: 'white', fontSize: 18}}>Proccessing, please wait...</Text>
         </View>
       )
     } else {
@@ -407,7 +424,7 @@ class Startshoping extends React.Component {
                         </View>
                       </View>
                     ))
-                  : <Text>No Item Yet</Text> }
+                  : <Text style={{alignSelf: 'center', marginTop: 10}}>No Item Yet</Text> }
                   </List>
                 </View>
               </ScrollView>
@@ -416,6 +433,8 @@ class Startshoping extends React.Component {
             <View style={{backgroundColor: 'white', flexDirection: 'row', alignItems: 'center'}}>
               <Button
                 title='Suggestion'
+                fontWeight="bold"
+                fontSize={16}
                 buttonStyle={{width: 150, backgroundColor: 'white', borderRadius: 10, borderWidth: 2, borderColor: '#0b8b00ff'}}
                 color="#0b8b00ff"
                 onPress={() => this.ShowSuggestion()}
@@ -423,6 +442,8 @@ class Startshoping extends React.Component {
 
               <Button
                 title='Save Belanjaan'
+                fontWeight="bold"
+                fontSize={16}
                 buttonStyle={{width: 150, backgroundColor: '#0b8b00ff', borderRadius: 10, borderWidth: 2, borderColor: '#0b8b00ff'}}
                 color='white'
                 onPress={() => this.belanja() }
@@ -430,13 +451,25 @@ class Startshoping extends React.Component {
             </View>
 
             <View>
-                <Modal
+              <Modal
                 isVisible={this.state.isModalVisible}
-                style={styles.bottomModal}
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  backgroundColor: 'transparent',
+                  padding: 22,
+                  justifyContent: 'center'
+                }}
                 animationIn={'slideInLeft'}
-                animationOut={'slideOutRight'}
-                >
-                <View>
+                animationOut={'slideOutRight'}>
+
+                <View style={{
+                  height: 400,
+                  backgroundColor: 'white',
+                  borderRadius: 4,
+                  padding: 10,
+                  borderColor: 'rgba(0, 0, 0, 0.1)',
+                }}>
                   <Text style={styles.textinputval}>Item Name</Text>
                   <TextInput
                     underlineColorAndroid="#0b8b00ff"
@@ -464,74 +497,89 @@ class Startshoping extends React.Component {
                     value={this.state.item.price ? formatRupiah(this.state.item.price) : formatRupiah('0')}
                   />
                   <Text style={{color: 'black', fontSize: 16, fontWeight: 'bold'}}>Total Price : {this.state.item.total ? formatRupiah(this.state.item.total) : formatRupiah('0')}</Text>
-                </View>
 
-                <View style={{flex: 1, flexDirection: 'row', paddingTop: 20}}>
-                  <View style={{flex: 1}}>
+                  <View style={{flex: 1, flexDirection: 'row', paddingTop: 20, justifyContent: 'center'}}>
                     <Button
-                    title='Cancel'
-                    buttonStyle={{backgroundColor: 'red', borderRadius: 10, borderWidth: 2, borderColor: 'red'}}
-                    onPress={this._hideModal}
+                      title='Cancel'
+                      fontWeight="bold"
+                      fontSize={16}
+                      buttonStyle={{width: 100, backgroundColor: 'red', borderRadius: 10, borderWidth: 2, borderColor: 'red'}}
+                      onPress={this._hideModal}
+                    />
+                    <Button
+                      title='Save'
+                      fontWeight="bold"
+                      fontSize={16}
+                      buttonStyle={{width: 100, backgroundColor: '#0b8b00ff', borderRadius: 10, borderWidth: 2, borderColor: '#0b8b00ff'}}
+                      onPress={() => this.simpanBelanjaan()}
                     />
                   </View>
-                  <View style={{flex: 1}}>
-                    <Button
-                    title='Save'
-                    buttonStyle={{backgroundColor: '#0b8b00ff', borderRadius: 10, borderWidth: 2, borderColor: '#0b8b00ff'}}
-                    onPress={() => this.simpanBelanjaan()}
-                    />
-                  </View>
                 </View>
-                </Modal>
+              </Modal>
 
-                <Modal
+              <Modal
                 isVisible={this.state.isModalVisibleX}
                 style={styles.bottomModal}
                 animationIn={'slideInLeft'}
                 animationOut={'slideOutRight'}>
-                  <Text style={{textAlign: 'center', paddingBottom: 15, fontSize: 20, fontWeight: 'bold', color: '#0b8b00ff'}}>
-                    We have recommendation for you.
-                  </Text>
-                  <View>
-                    <Text>Should be keep</Text>
-                    <List containerStyle={{marginBottom: 20}}>
-                      {
-                        this.state.suggestionKeep.map((item, i) => (
-                          <Card containerStyle={{padding: 0}} >
-                            {
-                              <ListItem
-                                hideChevron={true}
-                                key={i}
-                                title={item}
-                              />
-                            }
-                          </Card>
-                        ))
-                      }
-                    </List>
-                    <Text>Should be removed</Text>
-                    <List containerStyle={{marginBottom: 20}}>
-                      {
-                        this.state.suggestionRemove.map((item, i) => (
-                          <Card containerStyle={{padding: 0}} >
-                            {
-                              <ListItem
-                                hideChevron={true}
-                                key={i}
-                                title={item}
-                              />
-                            }
-                          </Card>
-                        ))
-                      }
-                    </List>
-                    <Button
-                    title="I don't care, I'm Rich!"
-                    buttonStyle={{backgroundColor: '#0b8b00ff', borderRadius: 10, borderWidth: 2, borderColor: '#0b8b00ff'}}
+
+                <Text style={{textAlign: 'center', paddingBottom: 15, fontSize: 20, fontWeight: 'bold', color: '#0b8b00ff'}}>
+                  We have recommendation for you.
+                </Text>
+
+                <View>
+                  <Text>Should be keep</Text>
+                  <List containerStyle={{marginBottom: 20}}>
+                    {
+                      this.state.suggestionKeep.map((item, i) => (
+                        <Card containerStyle={{padding: 0}} >
+                          {
+                            <ListItem
+                              hideChevron={true}
+                              key={i}
+                              title={item}
+                            />
+                          }
+                        </Card>
+                      ))
+                    }
+                  </List>
+                  <Text>Should be removed</Text>
+                  <List containerStyle={{marginBottom: 20}}>
+                    {
+                      this.state.suggestionRemove.map((item, i) => (
+                        <Card containerStyle={{padding: 0}} >
+                          {
+                            <ListItem
+                              hideChevron={true}
+                              key={i}
+                              title={item}
+                            />
+                          }
+                        </Card>
+                      ))
+                    }
+                  </List>
+                </View>
+                <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+                  <Button
+                    buttonStyle={{width: 120, paddingLeft: 20, paddingRight: 20, backgroundColor: 'red', borderWidth: 2, borderColor: 'red', borderRadius: 40}}
                     onPress={() => this._hideModalX()}
-                    />
-                  </View>
-                </Modal>
+                    title="Cancel"
+                    fontWeight="bold"
+                    fontSize={16}
+                    color="white"
+                  />
+
+                  <Button
+                    title="More"
+                    fontWeight="bold"
+                    fontSize={18}
+                    buttonStyle={{width: 120, paddingLeft: 20, paddingRight: 20, backgroundColor: '#0b8b00ff', borderRadius: 40, borderWidth: 2, borderColor: '#0b8b00ff'}}
+                    onPress={() => this._hideModalX()}
+                  />
+                </View>
+              </Modal>
 
             </View>
           </View>

@@ -263,7 +263,7 @@ rendering() {
           ]}
           source={require('./sultant.png')}
         />
-        <Text style={{color: 'white'}}>Proccessing, please wait...</Text>
+        <Text style={{color: 'white', fontSize: 18}}>Proccessing, please wait...</Text>
       </View>
     )
   } else {
@@ -288,6 +288,8 @@ rendering() {
              <Button
                 title='Scan KTP'
                 color='white'
+                fontWeight='bold'
+                fontSize={16}
                 buttonStyle={{backgroundColor: 'red', borderRadius: 10}}
                 onPress={this._takePhoto}
              />
@@ -312,6 +314,7 @@ rendering() {
                    <Text style={styles.textinputval}>Name</Text>
                    <TextInput
                      underlineColorAndroid="#0b8b00ff"
+                     autoCapitalize={"characters"}
                      style={styles.textinput}
                      onChangeText={(nama) => this.setState({nama})}
                      value={this.state.nama}
@@ -320,6 +323,7 @@ rendering() {
                   <Text style={styles.textinputval}>Gender</Text>
                   <TextInput
                      underlineColorAndroid="#0b8b00ff"
+                     autoCapitalize={"characters"}
                      style={styles.textinput}
                      onChangeText={(jenisKelamin) => this.setState({jenisKelamin})}
                      value={this.state.jenisKelamin}
@@ -328,6 +332,7 @@ rendering() {
                   <Text style={styles.textinputval}>Province</Text>
                   <TextInput
                      underlineColorAndroid="#0b8b00ff"
+                     autoCapitalize={"characters"}
                      style={styles.textinput}
                      onChangeText={(provinsi) => this.setState({provinsi})}
                      value={this.state.provinsi}
@@ -336,6 +341,7 @@ rendering() {
                   <Text style={styles.textinputval}>City</Text>
                   <TextInput
                      underlineColorAndroid="#0b8b00ff"
+                     autoCapitalize={"characters"}
                      style={styles.textinput}
                      onChangeText={(kota) => this.setState({kota})}
                      value={this.state.kota}
@@ -344,6 +350,7 @@ rendering() {
                   <Text style={styles.textinputval}>Religion</Text>
                   <TextInput
                      underlineColorAndroid="#0b8b00ff"
+                     autoCapitalize={"characters"}
                      style={styles.textinput}
                      onChangeText={(agama) => this.setState({agama})}
                      value={this.state.agama}
@@ -352,6 +359,7 @@ rendering() {
                   <Text style={styles.textinputval}>Status</Text>
                   <TextInput
                      underlineColorAndroid="#0b8b00ff"
+                     autoCapitalize={"characters"}
                      style={styles.textinput}
                      onChangeText={(status) => this.setState({status})}
                      value={this.state.status}
@@ -360,6 +368,7 @@ rendering() {
                   <Text style={styles.textinputval}>Birth Place</Text>
                   <TextInput
                      underlineColorAndroid="#0b8b00ff"
+                     autoCapitalize={"characters"}
                      style={styles.textinput}
                      onChangeText={(tempatLahir) => this.setState({tempatLahir})}
                      value={this.state.tempatLahir}
@@ -377,6 +386,8 @@ rendering() {
                     <Button
                       title='Simpan'
                       color='white'
+                      fontWeight="bold"
+                      fontSize={16}
                       buttonStyle={{
                         backgroundColor: '#0b8b00ff',
                         borderRadius: 10,
