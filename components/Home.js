@@ -191,7 +191,7 @@ _handleImagePicked = async pickerResult => {
       let match = /\.(\w+)$/.exec(filename);
       let type = match ? `image/${match[1]}` : `image`;
 
-      var ACCESS_TOKEN = 'jPHkzgRYYKAAAAAAAAAACwtSuHiIRQl4SKdPc9Ad3yxY0BxdCbA3eeIgdlrCZS8w';
+      var ACCESS_TOKEN = '0_AqSl7cNVAAAAAAAAAACAfDZ584ECmF3E754bytZYjY1sMhzvDRu4hdoyHai8MB';
       var dbx = new Dropbox({ accessToken: ACCESS_TOKEN });
 
       var self = this
