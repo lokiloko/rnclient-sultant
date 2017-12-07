@@ -423,7 +423,7 @@ class Startshoping extends React.Component {
               </ScrollView>
             </View>
 
-            <View style={{backgroundColor: 'white', flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{backgroundColor: 'white', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
               <Button
                 title='Suggestion'
                 fontWeight="bold"
@@ -434,7 +434,7 @@ class Startshoping extends React.Component {
               />
 
               <Button
-                title='Save Belanjaan'
+                title='Save Transacton'
                 fontWeight="bold"
                 fontSize={16}
                 buttonStyle={{width: 150, backgroundColor: '#0b8b00ff', borderRadius: 10, borderWidth: 2, borderColor: '#0b8b00ff'}}
