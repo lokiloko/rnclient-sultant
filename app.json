@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "Sultant",
+    "icon": "./logo.png",
+    "version": "0.1.0",
+    "slug": "sultant-beta",
+    "sdkVersion": "22.0.0",
+    "splash": {
+      "image": "./splash.png",
+      "backgroundColor": "#0b8b00ff",
+      "resizeMode": "cover"
+    },
+    "ios": {
+      "bundleIdentifier": "com.hacktiv8.sultant"
+    },
+    "android": {
+      "package": "com.hacktiv8.sultant"
+    }
+  }
+}
