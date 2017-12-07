@@ -168,6 +168,7 @@ _takePhoto = async () => {
   let pickerResult = await ImagePicker.launchCameraAsync({
     allowsEditing: true,
     aspect: [4, 3],
+    quality: 0.5
   });
 
   this._handleImagePicked(pickerResult);
