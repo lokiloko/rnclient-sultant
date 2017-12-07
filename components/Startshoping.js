@@ -434,7 +434,7 @@ class Startshoping extends React.Component {
               />
 
               <Button
-                title='Save Transacton'
+                title='Finish Shopping'
                 fontWeight="bold"
                 fontSize={16}
                 buttonStyle={{width: 150, backgroundColor: '#0b8b00ff', borderRadius: 10, borderWidth: 2, borderColor: '#0b8b00ff'}}
